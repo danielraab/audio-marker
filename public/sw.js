@@ -78,7 +78,8 @@ self.addEventListener('fetch', (event) => {
           return fetch(request).then((networkResponse) => {
             // Only cache successful responses
             if (networkResponse && networkResponse.status === 200) {
-              cache.put(request, networkResponse.clone());
+              const responseClone = networkResponse.clone();
+              cache.put(request, responseClone);
             }
             return networkResponse;
           }).catch((error) => {
@@ -100,8 +101,9 @@ self.addEventListener('fetch', (event) => {
         }
         return fetch(request).then((networkResponse) => {
           if (networkResponse && networkResponse.status === 200) {
+            const responseClone = networkResponse.clone();
             caches.open(STATIC_CACHE_NAME).then((cache) => {
-              cache.put(request, networkResponse.clone());
+              cache.put(request, responseClone);
             });
           }
           return networkResponse;
@@ -117,8 +119,9 @@ self.addEventListener('fetch', (event) => {
       fetch(request)
         .then((networkResponse) => {
           if (networkResponse && networkResponse.status === 200) {
+            const responseClone = networkResponse.clone();
             caches.open(CACHE_NAME).then((cache) => {
-              cache.put(request, networkResponse.clone());
+              cache.put(request, responseClone);
             });
           }
           return networkResponse;
@@ -140,8 +143,9 @@ self.addEventListener('fetch', (event) => {
     fetch(request)
       .then((networkResponse) => {
         if (networkResponse && networkResponse.status === 200) {
+          const responseClone = networkResponse.clone();
           caches.open(CACHE_NAME).then((cache) => {
-            cache.put(request, networkResponse.clone());
+            cache.put(request, responseClone);
           });
         }
         return networkResponse;

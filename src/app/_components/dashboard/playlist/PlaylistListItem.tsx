@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { api } from "~/trpc/react";
 import { PlaylistActionsDropdown } from "./PlaylistActionsDropdown";
 import { formatTimeAgo } from "~/lib/time";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 interface PlaylistListItemProps {
   playlist: {
@@ -27,6 +27,7 @@ export function PlaylistListItem({ playlist }: PlaylistListItemProps) {
   const router = useRouter();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedPlaylistId, setSelectedPlaylistId] = useState<string>("");
+  const locale = useLocale();
   const t = useTranslations('PlaylistListItem');
 
   const deletePlaylistMutation = api.playlist.deletePlaylist.useMutation({
@@ -94,10 +95,10 @@ export function PlaylistListItem({ playlist }: PlaylistListItemProps) {
             </p>
           )}
           <div className="space-y-1 text-sm text-default-500">
-            <p><span className="font-medium">{t('labels.created')}</span> {formatTimeAgo(new Date(playlist.createdAt))}</p>
-            <p><span className="font-medium">{t('labels.lastUpdated')}</span> {formatTimeAgo(new Date(playlist.updatedAt))}</p>
+            <p><span className="font-medium">{t('labels.created')}</span> {formatTimeAgo(new Date(playlist.createdAt), locale)}</p>
+            <p><span className="font-medium">{t('labels.lastUpdated')}</span> {formatTimeAgo(new Date(playlist.updatedAt), locale)}</p>
             {playlist.lastListenAt && (
-              <p><span className="font-medium">{t('labels.lastListened')}</span> {formatTimeAgo(new Date(playlist.lastListenAt))}</p>
+              <p><span className="font-medium">{t('labels.lastListened')}</span> {formatTimeAgo(new Date(playlist.lastListenAt), locale)}</p>
             )}
           </div>
         </CardBody>

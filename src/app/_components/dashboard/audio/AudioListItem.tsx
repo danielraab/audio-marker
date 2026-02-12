@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { api } from "~/trpc/react";
 import { AudioActionsDropdown } from "./AudioActionsDropdown";
 import { formatTimeAgo } from "~/lib/time";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 interface AudioListItemProps {
   audio: {
@@ -27,6 +27,7 @@ export function AudioListItem({ audio }: AudioListItemProps) {
   const router = useRouter();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedAudioId, setSelectedAudioId] = useState<string>("");
+  const locale = useLocale();
   const t = useTranslations("AudioListItem");
 
   const deleteAudioMutation = api.audio.deleteAudio.useMutation({
@@ -90,9 +91,9 @@ export function AudioListItem({ audio }: AudioListItemProps) {
           )}
           <div className="space-y-1 text-sm text-default-500">
             <p className="break-words"><span className="font-medium">{t('labels.originalFileName')}</span> {audio.originalFileName}</p>
-            <p><span className="font-medium">{t('labels.uploaded')}</span> {formatTimeAgo(new Date(audio.createdAt))}</p>
+            <p><span className="font-medium">{t('labels.uploaded')}</span> {formatTimeAgo(new Date(audio.createdAt), locale)}</p>
             {audio.lastListenAt && (
-              <p><span className="font-medium">{t('labels.lastListened')}</span> {formatTimeAgo(new Date(audio.lastListenAt))}</p>
+              <p><span className="font-medium">{t('labels.lastListened')}</span> {formatTimeAgo(new Date(audio.lastListenAt), locale)}</p>
             )}
           </div>
         </CardBody>

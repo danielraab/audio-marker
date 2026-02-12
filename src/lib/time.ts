@@ -10,7 +10,7 @@ export const roundTime = (seconds: number, decimals = 2): number => {
   return Math.round(seconds * factor) / factor;
 };
 
-export const formatTimeAgo = (date: Date) => {
+export const formatTimeAgo = (date: Date, locale?: string) => {
   const now = new Date();
   const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
 
@@ -18,5 +18,5 @@ export const formatTimeAgo = (date: Date) => {
   if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)} minutes ago`;
   if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)} hours ago`;
   if (diffInSeconds < 2592000) return `${Math.floor(diffInSeconds / 86400)} days ago`;
-  return date.toLocaleDateString();
+  return locale ? date.toLocaleDateString(locale) : date.toLocaleDateString();
 };
