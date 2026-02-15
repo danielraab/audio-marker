@@ -56,6 +56,7 @@ export default async function ListenPage({ params }: ListenPageProps) {
         )}
         <ListenOnlyAudioPlayer
           audioUrl={`/api/audio/${audio.id}/file`}
+          peaksUrl={`/api/audio/${audio.id}/peaks`}
           audioName={audio.name}
           audioDescription={audio.description}
           audioReadOnlyToken={audio.id}

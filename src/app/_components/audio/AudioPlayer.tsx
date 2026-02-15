@@ -21,6 +21,7 @@ interface AudioPlayerProps {
   audioName: string;
   audioDescription?: string | null;
   audioReadOnlyToken: string;
+  peaksUrl?: string;
   markers?: AudioMarker[];
   onTimeUpdate?: (time: number) => void;
   onPlayFromFnReady?: (playFrom: (marker: AudioMarker) => void) => void;
@@ -37,6 +38,7 @@ export default function AudioPlayer({
   audioName,
   audioDescription,
   audioReadOnlyToken,
+  peaksUrl,
   markers = [],
   onTimeUpdate,
   onPlayFromFnReady,
@@ -66,6 +68,7 @@ export default function AudioPlayer({
   const markersRef = useRef<AudioMarker[]>(markers);
   const onMarkerUpdatedRef = useRef(onMarkerUpdated);
   const wakeLockRef = useRef<WakeLockSentinel | null>(null);
+  const [peaks, setPeaks] = useState<number[] | null>(null);
 
   // Keep refs in sync with props
   useEffect(() => {
@@ -80,6 +83,26 @@ export default function AudioPlayer({
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // Fetch pre-generated peaks data for performant waveform rendering
+  useEffect(() => {
+    if (!peaksUrl) return;
+    let cancelled = false;
+    fetch(peaksUrl)
+      .then(res => {
+        if (!res.ok) throw new Error(`Peaks fetch failed: ${res.status}`);
+        return res.json() as Promise<{ peaks: number[]; duration: number }>;
+      })
+      .then(data => {
+        if (!cancelled) {
+          setPeaks(data.peaks);
+        }
+      })
+      .catch(() => {
+        // Non-fatal: WaveSurfer will decode audio directly as fallback
+      });
+    return () => { cancelled = true; };
+  }, [peaksUrl]);
 
   // Create regions from markers - memoized to prevent unnecessary recreations
   const createRegionsFromMarkers = useCallback((markers: AudioMarker[], editingId: string | null | undefined) => {
@@ -223,6 +246,12 @@ export default function AudioPlayer({
       normalize: true,
       mediaControls: false,
       backend: 'MediaElement',
+      // Use pre-generated peaks for the waveform shape only.
+      // Do NOT pass duration here — let WaveSurfer use the browser's MediaElement
+      // duration so the cursor and waveform are always in sync across all browsers.
+      // (Chrome and Firefox can report different durations for the same MP3 due to
+      // encoder delay handling; ffprobe may report yet another value.)
+      ...(peaks ? { peaks: [peaks] } : {}),
       plugins: [
         Timeline.create(),
         regionsPlugin.current
@@ -294,7 +323,7 @@ export default function AudioPlayer({
         wavesurfer.current.destroy();
       }
     };
-  }, [audioUrl, onSelectedRegionUpdate, onTimeUpdate, createRegionsFromMarkers, onFinish]);
+  }, [audioUrl, peaks, onSelectedRegionUpdate, onTimeUpdate, createRegionsFromMarkers, onFinish]);
 
   // Update marker regions when markers change, without reinitializing WaveSurfer
   useEffect(() => {

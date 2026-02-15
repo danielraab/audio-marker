@@ -13,6 +13,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 
 interface AudioPlayerWithMarkersProps {
   audioUrl: string;
+  peaksUrl?: string;
   audioName: string;
   audioDescription?: string | null;
   audioReadOnlyToken: string;
@@ -21,6 +22,7 @@ interface AudioPlayerWithMarkersProps {
 
 export default function ListenOnlyAudioPlayer({ 
   audioUrl, 
+  peaksUrl,
   audioName,
   audioDescription,
   audioReadOnlyToken,
@@ -221,6 +223,7 @@ export default function ListenOnlyAudioPlayer({
       {/* Audio Player */}
       <AudioPlayer
         audioUrl={audioUrl}
+        peaksUrl={peaksUrl}
         audioName={audioName}
         audioDescription={audioDescription}
         audioReadOnlyToken={audioReadOnlyToken}

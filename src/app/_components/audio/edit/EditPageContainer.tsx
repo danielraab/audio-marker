@@ -74,6 +74,7 @@ export function EditPageContainer({ audioId }: EditPageContainerProps) {
       
       <AudioPlayer
         audioUrl={`/api/audio/${audio.id}/file`}
+        peaksUrl={`/api/audio/${audio.id}/peaks`}
         audioName={audio.name}
         audioReadOnlyToken={audio.id}
         markers={markers}

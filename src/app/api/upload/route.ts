@@ -5,6 +5,8 @@ import { db } from "~/server/db";
 import { writeFile } from 'fs/promises';
 import { v4 as uuidv4 } from 'uuid';
 import path from 'path';
+import { generateAndSavePeaks } from '~/lib/peaks';
+import { replaceWithCbrMp3 } from '~/lib/audioReencode';
 
 export async function POST(req: NextRequest) {
   try {
@@ -45,6 +47,22 @@ export async function POST(req: NextRequest) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
     await writeFile(filePath, buffer);
+
+    // Re-encode to CBR MP3 for browser compatibility
+    try {
+      await replaceWithCbrMp3(filePath);
+    } catch (reencodeError) {
+      console.warn('CBR re-encode failed (non-fatal):', reencodeError);
+      // Non-fatal: original file is kept
+    }
+
+    // Generate waveform peaks JSON for performant rendering
+    try {
+      await generateAndSavePeaks(filePath);
+    } catch (peakError) {
+      console.warn('Peak generation failed (non-fatal):', peakError);
+      // Non-fatal: audio still works without pre-generated peaks
+    }
 
     // Create database record (store only filename)
     const audio = await db.audio.create({

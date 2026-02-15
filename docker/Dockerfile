@@ -1,7 +1,7 @@
 ##### DEPENDENCIES
 
 FROM --platform=linux/amd64 node:20-alpine AS deps
-RUN apk add --no-cache libc6-compat openssl
+RUN apk add --no-cache libc6-compat openssl ffmpeg
 WORKDIR /app
 
 # Install Prisma Client - remove if not using Prisma
@@ -42,7 +42,7 @@ RUN \
 ##### RUNNER
 
 FROM --platform=linux/amd64 node:20-alpine AS runner
-RUN apk add --no-cache openssl
+RUN apk add --no-cache openssl ffmpeg
 WORKDIR /app
 
 ENV NODE_ENV production
