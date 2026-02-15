@@ -222,7 +222,7 @@ export default function AudioPlayer({
       height: 150,
       normalize: true,
       mediaControls: false,
-      backend: 'WebAudio',
+      backend: 'MediaElement',
       plugins: [
         Timeline.create(),
         regionsPlugin.current
