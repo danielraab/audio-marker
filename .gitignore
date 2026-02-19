@@ -11,7 +11,7 @@
 # database
 /prisma/db.sqlite
 /prisma/db.sqlite-journal
-db.sqlite
+*.sqlite
 
 # data directory (uploads and database)
 /data/

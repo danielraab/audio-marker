@@ -1,19 +1,16 @@
 import { execFile } from 'child_process';
+import { promisify } from 'util';
 import { writeFile } from 'fs/promises';
 import path from 'path';
+
+const execFileAsync = promisify(execFile);
 
 /**
  * Number of peaks per second of audio.
  * Higher values = more detail but larger file.
- * 800 peaks/sec provides good waveform detail at typical zoom levels.
+ * 100 peaks/sec provides good waveform detail at typical zoom levels.
  */
-const PEAKS_PER_SECOND = 100;
-
-/**
- * Sample rate to use when decoding audio for peak extraction.
- * Lower than source (typically 44100) to reduce processing.
- */
-const DECODE_SAMPLE_RATE = 8000;
+const PEAKS_PER_SECOND = 50;
 
 export interface PeaksData {
   /** Array of peak values, normalized to [-1, 1] */
@@ -27,41 +24,31 @@ export interface PeaksData {
 }
 
 /**
- * Generate a peak list from an audio file using ffmpeg.
+ * Generate a peak list from an audio file using audiowaveform.
  *
- * Decodes the audio to mono raw PCM float32 at a reduced sample rate,
- * then downsamples to a fixed number of peaks per second by taking the
- * max absolute value in each bucket.
+ * Uses audiowaveform to generate waveform data at a fixed number of peaks per second.
+ * The output is normalized to [-1, 1] range.
  *
- * @param audioFilePath - Absolute path to the audio file (MP3)
+ * @param audioFilePath - Absolute path to the audio file (MP3, FLAC, WAV, etc.)
  * @returns The peaks data object
  */
 export async function generatePeaks(audioFilePath: string): Promise<PeaksData> {
-  // Step 1: Get duration via ffprobe
-  const duration = await getAudioDuration(audioFilePath);
+  const waveformData = await generateWaveformData(audioFilePath, PEAKS_PER_SECOND);
 
-  // Step 2: Decode to raw PCM float32 mono via ffmpeg
-  const rawPcm = await decodeToRawPcm(audioFilePath, DECODE_SAMPLE_RATE);
-
-  // Step 3: Convert raw buffer to Float32Array
-  const samples = new Float32Array(rawPcm.buffer, rawPcm.byteOffset, rawPcm.byteLength / 4);
-
-  // Step 4: Compute peaks by downsampling
-  const totalPeaks = Math.ceil(duration * PEAKS_PER_SECOND);
-  const samplesPerPeak = Math.max(1, Math.floor(samples.length / totalPeaks));
-  const peaks: number[] = new Array(totalPeaks) as number[];
-
-  for (let i = 0; i < totalPeaks; i++) {
-    const start = i * samplesPerPeak;
-    const end = Math.min(start + samplesPerPeak, samples.length);
-    let max = 0;
-    for (let j = start; j < end; j++) {
-      const abs = Math.abs(samples[j]!);
-      if (abs > max) max = abs;
-    }
+  // audiowaveform returns data array with alternating min/max values
+  // We take the absolute max of each min/max pair for our peaks
+  const peaks: number[] = [];
+  for (let i = 0; i < waveformData.data.length; i += 2) {
+    const min = Math.abs(waveformData.data[i]!);
+    const max = Math.abs(waveformData.data[i + 1]!);
+    const peak = Math.max(min, max);
+    // Normalize from 8-bit range (0-255, with 128 as center) to [0, 1]
+    const normalized = peak / 128.0;
     // Round to 4 decimal places to reduce JSON size
-    peaks[i] = Math.round(max * 10000) / 10000;
+    peaks.push(Math.round(normalized * 10000) / 10000);
   }
+
+  const duration = waveformData.length / waveformData.sample_rate;
 
   return {
     peaks,
@@ -91,63 +78,48 @@ export async function generateAndSavePeaks(audioFilePath: string): Promise<strin
 }
 
 /**
- * Get the duration of an audio file in seconds using ffprobe.
+ * Interface for audiowaveform JSON output.
  */
-function getAudioDuration(filePath: string): Promise<number> {
-  return new Promise((resolve, reject) => {
-    execFile(
-      'ffprobe',
-      [
-        '-v', 'quiet',
-        '-print_format', 'json',
-        '-show_format',
-        filePath,
-      ],
-      { maxBuffer: 1024 * 1024 },
-      (error, stdout) => {
-        if (error) {
-          reject(new Error(`ffprobe failed: ${error.message}`));
-          return;
-        }
-        try {
-          const data = JSON.parse(stdout) as { format?: { duration?: string } };
-          const duration = parseFloat(data.format?.duration ?? '0');
-          if (isNaN(duration) || duration <= 0) {
-            reject(new Error('Could not determine audio duration'));
-            return;
-          }
-          resolve(duration);
-        } catch (e) {
-          reject(new Error(`Failed to parse ffprobe output: ${(e as Error).message}`));
-        }
-      }
-    );
-  });
+interface AudiowaveformData {
+  version: number;
+  channels: number;
+  sample_rate: number;
+  samples_per_pixel: number;
+  bits: number;
+  length: number;
+  data: number[];
 }
 
 /**
- * Decode an audio file to raw PCM float32 mono using ffmpeg.
+ * Generate waveform data using audiowaveform.
+ * 
+ * @param filePath - Path to the audio file
+ * @param pixelsPerSecond - Number of data points per second
+ * @returns Parsed audiowaveform JSON output
  */
-function decodeToRawPcm(filePath: string, sampleRate: number): Promise<Buffer> {
-  return new Promise((resolve, reject) => {
-    execFile(
-      'ffmpeg',
+async function generateWaveformData(filePath: string, pixelsPerSecond: number): Promise<AudiowaveformData> {
+  try {
+    const { stdout } = await execFileAsync(
+      'audiowaveform',
       [
         '-i', filePath,
-        '-ac', '1',             // mono
-        '-ar', String(sampleRate),
-        '-f', 'f32le',          // raw 32-bit float, little-endian
-        '-acodec', 'pcm_f32le',
-        'pipe:1',
+        '--pixels-per-second', String(pixelsPerSecond),
+        '-b', '8',              // 8-bit output (smaller, sufficient detail)
+        '--output-format', 'json',
+        '-o', '-',              // output to stdout
       ],
-      { maxBuffer: 50 * 1024 * 1024, encoding: 'buffer' },
-      (error, stdout) => {
-        if (error) {
-          reject(new Error(`ffmpeg decode failed: ${error.message}`));
-          return;
-        }
-        resolve(stdout as unknown as Buffer);
-      }
+      { maxBuffer: 10 * 1024 * 1024 }, // 10MB buffer for large files
     );
-  });
+
+    const data = JSON.parse(stdout) as AudiowaveformData;
+    if (!data.data || !Array.isArray(data.data) || data.data.length === 0) {
+      throw new Error('audiowaveform returned invalid data');
+    }
+
+    return data;
+  } catch (error) {
+    const err = error as { message: string; stderr?: string };
+    const stderrMsg = err.stderr ? '\n' + err.stderr : '';
+    throw new Error(`audiowaveform failed: ${err.message}${stderrMsg}`);
+  }
 }

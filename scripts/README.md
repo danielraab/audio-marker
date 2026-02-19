@@ -1,5 +1,34 @@
 # Admin Scripts
 
+## Install Audio Processing Tools
+
+This script installs `ffmpeg` and `audiowaveform`, tools required for audio processing and waveform generation. It automatically detects your operating system and uses the appropriate package manager.
+
+### Usage
+
+```bash
+./scripts/install-audio-tools.sh
+```
+
+### Supported Platforms
+
+- **macOS**: Installs via Homebrew
+- **Ubuntu/Debian**: Installs ffmpeg via apt, builds audiowaveform from source (takes a few minutes)
+- **Fedora/RHEL/CentOS**: Installs via dnf/yum
+- **Alpine Linux**: Installs via apk
+- **Arch Linux**: Installs via pacman
+- **Windows**: Manual installation required (see script output for download links)
+
+### Notes
+
+- The script requires sudo privileges for package installation
+- For Docker deployments, both tools are already included in the container
+- If your OS is not supported, install manually:
+  - [ffmpeg downloads](https://ffmpeg.org/download.html)
+  - [audiowaveform releases](https://github.com/bbc/audiowaveform/releases)
+
+---
+
 ## Database Seeder
 
 This script fills the database with test data for development and testing purposes. All dates are relative to the script execution time.

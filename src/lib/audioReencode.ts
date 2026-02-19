@@ -26,7 +26,6 @@ export async function reencodeMp3ToCbr(
         '-ar', String(sampleRate),
         '-b:a', `${bitrate}k`,
         '-codec:a', 'libmp3lame',
-        '-cbr', 'true',
         outputPath,
       ],
       { maxBuffer: 10 * 1024 * 1024 },

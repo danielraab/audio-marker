@@ -19,6 +19,20 @@ RUN \
     else echo "Lockfile not found." && exit 1; \
     fi
 
+##### AUDIOWAVEFORM BUILDER
+# Build audiowaveform from source since it's not available in Alpine repos
+
+FROM --platform=linux/amd64 alpine:3.19 AS audiowaveform-builder
+RUN apk add --no-cache git make cmake gcc g++ libmad-dev libid3tag-dev libsndfile-dev \
+    gd-dev boost-dev libgd libpng-dev zlib-dev
+RUN git clone https://github.com/bbc/audiowaveform.git /tmp/audiowaveform && \
+    cd /tmp/audiowaveform && \
+    mkdir build && \
+    cd build && \
+    cmake -D ENABLE_TESTS=0 -D CMAKE_BUILD_TYPE=Release .. && \
+    make && \
+    make install
+
 ##### BUILDER
 
 FROM --platform=linux/amd64 node:20-alpine AS builder
@@ -42,8 +56,12 @@ RUN \
 ##### RUNNER
 
 FROM --platform=linux/amd64 node:20-alpine AS runner
-RUN apk add --no-cache openssl ffmpeg
+# Install runtime dependencies for audiowaveform and ffmpeg
+RUN apk add --no-cache openssl ffmpeg libmad libid3tag libsndfile gd libpng boost-filesystem boost-program-options boost-regex
 WORKDIR /app
+
+# Copy audiowaveform binary from builder stage
+COPY --from=audiowaveform-builder /usr/local/bin/audiowaveform /usr/local/bin/audiowaveform
 
 ENV NODE_ENV production
 
