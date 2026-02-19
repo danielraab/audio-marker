@@ -18,18 +18,6 @@ function daysAgo(days: number): Date {
   return date;
 }
 
-function hoursAgo(hours: number): Date {
-  const date = new Date();
-  date.setHours(date.getHours() - hours);
-  return date;
-}
-
-function minutesAgo(minutes: number): Date {
-  const date = new Date();
-  date.setMinutes(date.getMinutes() - minutes);
-  return date;
-}
-
 // Generate random listen records spread across time
 function generateListenDates(count: number, maxDaysAgo: number): Date[] {
   const dates: Date[] = [];
@@ -113,7 +101,7 @@ async function seed() {
       },
     });
 
-    const disabledUser = await prisma.user.upsert({
+    await prisma.user.upsert({
       where: { email: "disabled@example.com" },
       update: {},
       create: {

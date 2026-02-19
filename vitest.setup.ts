@@ -8,10 +8,12 @@ afterEach(() => {
 });
 
 // Mock localStorage for tests
-const localStorageMock = {
+const localStorageMock: Storage = {
   getItem: vi.fn(),
   setItem: vi.fn(),
   removeItem: vi.fn(),
   clear: vi.fn(),
+  key: vi.fn(),
+  length: 0,
 };
-global.localStorage = localStorageMock as any;
+global.localStorage = localStorageMock;

@@ -39,7 +39,7 @@ export const markerRouter = createTRPCRouter({
         },
       });
 
-      if (!audio || audio.createdById !== ctx.session.user.id) {
+      if (audio?.createdById !== ctx.session.user.id) {
         throw new Error("Unauthorized");
       }
 
@@ -74,7 +74,7 @@ export const markerRouter = createTRPCRouter({
         },
       });
 
-      if (!marker || marker.audio.createdById !== ctx.session.user.id) {
+      if (marker?.audio.createdById !== ctx.session.user.id) {
         throw new Error("Unauthorized");
       }
 
@@ -109,7 +109,7 @@ export const markerRouter = createTRPCRouter({
         },
       });
 
-      if (!marker || marker.audio.createdById !== ctx.session.user.id) {
+      if (marker?.audio.createdById !== ctx.session.user.id) {
         throw new Error("Unauthorized");
       }
 

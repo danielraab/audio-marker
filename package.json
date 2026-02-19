@@ -6,7 +6,7 @@
   "scripts": {
     "admin:create": "tsx scripts/create-admin.ts",
     "build": "next build",
-    "check": "next lint && tsc --noEmit",
+    "check": "eslint . && tsc --noEmit",
     "db:generate": "prisma migrate dev",
     "db:migrate": "prisma migrate deploy",
     "db:push": "prisma db push",
@@ -17,8 +17,8 @@
     "format:write": "prettier --write \"**/*.{ts,tsx,js,jsx,mdx}\" --cache",
     "migrate:storage": "tsx scripts/migrate-audio-storage.ts",
     "postinstall": "prisma generate",
-    "lint": "next lint",
-    "lint:fix": "next lint --fix",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
     "preview": "next build && next start",
     "start": "next start",
     "test": "vitest",
@@ -87,10 +87,6 @@
     "typescript": "^5.8.2",
     "typescript-eslint": "^8.27.0",
     "vitest": "^4.0.18"
-  },
-  "overrides": {
-    "minimatch": ">=10.2.1",
-    "ajv": ">=8.18.0"
   },
   "ct3aMetadata": {
     "initVersion": "7.39.3"
