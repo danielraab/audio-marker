@@ -6,6 +6,22 @@ const AUDIO_CACHE_NAME = 'audio-marker-audio-v1';
 const STATIC_CACHE_NAME = 'audio-marker-static-v1';
 const AUDIO_API_REGEX = /^\/api\/audio\/[^\/]+\/file$/;
 
+// Check if we're in production mode (enable caching only in production)
+// Read from URL parameter passed during registration
+let IS_PRODUCTION = false;
+
+try {
+  const url = new URL(self.location.href);
+  const env = url.searchParams.get('env');
+  IS_PRODUCTION = env === 'production';
+} catch (e) {
+  // Fallback: assume production if we can't determine
+  console.warn('[Service Worker] Could not determine environment, defaulting to production');
+  IS_PRODUCTION = true;
+}
+
+const isProduction = () => IS_PRODUCTION;
+
 // Static assets to cache on install
 const STATIC_ASSETS = [
   '/',
@@ -16,13 +32,19 @@ const STATIC_ASSETS = [
 
 // Install event - cache static assets
 self.addEventListener('install', (event) => {
-  console.log('[Service Worker] Installing...');
-  event.waitUntil(
-    caches.open(STATIC_CACHE_NAME).then((cache) => {
-      console.log('[Service Worker] Caching static assets');
-      return cache.addAll(STATIC_ASSETS);
-    })
-  );
+  console.log('[Service Worker] Installing...', isProduction() ? '(Production Mode)' : '(Development Mode)');
+  
+  if (isProduction()) {
+    event.waitUntil(
+      caches.open(STATIC_CACHE_NAME).then((cache) => {
+        console.log('[Service Worker] Caching static assets');
+        return cache.addAll(STATIC_ASSETS);
+      })
+    );
+  } else {
+    console.log('[Service Worker] Development mode - skipping cache');
+  }
+  
   self.skipWaiting();
 });
 
@@ -61,6 +83,12 @@ self.addEventListener('fetch', (event) => {
 
   // Skip chrome-extension and other non-http(s) requests
   if (!url.protocol.startsWith('http')) {
+    return;
+  }
+
+  // Skip caching in development mode - just fetch normally
+  if (!isProduction()) {
+    event.respondWith(fetch(request));
     return;
   }
 
@@ -110,6 +138,12 @@ self.addEventListener('fetch', (event) => {
         });
       })
     );
+    return;
+  }
+
+  // Auth endpoints - Never cache, always fetch from network
+  if (isAuthRequest(request)) {
+    event.respondWith(fetch(request));
     return;
   }
 
@@ -196,11 +230,20 @@ function isStaticAsset(request) {
 
 function isApiRequest(request) {
   const url = new URL(request.url);
-  // Exclude audio file API from general API handling
+  // Exclude audio file API and auth API from general API handling
   if (url.pathname.match(AUDIO_API_REGEX)) {
     return false;
   }
+  if (url.pathname.startsWith('/api/auth/')) {
+    return false;
+  }
   return url.pathname.startsWith('/api/');
+}
+
+function isAuthRequest(request) {
+  const url = new URL(request.url);
+  // Never cache authentication endpoints
+  return url.pathname.startsWith('/api/auth/');
 }
 
 // Message event - handle messages from clients

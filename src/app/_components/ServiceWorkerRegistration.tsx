@@ -8,9 +8,13 @@ export default function ServiceWorkerRegistration() {
       typeof window !== 'undefined' &&
       'serviceWorker' in navigator
     ) {
+      // Pass environment mode to service worker via URL parameter
+      const isDev = process.env.NODE_ENV === 'development';
+      const swUrl = `/sw.js?env=${isDev ? 'development' : 'production'}`;
+      
       // Register service worker
       navigator.serviceWorker
-        .register('/sw.js')
+        .register(swUrl)
         .then((registration) => {
           console.log('Service Worker registered successfully:', registration.scope);
 
