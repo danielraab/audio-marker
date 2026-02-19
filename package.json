@@ -88,6 +88,10 @@
     "typescript-eslint": "^8.27.0",
     "vitest": "^4.0.18"
   },
+  "overrides": {
+    "minimatch": ">=10.2.1",
+    "ajv": ">=8.18.0"
+  },
   "ct3aMetadata": {
     "initVersion": "7.39.3"
   },
