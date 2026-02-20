@@ -71,41 +71,6 @@ docker-compose -f docker/docker-compose.yml exec audio-marker npm run db:seed
 
 ---
 
-## Migrate Audio Storage
-
-This script updates the database to migrate from full file paths to filenames only.
-
-### Usage
-
-#### Development
-```bash
-npm run migrate:storage
-```
-
-#### Production (Docker Container)
-```bash
-# Execute inside the running container
-docker exec -it <container-name> npm run migrate:storage
-
-# Or using docker-compose
-docker-compose -f docker/docker-compose.yml exec audio-marker npm run migrate:storage
-```
-
-### What it does
-
-1. Updates all database records to store only filenames (e.g., `abc123.mp3` instead of `/uploads/abc123.mp3`)
-2. Does NOT move or copy files - files stay in their current location
-3. Docker volumes are mounted to the correct locations automatically
-
-### Migration Context
-
-This migration is necessary when upgrading from versions that stored full paths to the new system that uses:
-- Database: stores only filenames
-- API route: serves files from `/data/uploads` with permission checks
-- Docker volumes: `audio_uploads` mounted at `/app/data/uploads`
-
----
-
 ## Create Admin User
 
 This script allows you to create a new admin user or promote an existing user to admin status.
@@ -169,3 +134,77 @@ The script provides clear feedback:
 - The script uses Prisma Client to interact with the database
 - It's safe to run multiple times on the same email
 - The script will automatically disconnect from the database when finished
+
+---
+
+## Generate All Peaks
+
+This script generates waveform peak data for all MP3 files in the uploads directory. Peak data is stored as JSON files alongside the audio files and used for waveform visualization in the UI.
+
+### Usage
+
+#### Development
+```bash
+npx tsx scripts/generate-all-peaks.ts
+```
+
+#### Production (Docker Container)
+```bash
+docker exec -it <container-name> npx tsx scripts/generate-all-peaks.ts
+
+# Or using docker-compose
+docker-compose -f docker/docker-compose.yml exec audio-marker npx tsx scripts/generate-all-peaks.ts
+```
+
+### What it does
+
+- Scans `data/uploads/` for all `.mp3` files
+- Generates a `.json` peaks file next to each MP3 using `audiowaveform`
+- Skips files that fail and reports errors without stopping the batch
+
+### Requirements
+
+- `audiowaveform` must be installed and available in `PATH`
+- MP3 files must be located in `data/uploads/`
+
+### Notes
+
+- Safe to re-run; existing peak files will be overwritten
+- Useful after migrating audio files or if peak files are missing
+
+---
+
+## Re-encode All Audio
+
+This script re-encodes all MP3 files in the uploads directory to CBR (Constant Bit Rate) format. This ensures consistent audio quality and compatibility with the waveform generation toolchain.
+
+### Usage
+
+#### Development
+```bash
+npx tsx scripts/reencode-all-audio.ts
+```
+
+#### Production (Docker Container)
+```bash
+docker exec -it <container-name> npx tsx scripts/reencode-all-audio.ts
+
+# Or using docker-compose
+docker-compose -f docker/docker-compose.yml exec audio-marker npx tsx scripts/reencode-all-audio.ts
+```
+
+### What it does
+
+- Scans `data/uploads/` for all `.mp3` files
+- Re-encodes each file to CBR MP3 in-place using `ffmpeg`
+- Skips files that fail and reports errors without stopping the batch
+
+### Requirements
+
+- `ffmpeg` must be installed and available in `PATH`
+- MP3 files must be located in `data/uploads/`
+
+### Notes
+
+- The original file is replaced by the re-encoded version
+- Run this before generating peaks if uploaded files are in VBR format and causing issues

@@ -83,6 +83,7 @@ COPY --from=builder /app/node_modules ./node_modules
 
 # Copy scripts directory for admin CLI commands
 COPY --from=builder /app/scripts ./scripts
+COPY --from=builder /app/src/lib ./src/lib
 
 # Copy the entrypoint script
 COPY docker/docker-entrypoint.sh /usr/local/bin/
