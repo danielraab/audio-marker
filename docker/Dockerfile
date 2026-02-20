@@ -55,7 +55,7 @@ RUN \
 
 ##### RUNNER
 
-FROM --platform=linux/amd64 node:20-alpine AS runner
+FROM --platform=linux/amd64 node:20-alpine3.19 AS runner
 # Install runtime dependencies for audiowaveform and ffmpeg
 RUN apk add --no-cache openssl ffmpeg libmad libid3tag libsndfile libgd libpng boost-libs
 WORKDIR /app
