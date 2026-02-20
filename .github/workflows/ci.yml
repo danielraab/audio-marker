@@ -10,6 +10,12 @@ on:
       - main
       - develop
   workflow_dispatch:
+    inputs:
+      bypass_audit:
+        description: 'Bypass security audit (use only if audit failure is a known false-positive)'
+        required: false
+        default: false
+        type: boolean
 
 jobs:
   test:
@@ -48,8 +54,13 @@ jobs:
   security:
     name: Security Audit
     runs-on: ubuntu-latest
-    
+    continue-on-error: ${{ inputs.bypass_audit == true }}
+
     steps:
+      - name: Audit bypass notice
+        if: inputs.bypass_audit == true
+        run: echo "::warning::Security audit bypass is active. This was triggered manually — ensure vulnerabilities are reviewed before merging."
+
       - name: Checkout code
         uses: actions/checkout@v4
 
