@@ -2,7 +2,7 @@
 // @ts-check
 
 const CACHE_NAME = 'audio-marker-v1';
-const AUDIO_CACHE_NAME = 'audio-marker-audio-v1';
+const AUDIO_CACHE_NAME = 'audio-marker-audio-v2';
 const STATIC_CACHE_NAME = 'audio-marker-static-v1';
 const PEAKS_CACHE_NAME = 'audio-marker-peaks-v1';
 const AUDIO_API_REGEX = /^\/api\/audio\/[^\/]+\/file$/;
