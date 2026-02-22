@@ -4,7 +4,9 @@
 const CACHE_NAME = 'audio-marker-v1';
 const AUDIO_CACHE_NAME = 'audio-marker-audio-v1';
 const STATIC_CACHE_NAME = 'audio-marker-static-v1';
+const PEAKS_CACHE_NAME = 'audio-marker-peaks-v1';
 const AUDIO_API_REGEX = /^\/api\/audio\/[^\/]+\/file$/;
+const PEAKS_API_REGEX = /^\/api\/audio\/[^\/]+\/peaks$/
 
 // Check if we're in production mode (enable caching only in production)
 // Read from URL parameter passed during registration
@@ -33,7 +35,7 @@ const STATIC_ASSETS = [
 // Install event - cache static assets
 self.addEventListener('install', (event) => {
   console.log('[Service Worker] Installing...', isProduction() ? '(Production Mode)' : '(Development Mode)');
-  
+
   if (isProduction()) {
     event.waitUntil(
       caches.open(STATIC_CACHE_NAME).then((cache) => {
@@ -44,7 +46,7 @@ self.addEventListener('install', (event) => {
   } else {
     console.log('[Service Worker] Development mode - skipping cache');
   }
-  
+
   self.skipWaiting();
 });
 
@@ -58,7 +60,8 @@ self.addEventListener('activate', (event) => {
           if (
             cacheName !== CACHE_NAME &&
             cacheName !== AUDIO_CACHE_NAME &&
-            cacheName !== STATIC_CACHE_NAME
+            cacheName !== STATIC_CACHE_NAME &&
+            cacheName !== PEAKS_CACHE_NAME
           ) {
             console.log('[Service Worker] Deleting old cache:', cacheName);
             return caches.delete(cacheName);
@@ -92,31 +95,15 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+  // Peaks data - Cache First strategy (peaks are computed from audio and rarely change)
+  if (isPeaksRequest(request)) {
+    event.respondWith(handleCacheFirstRequest(request, url, PEAKS_CACHE_NAME, 'peaks'));
+    return;
+  }
+
   // Audio files - Cache First strategy with network fallback
   if (isAudioRequest(request)) {
-    event.respondWith(
-      caches.open(AUDIO_CACHE_NAME).then((cache) => {
-        return cache.match(request).then((cachedResponse) => {
-          if (cachedResponse) {
-            console.log('[Service Worker] Serving audio from cache:', url.pathname);
-            return cachedResponse;
-          }
-
-          console.log('[Service Worker] Fetching and caching audio:', url.pathname);
-          return fetch(request).then((networkResponse) => {
-            // Only cache successful responses
-            if (networkResponse && networkResponse.status === 200) {
-              const responseClone = networkResponse.clone();
-              cache.put(request, responseClone);
-            }
-            return networkResponse;
-          }).catch((error) => {
-            console.error('[Service Worker] Audio fetch failed:', error);
-            throw error;
-          });
-        });
-      })
-    );
+    event.respondWith(handleCacheFirstRequest(request, url, AUDIO_CACHE_NAME, 'audio'));
     return;
   }
 
@@ -149,74 +136,86 @@ self.addEventListener('fetch', (event) => {
 
   // API and dynamic content - Network First strategy
   if (isApiRequest(request)) {
-    event.respondWith(
-      fetch(request)
-        .then((networkResponse) => {
-          if (networkResponse && networkResponse.status === 200) {
-            const responseClone = networkResponse.clone();
-            caches.open(CACHE_NAME).then((cache) => {
-              cache.put(request, responseClone);
-            });
-          }
-          return networkResponse;
-        })
-        .catch(() => {
-          return caches.match(request).then((cachedResponse) => {
-            if (cachedResponse) {
-              return cachedResponse;
-            }
-            return new Response('Network error', { status: 503 });
-          });
-        })
-    );
+    event.respondWith(handleNetworkFirstRequest(request));
     return;
   }
 
   // Default - Network First with cache fallback
-  event.respondWith(
-    fetch(request)
-      .then((networkResponse) => {
-        if (networkResponse && networkResponse.status === 200) {
-          const responseClone = networkResponse.clone();
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(request, responseClone);
-          });
-        }
-        return networkResponse;
-      })
-      .catch(() => {
-        return caches.match(request).then((cachedResponse) => {
-          if (cachedResponse) {
-            return cachedResponse;
-          }
-          return new Response('Network error', { status: 503 });
-        });
-      })
-  );
+  event.respondWith(handleNetworkFirstRequest(request));
 });
 
+// Handler functions
+function handleNetworkFirstRequest(request) {
+  return fetch(request)
+    .then((networkResponse) => {
+      if (networkResponse && networkResponse.status === 200) {
+        const responseClone = networkResponse.clone();
+        caches.open(CACHE_NAME).then((cache) => {
+          cache.put(request, responseClone);
+        });
+      }
+      return networkResponse;
+    })
+    .catch(() => {
+      return caches.match(request).then((cachedResponse) => {
+        if (cachedResponse) {
+          return cachedResponse;
+        }
+        return new Response('Network error', { status: 503 });
+      });
+    });
+}
+
+function handleCacheFirstRequest(request, url, cacheName, label) {
+  return caches.open(cacheName).then((cache) => {
+    return cache.match(request).then((cachedResponse) => {
+      if (cachedResponse) {
+        console.log(`[Service Worker] Serving ${label} from cache:`, url.pathname);
+        return cachedResponse;
+      }
+
+      console.log(`[Service Worker] Fetching and caching ${label}:`, url.pathname);
+      return fetch(request).then((networkResponse) => {
+        if (networkResponse && networkResponse.status === 200) {
+          const responseClone = networkResponse.clone();
+          cache.put(request, responseClone);
+        }
+        return networkResponse;
+      }).catch((error) => {
+        console.error(`[Service Worker] ${label} fetch failed:`, error);
+        throw error;
+      });
+    });
+  });
+}
+
 // Helper functions
+function isPeaksRequest(request) {
+  const url = new URL(request.url);
+  return url.pathname.match(PEAKS_API_REGEX) !== null;
+}
+
 function isAudioRequest(request) {
   const url = new URL(request.url);
   const audioExtensions = ['.mp3', '.wav', '.ogg', '.m4a', '.aac', '.flac', '.webm'];
   const pathname = url.pathname.toLowerCase();
-  
+
   // Check if it's the audio API endpoint
   if (pathname.match(AUDIO_API_REGEX)) {
     return true;
   }
-  
+
   // Check file extension
   if (audioExtensions.some(ext => pathname.endsWith(ext))) {
     return true;
   }
-  
+
   // Check content-type header if available
   const contentType = request.headers.get('accept');
   if (contentType && contentType.includes('audio/')) {
     return true;
   }
-  
+
   return false;
 }
 
@@ -224,14 +223,17 @@ function isStaticAsset(request) {
   const url = new URL(request.url);
   const staticExtensions = ['.css', '.js', '.png', '.jpg', '.jpeg', '.svg', '.ico', '.woff', '.woff2', '.ttf'];
   const pathname = url.pathname.toLowerCase();
-  
+
   return staticExtensions.some(ext => pathname.endsWith(ext));
 }
 
 function isApiRequest(request) {
   const url = new URL(request.url);
-  // Exclude audio file API and auth API from general API handling
+  // Exclude audio file API, peaks API, and auth API from general API handling
   if (url.pathname.match(AUDIO_API_REGEX)) {
+    return false;
+  }
+  if (url.pathname.match(PEAKS_API_REGEX)) {
     return false;
   }
   if (url.pathname.startsWith('/api/auth/')) {
@@ -249,11 +251,11 @@ function isAuthRequest(request) {
 // Message event - handle messages from clients
 self.addEventListener('message', (event) => {
   const data = event.data;
-  
+
   if (data && data.type === 'SKIP_WAITING') {
     self.skipWaiting();
   }
-  
+
   if (data && data.type === 'CLEAR_CACHE') {
     event.waitUntil(
       caches.keys().then((cacheNames) => {
@@ -263,6 +265,14 @@ self.addEventListener('message', (event) => {
             return caches.delete(cacheName);
           })
         );
+      })
+    );
+  }
+
+  if (data && data.type === 'CLEAR_PEAKS_CACHE') {
+    event.waitUntil(
+      caches.delete(PEAKS_CACHE_NAME).then(() => {
+        console.log('[Service Worker] Peaks cache cleared');
       })
     );
   }
