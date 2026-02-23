@@ -15,6 +15,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+## [0.9.0] - 2026-02-23
+
+### Added
+
+- **Audio Processing Scripts**: Added scripts for generating waveform peaks and re-encoding audio files
+- **Peak Generation Tooling**: Added `audiowaveform`-based peak generation workflow and development installation script
+- **Service Worker Peak Caching**: Added dedicated caching strategy for peaks data in the service worker
+
+### Changed
+
+- **Service Worker Caching**: Updated service worker behavior to cache assets only in production mode and bumped audio cache name to version 2
+- **Audio Player Refactoring**: Extracted logic from the audio player component for improved maintainability
+- **Docker Tooling**: Updated Docker setup for audio processing tools and container script execution
+- **Code Quality Tooling**: Switched to ESLint CLI and removed obsolete audio storage migration script
+
+### Fixed
+
+- **Audio Playback Backend**: Switched audio backend from WebAudio to MediaElement in audio player for improved playback behavior
+- **Time Formatting**: Enhanced time formatting with locale support
+- **Docker Peak Generation**: Fixed peak generation and script execution issues in Docker containers
+
+### Security
+
+- **Dependency Hardening**: Added package overrides for vulnerable `minimatch` and `ajv` transitive dependencies
+
 ## [0.8.0] - 2026-02-11
 
 ### Added
