@@ -11,6 +11,8 @@ import Footer from "./_components/global/layout/Footer";
 import { CookieConsent } from "./_components/global/CookieConsent";
 import { getLocale } from 'next-intl/server';
 import { NextIntlClientProvider } from "next-intl";
+import { getHeadInjection } from "~/lib/headInjection";
+import HeadInjection from "./_components/HeadInjection";
 
 export const metadata: Metadata = {
   title: "Audio Marker",
@@ -55,6 +57,7 @@ export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   const locale = await getLocale();
+  const headInjection = await getHeadInjection();
 
   return (
     <html lang={locale} className={`${geist.variable}`}>
@@ -65,6 +68,7 @@ export default async function RootLayout({
         <Providers>
           <NextIntlClientProvider>
             <ServiceWorkerRegistration />
+            {headInjection && <HeadInjection html={headInjection} />}
             <Navbar />
             <TRPCReactProvider>
               <main className="flex flex-1 flex-col items-center justify-center gap-8 px-4 py-4 w-full max-w-full overflow-x-hidden">

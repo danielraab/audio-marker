@@ -308,7 +308,8 @@
     "progressLabel": "Autoplay countdown progress",
     "cancel": "Cancel Autoplay",
     "playNow": "Play Now"
-  },  "PlaylistNavigation": {
+  },
+  "PlaylistNavigation": {
     "position": "{current} of {total}",
     "autoplay": "Autoplay",
     "playing": "Playing",
@@ -316,7 +317,8 @@
     "next": "Next",
     "collapse": "Collapse playlist",
     "expand": "Expand playlist"
-  },  "PlaylistListItem": {
+  },
+  "PlaylistListItem": {
     "audioCount": "{count} {count, plural, one {audio} other {audios}}",
     "listens": "{count} {count, plural, one {listen} other {listens}}",
     "visibility": {
@@ -364,8 +366,7 @@
     },
     "cancel": "Cancel",
     "submit": "Create Playlist"
-  }
-  ,
+  },
   "SettingsPage": {
     "title": "Admin Settings",
     "description": "Manage users and system settings",
@@ -381,15 +382,26 @@
   },
   "GeneralSettings": {
     "loading": "Loading settings...",
-    "title": "Authentication Settings",
-    "emailRegistration": {
-      "title": "Email Registration",
-      "description": "New user registration via email (Nodemailer) is currently {status}.",
-      "note": "This setting is configured via the MAIL_REGISTRATION_ENABLED environment variable. Contact your system administrator to change this setting."
+    "authSettings": {
+      "title": "Authentication Settings",
+      "emailRegistration": {
+        "title": "Email Registration",
+        "description": "New user registration via email (Nodemailer) is currently {status}.",
+        "note": "This setting is configured via the MAIL_REGISTRATION_ENABLED environment variable. Contact your system administrator to change this setting."
+      },
+      "status": {
+        "enabled": "Enabled",
+        "disabled": "Disabled"
+      }
     },
-    "status": {
-      "enabled": "Enabled",
-      "disabled": "Disabled"
+    "headInjection": {
+      "title": "Custom Head HTML",
+      "description": "HTML injected into the '<head>' element on every page. Use this for analytics scripts, custom styles, or other head-level elements.",
+      "label": "Head HTML",
+      "placeholder": "'<script>'\n  // your script here\n'</script>'",
+      "save": "Save",
+      "saveSuccess": "Head HTML saved successfully.",
+      "saveError": "Failed to save. Please try again."
     }
   },
   "SoftDeletedSection": {
@@ -615,4 +627,3 @@
     }
   }
 }
-

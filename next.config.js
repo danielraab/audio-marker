@@ -93,7 +93,7 @@ export default Sentry.withSentryConfig(configWithIntl, {
   authToken: process.env.SENTRY_AUTH_TOKEN,
 
 
-    // Only print logs for uploading source maps in CI
+  // Only print logs for uploading source maps in CI
   //silent: !process.env.CI,
 
   // Upload a larger set of source maps for prettier stack traces (increases build time)

@@ -366,8 +366,7 @@
     },
     "cancel": "Abbrechen",
     "submit": "Playlist erstellen"
-  }
-  ,
+  },
   "SettingsPage": {
     "title": "Admin-Einstellungen",
     "description": "Verwalte Benutzer und Systemeinstellungen",
@@ -383,15 +382,26 @@
   },
   "GeneralSettings": {
     "loading": "Einstellungen werden geladen...",
-    "title": "Authentifizierungs-Einstellungen",
-    "emailRegistration": {
-      "title": "E-Mail-Registrierung",
-      "description": "Die Registrierung neuer Benutzer per E-Mail (Nodemailer) ist derzeit {status}.",
-      "note": "Diese Einstellung wird über die Umgebungsvariable MAIL_REGISTRATION_ENABLED konfiguriert. Wende dich an den Systemadministrator, um diese Einstellung zu ändern."
+    "authSettings": {
+      "title": "Authentifizierungs-Einstellungen",
+      "emailRegistration": {
+        "title": "E-Mail-Registrierung",
+        "description": "Die Registrierung neuer Benutzer per E-Mail (Nodemailer) ist derzeit {status}.",
+        "note": "Diese Einstellung wird über die Umgebungsvariable MAIL_REGISTRATION_ENABLED konfiguriert. Wende dich an den Systemadministrator, um diese Einstellung zu ändern."
+      },
+      "status": {
+        "enabled": "Aktiviert",
+        "disabled": "Deaktiviert"
+      }
     },
-    "status": {
-      "enabled": "Aktiviert",
-      "disabled": "Deaktiviert"
+    "headInjection": {
+      "title": "Benutzerdefiniertes Head-HTML",
+      "description": "HTML, das auf jeder Seite in das '<head>'-Element eingefügt wird. Verwende dies für Analytics-Skripte, eigene Styles oder andere Head-Elemente.",
+      "label": "Head-HTML",
+      "placeholder": "'<script>'\n  // dein Skript hier\n'</script>'",
+      "save": "Speichern",
+      "saveSuccess": "Head-HTML erfolgreich gespeichert.",
+      "saveError": "Speichern fehlgeschlagen. Bitte erneut versuchen."
     }
   },
   "SoftDeletedSection": {

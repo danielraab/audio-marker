@@ -2,7 +2,7 @@
 
 import { Tabs, Tab } from "@heroui/tabs";
 import UserListSection from "./UserListSection";
-import GeneralSettingsSection from "./GeneralSettingsSection";
+import SystemSettingsSection from "./SystemSettingsSection";
 import SoftDeletedSection from "./SoftDeletedSection";
 import LegalInformationSection from "./LegalInformationSection";
 import StatisticsSection from "./StatisticsSection";
@@ -46,14 +46,9 @@ export default function SettingsPage() {
             <LegalInformationSection />
           </div>
         </Tab>
-        <Tab key="system" title={t('tabs.system')} isDisabled>
+        <Tab key="system" title={t('tabs.system')}>
           <div className="py-4">
-            <p className="text-default-500">{t('comingSoon')}</p>
-          </div>
-        </Tab>
-        <Tab key="general" title={t('tabs.general')}>
-          <div className="py-4">
-            <GeneralSettingsSection />
+            <SystemSettingsSection />
           </div>
         </Tab>
       </Tabs>

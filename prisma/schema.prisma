@@ -2,7 +2,7 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-    provider = "prisma-client-js"
+    provider      = "prisma-client-js"
     binaryTargets = ["native", "debian-openssl-3.0.x"]
 }
 
@@ -44,17 +44,17 @@ model Session {
 }
 
 model User {
-    id            String    @id @default(cuid())
-    name          String?
-    email         String?   @unique
-    emailVerified DateTime?
-    image         String?
-    isAdmin       Boolean   @default(false)
-    isDisabled    Boolean   @default(false)
-    accounts      Account[]
-    sessions      Session[]
-    audios        Audio[]
-    playlists     Playlist[]
+    id                String             @id @default(cuid())
+    name              String?
+    email             String?            @unique
+    emailVerified     DateTime?
+    image             String?
+    isAdmin           Boolean            @default(false)
+    isDisabled        Boolean            @default(false)
+    accounts          Account[]
+    sessions          Session[]
+    audios            Audio[]
+    playlists         Playlist[]
     legalInformations LegalInformation[]
 }
 
@@ -67,84 +67,90 @@ model VerificationToken {
 }
 
 model Audio {
-    id               String    @id @default(cuid())
+    id               String              @id @default(cuid())
     name             String
     description      String?
     originalFileName String
     filePath         String
-    createdBy        User      @relation(fields: [createdById], references: [id])
+    createdBy        User                @relation(fields: [createdById], references: [id])
     createdById      String
-    createdAt        DateTime  @default(now())
-    updatedAt        DateTime  @updatedAt
+    createdAt        DateTime            @default(now())
+    updatedAt        DateTime            @updatedAt
     deletedAt        DateTime?
-    isPublic         Boolean   @default(true)
+    isPublic         Boolean             @default(true)
     markers          Marker[]
     playlistAudios   PlaylistAudio[]
     listenRecords    AudioListenRecord[]
 }
 
 model Marker {
-    id           String    @id @default(cuid())
+    id           String   @id @default(cuid())
     label        String
-    timestamp    Float     // start time (for both markers and sections)
-    endTimestamp Float?    // end time (only for sections, null for point markers)
-    color        String    @default("#3b82f6") // default blue color
-    audio        Audio     @relation(fields: [audioId], references: [id], onDelete: Cascade)
+    timestamp    Float // start time (for both markers and sections)
+    endTimestamp Float? // end time (only for sections, null for point markers)
+    color        String   @default("#3b82f6") // default blue color
+    audio        Audio    @relation(fields: [audioId], references: [id], onDelete: Cascade)
     audioId      String
-    createdAt    DateTime  @default(now())
-    updatedAt    DateTime  @updatedAt
+    createdAt    DateTime @default(now())
+    updatedAt    DateTime @updatedAt
 
     @@unique([audioId, timestamp])
 }
 
 model Playlist {
-    id            String          @id @default(cuid())
+    id            String                 @id @default(cuid())
     name          String
     description   String?
-    isPublic      Boolean         @default(false)
-    createdBy     User            @relation(fields: [createdById], references: [id])
+    isPublic      Boolean                @default(false)
+    createdBy     User                   @relation(fields: [createdById], references: [id])
     createdById   String
-    createdAt     DateTime        @default(now())
-    updatedAt     DateTime        @updatedAt
+    createdAt     DateTime               @default(now())
+    updatedAt     DateTime               @updatedAt
     deletedAt     DateTime?
     audios        PlaylistAudio[]
     listenRecords PlaylistListenRecord[]
 }
 
 model PlaylistAudio {
-    id          String   @id @default(cuid())
-    playlist    Playlist @relation(fields: [playlistId], references: [id], onDelete: Cascade)
-    playlistId  String
-    audio       Audio    @relation(fields: [audioId], references: [id], onDelete: Cascade)
-    audioId     String
-    order       Int      @default(0)
-    addedAt     DateTime @default(now())
+    id         String   @id @default(cuid())
+    playlist   Playlist @relation(fields: [playlistId], references: [id], onDelete: Cascade)
+    playlistId String
+    audio      Audio    @relation(fields: [audioId], references: [id], onDelete: Cascade)
+    audioId    String
+    order      Int      @default(0)
+    addedAt    DateTime @default(now())
 
     @@unique([playlistId, audioId])
 }
 
 model AudioListenRecord {
-    id          String   @id @default(cuid())
-    audio       Audio    @relation(fields: [audioId], references: [id], onDelete: Cascade)
-    audioId     String
-    listenedAt  DateTime @default(now())
+    id         String   @id @default(cuid())
+    audio      Audio    @relation(fields: [audioId], references: [id], onDelete: Cascade)
+    audioId    String
+    listenedAt DateTime @default(now())
 }
 
 model PlaylistListenRecord {
-    id          String   @id @default(cuid())
-    playlist    Playlist @relation(fields: [playlistId], references: [id], onDelete: Cascade)
-    playlistId  String
-    listenedAt  DateTime @default(now())
+    id         String   @id @default(cuid())
+    playlist   Playlist @relation(fields: [playlistId], references: [id], onDelete: Cascade)
+    playlistId String
+    listenedAt DateTime @default(now())
 }
 
 model LegalInformation {
-    id         String   @id @default(cuid())
-    enabled    Boolean  @default(true)
-    label      String
-    content    String
-    sortOrder  Int      @default(0)
-    createdAt  DateTime @default(now())
-    updatedAt  DateTime @updatedAt
-    updatedBy  User?    @relation(fields: [updatedById], references: [id])
+    id          String   @id @default(cuid())
+    enabled     Boolean  @default(true)
+    label       String
+    content     String
+    sortOrder   Int      @default(0)
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+    updatedBy   User?    @relation(fields: [updatedById], references: [id])
     updatedById String?
+}
+
+model SystemSetting {
+    key       String   @id
+    value     String
+    updatedAt DateTime @updatedAt
 }
