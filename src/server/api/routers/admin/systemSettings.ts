@@ -3,6 +3,7 @@ import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { env } from "~/env";
 import { requireAdmin } from "./utils";
 import { revalidateTag } from "next/cache";
+import { after } from "next/server";
 
 export const HEAD_INJECTION_KEY = "headInjection";
 export const HEAD_INJECTION_CACHE_TAG = "system-setting-head-injection";
@@ -37,7 +38,7 @@ export const systemSettingsRouter = createTRPCRouter({
         update: { value: input.value },
       });
 
-      revalidateTag(HEAD_INJECTION_CACHE_TAG);
+      after(() => revalidateTag(HEAD_INJECTION_CACHE_TAG));
 
       return { success: true };
     }),

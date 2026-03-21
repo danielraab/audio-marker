@@ -15,6 +15,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+## [0.9.2] - 2026-03-21
+
+### Fixed
+
+- **Head injection cache invalidation**: Fixed `revalidateTag` not working in production builds by wrapping the call in `after()` from `next/server`, ensuring it runs within the correct Next.js server context after the tRPC response is sent
+
 ## [0.9.1] - 2026-03-21
 
 ### Added

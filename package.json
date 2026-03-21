@@ -1,6 +1,6 @@
 {
   "name": "audio-marker",
-  "version": "0.9.1",
+  "version": "0.9.2",
   "private": true,
   "type": "module",
   "scripts": {
@@ -90,6 +90,9 @@
   },
   "ct3aMetadata": {
     "initVersion": "7.39.3"
+  },
+  "overrides": {
+    "effect": "^3.21.0"
   },
   "packageManager": "npm@10.9.3"
 }
