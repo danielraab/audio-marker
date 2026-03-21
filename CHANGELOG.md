@@ -15,6 +15,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+## [0.9.1] - 2026-03-21
+
+### Added
+
+- **Custom Head HTML Injection**: Added admin setting to insert custom HTML (e.g. analytics scripts) into the `<head>` element of every page, stored in the database and served with a server-side cache
+- **SystemSetting model**: Added a generic key/value `SystemSetting` database table to persist system-level configuration
+
+### Changed
+
+- **System Settings tab**: Enabled the previously disabled "System" tab in the admin settings page, replacing the "General" tab
+- **Translation structure**: Moved authentication settings translations into an `authSettings` sub-namespace within `GeneralSettings`
+
 ## [0.9.0] - 2026-02-23
 
 ### Added
