@@ -81,16 +81,33 @@ export const authConfig = {
         user: {
           ...session.user,
           id: user.id,
+          image: user.image,
           isAdmin: user.isAdmin,
           isDisabled: user.isDisabled,
         },
       };
     },
-    signIn: async ({ user, account }) => {
+    signIn: async ({ user, account, profile }) => {
       // Prevent disabled users from signing in
       if (user.isDisabled) {
         console.log(`❌ Disabled user ${user.email} attempted to sign in.`);
         return false;
+      }
+
+      // Keep avatar in sync with Authentik profile on every OAuth sign-in
+      if (account?.provider === "authentik" && user.id) {
+        const picture =
+          typeof profile?.picture === "string" ? profile.picture : null;
+
+        if (picture !== user.image) {
+          await db.user.update({
+            where: { id: user.id },
+            data: { image: picture },
+          });
+
+          // Keep callback user object consistent for this request lifecycle
+          user.image = picture;
+        }
       }
 
       // Check if registration is enabled for email provider (new users only)

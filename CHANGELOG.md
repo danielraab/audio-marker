@@ -15,6 +15,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+## [0.9.3] - 2026-03-30
+
+### Fixed
+
+- **Authentik avatar synchronization**: Updated authentication sign-in flow to sync changed avatar URLs from Authentik into the user record, and ensured the session user image reflects the latest stored value
+
 ## [0.9.2] - 2026-03-21
 
 ### Fixed
