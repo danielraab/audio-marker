@@ -9,7 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Dev container setup**: Added `.devcontainer/devcontainer.json` and `setup.sh` for a reproducible development environment with Node 20, ffmpeg, audiowaveform, and pnpm
+- **pnpm package manager**: Switched from npm to pnpm; added `pnpm-lock.yaml` and `.npmrc` with `resolution-min-age=7d` to guard against newly published packages
+
 ### Changed
+
+- **Dev container shell**: Configured zsh as the default shell in the dev container via the `common-utils` feature
+- **audiowaveform installation**: Replaced Ubuntu PPA approach with direct `.deb` download from GitHub releases, fixing compatibility with Debian 13 (trixie)
+- **Dependency overrides**: Migrated `overrides` field in `package.json` to `pnpm.overrides`
 
 ### Fixed
 
@@ -73,7 +80,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - **Audio Player Cleanup**: Ensured playback stops before cleanup in AudioPlayer component to prevent audio issues
-- **Audio Links**: Removed target="_blank" from audio play links in PlaylistAudioItem and ListenPlaylistAudioItem components
+- **Audio Links**: Removed target="\_blank" from audio play links in PlaylistAudioItem and ListenPlaylistAudioItem components
 
 ## [0.7.0] - 2026-02-09
 
@@ -163,7 +170,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **unnecessary Player rerenderign**: no rerendering of player when marker added
 
-
 ## [0.4.10] - 2026-02-01
 
 ### Changed
@@ -232,7 +238,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Region Selection**: Interactive waveform region selection for precise section creation
   - Drag on waveform to create selection regions
   - Auto-populate section start/end times from selected regions
-
 
 ## [0.4.1] - 2025-11-07
 
@@ -358,18 +363,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - overview does not overflow on mobile anymore
 
-
 ## [0.2.1] - 2025-10-02
 
 ### Added
+
 - **PWA functionality**: install Audio Marker as Progressive Web App
   - cache audio and static files
 - add speed slider for audio player
 
-
 ## [0.2.0] - 2025-10-02
 
 ### Added
+
 - **Playlist functionality**: Complete playlist system implementation
   - Create, edit, and manage playlists
   - Add/remove audio files to/from playlists
@@ -381,17 +386,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Optional authentication providers based on environment variables
 
 ### Changed
+
 - Reorganized environment variables in `.env.example` with logical grouping
 - Updated authentication configuration to support multiple providers conditionally
 - Enhanced audio management with playlist integration
 
 ### Fixed
+
 - GitHub Actions workflow for tag-based builds
 - Documentation improvements for nginx upload configuration
 - Added troubleshooting hints for nginx-related issues
 
 ### Security
-
 
 ## [0.1.1] - 2025-09-25
 
@@ -399,10 +405,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Try to fix github action
 
-
 ## [0.1.0] - 2025-09-25
 
 ### Added
+
 - Initial release of the audio marker application
 - Audio upload and editing features
 - Core audio playback functionality
