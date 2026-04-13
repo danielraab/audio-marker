@@ -1,7 +1,23 @@
-'use client';
+"use client";
 
-import { Button, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, useDisclosure } from "@heroui/react";
-import { MoreVertical, Play, Edit, Trash2, Link2, Check, ListMusic, BarChart3 } from "lucide-react";
+import {
+  Button,
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
+  useDisclosure,
+} from "@heroui/react";
+import {
+  MoreVertical,
+  Play,
+  Edit,
+  Trash2,
+  Link2,
+  Check,
+  ListMusic,
+  BarChart3,
+} from "lucide-react";
 import { useState, useCallback } from "react";
 import { AddToPlaylistModal } from "./AddToPlaylistModal";
 import { useTranslations } from "next-intl";
@@ -12,10 +28,10 @@ interface AudioActionsDropdownProps {
   isDeleteDisabled?: boolean;
 }
 
-export function AudioActionsDropdown({ 
+export function AudioActionsDropdown({
   audioId,
   onDeleteClick,
-  isDeleteDisabled = false 
+  isDeleteDisabled = false,
 }: AudioActionsDropdownProps) {
   const [copySuccess, setCopySuccess] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -34,80 +50,78 @@ export function AudioActionsDropdown({
 
   return (
     <>
-    <Dropdown>
-      <DropdownTrigger>
-        <Button 
-          isIconOnly
-          size="sm"
-          variant="light"
-          aria-label={t('aria.actions')}
-        >
-          <MoreVertical size={16} />
-        </Button>
-      </DropdownTrigger>
-      <DropdownMenu aria-label={t('aria.menu')}>
-        <DropdownItem
-          key="play"
-          startContent={<Play size={16} />}
-          href={`/audios/${audioId}/listen`}
-          className="text-success"
-          color="success"
-        >
-          {t('play')}
-        </DropdownItem>
-        <DropdownItem
-          key="copy"
-          startContent={copySuccess ? <Check size={16} /> : <Link2 size={16} />}
-          onPress={handleCopyLink}
-          className={copySuccess ? "text-success" : ""}
-        >
-          {copySuccess ? t('copied') : t('copyPlayLink')}
-        </DropdownItem>
-        <DropdownItem
-          key="edit"
-          startContent={<Edit size={16} />}
-          href={`/audios/${audioId}/edit`}
-          className="text-primary"
-          color="primary"
-        >
-          {t('edit')}
-        </DropdownItem>
-        <DropdownItem
-          key="statistics"
-          startContent={<BarChart3 size={16} />}
-          href={`/audios/${audioId}/statistics`}
-          className="text-warning"
-          color="warning"
-        >
-          {t('statistics')}
-        </DropdownItem>
-        <DropdownItem
-          key="add-to-playlist"
-          startContent={<ListMusic size={16} />}
-          onPress={onOpen}
-          className="text-secondary"
-          color="secondary"
-        >
-          {t('addToPlaylist')}
-        </DropdownItem>
-        <DropdownItem
-          key="delete"
-          className="text-danger"
-          color="danger"
-          startContent={<Trash2 size={16} />}
-          onPress={onDeleteClick}
-          isDisabled={isDeleteDisabled}
-        >
-          {t('delete')}
-        </DropdownItem>
-      </DropdownMenu>
-    </Dropdown>
+      <Dropdown>
+        <DropdownTrigger>
+          <Button
+            isIconOnly
+            size="sm"
+            variant="light"
+            aria-label={t("aria.actions")}
+          >
+            <MoreVertical size={16} />
+          </Button>
+        </DropdownTrigger>
+        <DropdownMenu aria-label={t("aria.menu")}>
+          <DropdownItem
+            key="play"
+            startContent={<Play size={16} />}
+            href={`/audios/${audioId}/listen`}
+            className="text-success"
+            color="success"
+          >
+            {t("play")}
+          </DropdownItem>
+          <DropdownItem
+            key="copy"
+            startContent={
+              copySuccess ? <Check size={16} /> : <Link2 size={16} />
+            }
+            onPress={handleCopyLink}
+            className={copySuccess ? "text-success" : ""}
+          >
+            {copySuccess ? t("copied") : t("copyPlayLink")}
+          </DropdownItem>
+          <DropdownItem
+            key="edit"
+            startContent={<Edit size={16} />}
+            href={`/audios/${audioId}/edit`}
+            className="text-primary"
+            color="primary"
+          >
+            {t("edit")}
+          </DropdownItem>
+          <DropdownItem
+            key="statistics"
+            startContent={<BarChart3 size={16} />}
+            href={`/audios/${audioId}/statistics`}
+            className="text-warning"
+            color="warning"
+          >
+            {t("statistics")}
+          </DropdownItem>
+          <DropdownItem
+            key="add-to-playlist"
+            startContent={<ListMusic size={16} />}
+            onPress={onOpen}
+            className="text-secondary"
+            color="secondary"
+          >
+            {t("addToPlaylist")}
+          </DropdownItem>
+          <DropdownItem
+            key="delete"
+            className="text-danger"
+            color="danger"
+            startContent={<Trash2 size={16} />}
+            onPress={onDeleteClick}
+            isDisabled={isDeleteDisabled}
+          >
+            {t("delete")}
+          </DropdownItem>
+        </DropdownMenu>
+      </Dropdown>
 
-    <AddToPlaylistModal
-      isOpen={isOpen}
-      onClose={onClose}
-      audioId={audioId}
-    />
+      <AddToPlaylistModal isOpen={isOpen} onClose={onClose} audioId={audioId} />
     </>
   );
 }

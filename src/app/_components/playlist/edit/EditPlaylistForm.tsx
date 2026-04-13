@@ -1,6 +1,14 @@
-'use client';
+"use client";
 
-import { Button, Card, CardBody, CardHeader, Input, Switch, Textarea } from "@heroui/react";
+import {
+  Button,
+  Card,
+  CardBody,
+  CardHeader,
+  Input,
+  Switch,
+  Textarea,
+} from "@heroui/react";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { api } from "~/trpc/react";
@@ -8,25 +16,27 @@ import { UnsavedChangesModal } from "../../global/UnsavedChangesModal";
 import { Save } from "lucide-react";
 import { useTranslations } from "next-intl";
 
-
 interface EditPlaylistFormProps {
   playlistId: string;
 }
 
-export default function EditPlaylistForm({ playlistId }: EditPlaylistFormProps) {
+export default function EditPlaylistForm({
+  playlistId,
+}: EditPlaylistFormProps) {
   const router = useRouter();
   const [isFormDirty, setIsFormDirty] = useState(false);
-  const [pendingNavigation, setPendingNavigation] = useState<string | null>(null);
+  const [pendingNavigation, setPendingNavigation] = useState<string | null>(
+    null,
+  );
   const [error, setError] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
   const utils = api.useUtils();
-  const t = useTranslations('EditPlaylistForm');
+  const t = useTranslations("EditPlaylistForm");
 
   const [playlist] = api.playlist.getUserPlaylistById.useSuspenseQuery({
     id: playlistId,
   });
-
 
   const updatePlaylistMutation = api.playlist.updatePlaylist.useMutation({
     onSuccess: () => {
@@ -46,24 +56,26 @@ export default function EditPlaylistForm({ playlistId }: EditPlaylistFormProps) 
 
   const submitForm = (form: HTMLFormElement) => {
     const formData = new FormData(form);
-    const name = (formData.get('name') as string).trim();
-    const description = formData.get('description') as string;
-    const isPublic = formData.get('isPublic') !== null;
+    const name = (formData.get("name") as string).trim();
+    const description = formData.get("description") as string;
+    const isPublic = formData.get("isPublic") !== null;
 
     if (!name) {
-      setError(t('errors.nameRequired'));
+      setError(t("errors.nameRequired"));
       return;
     }
 
-    updatePlaylistMutation.mutate(
-      { id: playlistId, name: name, description: description || undefined, isPublic },
-    );
+    updatePlaylistMutation.mutate({
+      id: playlistId,
+      name: name,
+      description: description || undefined,
+      isPublic,
+    });
   };
 
   const handleFormChange = () => {
     setIsFormDirty(true);
   };
-
 
   const handleNavigationAttempt = (path: string) => {
     if (isFormDirty) {
@@ -78,8 +90,10 @@ export default function EditPlaylistForm({ playlistId }: EditPlaylistFormProps) 
     <Card>
       <CardHeader className="flex gap-3">
         <div className="flex flex-col">
-          <p className="text-md font-semibold">{t('title', { name: playlist.name })}</p>
-          <p className="text-small text-default-500">{t('subtitle')}</p>
+          <p className="text-md font-semibold">
+            {t("title", { name: playlist.name })}
+          </p>
+          <p className="text-small text-default-500">{t("subtitle")}</p>
         </div>
       </CardHeader>
       <CardBody>
@@ -87,8 +101,8 @@ export default function EditPlaylistForm({ playlistId }: EditPlaylistFormProps) 
           <Input
             name="name"
             type="text"
-            label={t('fields.name.label')}
-            placeholder={t('fields.name.placeholder')}
+            label={t("fields.name.label")}
+            placeholder={t("fields.name.placeholder")}
             defaultValue={playlist.name}
             onChange={handleFormChange}
             isRequired
@@ -99,9 +113,9 @@ export default function EditPlaylistForm({ playlistId }: EditPlaylistFormProps) 
 
           <Textarea
             name="description"
-            label={t('fields.description.label')}
-            placeholder={t('fields.description.placeholder')}
-            defaultValue={playlist.description ?? ''}
+            label={t("fields.description.label")}
+            placeholder={t("fields.description.placeholder")}
+            defaultValue={playlist.description ?? ""}
             variant="bordered"
             labelPlacement="outside"
             onChange={handleFormChange}
@@ -116,22 +130,20 @@ export default function EditPlaylistForm({ playlistId }: EditPlaylistFormProps) 
             color="primary"
             onChange={handleFormChange}
           >
-            {t('fields.isPublic.label')}
+            {t("fields.isPublic.label")}
           </Switch>
 
-          {error && (
-            <p className="text-danger text-sm">{error}</p>
-          )}
+          {error && <p className="text-danger text-sm">{error}</p>}
 
           <div className="flex gap-2 justify-between">
             <Button
               color="default"
               variant="light"
               onPress={() => {
-                handleNavigationAttempt('/');
+                handleNavigationAttempt("/");
               }}
             >
-              {t('actions.cancel')}
+              {t("actions.cancel")}
             </Button>
             <Button
               type="submit"
@@ -139,7 +151,7 @@ export default function EditPlaylistForm({ playlistId }: EditPlaylistFormProps) 
               startContent={<Save size={16} />}
               isLoading={updatePlaylistMutation.isPending}
             >
-              {t('actions.save')}
+              {t("actions.save")}
             </Button>
           </div>
         </form>

@@ -11,7 +11,7 @@ export const playlistRouter = createTRPCRouter({
     const playlists = await ctx.db.playlist.findMany({
       where: {
         createdById: ctx.session.user.id,
-        deletedAt: null
+        deletedAt: null,
       },
       orderBy: { createdAt: "desc" },
       select: {
@@ -31,9 +31,9 @@ export const playlistRouter = createTRPCRouter({
             audios: {
               where: {
                 audio: {
-                  deletedAt: null
-                }
-              }
+                  deletedAt: null,
+                },
+              },
             },
             listenRecords: true,
           },
@@ -42,7 +42,7 @@ export const playlistRouter = createTRPCRouter({
     });
 
     // Transform the result to include audioCount, listenCounter, and lastListenAt
-    const playlistsWithAudioCount = playlists.map(playlist => ({
+    const playlistsWithAudioCount = playlists.map((playlist) => ({
       ...playlist,
       audioCount: playlist._count.audios,
       listenCounter: playlist._count.listenRecords,
@@ -61,7 +61,7 @@ export const playlistRouter = createTRPCRouter({
         where: {
           id: input.id,
           createdById: ctx.session.user.id,
-          deletedAt: null
+          deletedAt: null,
         },
         select: {
           id: true,
@@ -75,8 +75,8 @@ export const playlistRouter = createTRPCRouter({
             orderBy: { order: "asc" },
             where: {
               audio: {
-                deletedAt: null
-              }
+                deletedAt: null,
+              },
             },
             select: {
               id: true,
@@ -109,7 +109,7 @@ export const playlistRouter = createTRPCRouter({
       // Transform the result to include markerCount at the audio level
       const playlistWithMarkerCount = {
         ...playlist,
-        audios: playlist.audios.map(playlistAudio => ({
+        audios: playlist.audios.map((playlistAudio) => ({
           ...playlistAudio,
           audio: {
             ...playlistAudio.audio,
@@ -129,7 +129,7 @@ export const playlistRouter = createTRPCRouter({
         where: {
           id: input.id,
           isPublic: true,
-          deletedAt: null
+          deletedAt: null,
         },
         select: {
           id: true,
@@ -143,8 +143,8 @@ export const playlistRouter = createTRPCRouter({
             orderBy: { order: "asc" },
             where: {
               audio: {
-                deletedAt: null
-              }
+                deletedAt: null,
+              },
             },
             select: {
               id: true,
@@ -180,8 +180,8 @@ export const playlistRouter = createTRPCRouter({
       const playlistWithMarkerCount = {
         ...playlist,
         audios: playlist.audios
-          .filter(playlistAudio => playlistAudio.audio.isPublic)
-          .map(playlistAudio => ({
+          .filter((playlistAudio) => playlistAudio.audio.isPublic)
+          .map((playlistAudio) => ({
             ...playlistAudio,
             audio: {
               ...playlistAudio.audio,
@@ -195,11 +195,16 @@ export const playlistRouter = createTRPCRouter({
     }),
 
   createPlaylist: protectedProcedure
-    .input(z.object({
-      name: z.string().min(1, "Name is required").max(100, "Name is too long"),
-      description: z.string().max(500, "Description is too long").optional(),
-      isPublic: z.boolean().default(false),
-    }))
+    .input(
+      z.object({
+        name: z
+          .string()
+          .min(1, "Name is required")
+          .max(100, "Name is too long"),
+        description: z.string().max(500, "Description is too long").optional(),
+        isPublic: z.boolean().default(false),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       const playlist = await ctx.db.playlist.create({
         data: {
@@ -220,12 +225,17 @@ export const playlistRouter = createTRPCRouter({
     }),
 
   updatePlaylist: protectedProcedure
-    .input(z.object({
-      id: z.string(),
-      name: z.string().min(1, "Name is required").max(100, "Name is too long"),
-      description: z.string().max(500, "Description is too long").optional(),
-      isPublic: z.boolean(),
-    }))
+    .input(
+      z.object({
+        id: z.string(),
+        name: z
+          .string()
+          .min(1, "Name is required")
+          .max(100, "Name is too long"),
+        description: z.string().max(500, "Description is too long").optional(),
+        isPublic: z.boolean(),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       const playlist = await ctx.db.playlist.findUnique({
         where: { id: input.id },
@@ -284,10 +294,12 @@ export const playlistRouter = createTRPCRouter({
     }),
 
   addAudioToPlaylist: protectedProcedure
-    .input(z.object({
-      playlistId: z.string(),
-      audioId: z.string(),
-    }))
+    .input(
+      z.object({
+        playlistId: z.string(),
+        audioId: z.string(),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       // Check if playlist exists and belongs to user
       const playlist = await ctx.db.playlist.findUnique({
@@ -367,10 +379,12 @@ export const playlistRouter = createTRPCRouter({
     }),
 
   removeAudioFromPlaylist: protectedProcedure
-    .input(z.object({
-      playlistId: z.string(),
-      audioId: z.string(),
-    }))
+    .input(
+      z.object({
+        playlistId: z.string(),
+        audioId: z.string(),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       // Check if playlist exists and belongs to user
       const playlist = await ctx.db.playlist.findUnique({
@@ -400,13 +414,17 @@ export const playlistRouter = createTRPCRouter({
     }),
 
   reorderPlaylistAudios: protectedProcedure
-    .input(z.object({
-      playlistId: z.string(),
-      audioOrders: z.array(z.object({
-        audioId: z.string(),
-        order: z.number(),
-      })),
-    }))
+    .input(
+      z.object({
+        playlistId: z.string(),
+        audioOrders: z.array(
+          z.object({
+            audioId: z.string(),
+            order: z.number(),
+          }),
+        ),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       // Check if playlist exists and belongs to user
       const playlist = await ctx.db.playlist.findUnique({
@@ -433,8 +451,8 @@ export const playlistRouter = createTRPCRouter({
               },
             },
             data: { order },
-          })
-        )
+          }),
+        ),
       );
 
       return { success: true };
@@ -485,7 +503,7 @@ export const playlistRouter = createTRPCRouter({
       });
 
       // Transform the result to include markerCount at the top level
-      const audiosWithMarkerCount = availableAudios.map(audio => ({
+      const audiosWithMarkerCount = availableAudios.map((audio) => ({
         ...audio,
         markerCount: audio._count.markers,
         _count: undefined,
@@ -500,7 +518,7 @@ export const playlistRouter = createTRPCRouter({
       const playlists = await ctx.db.playlist.findMany({
         where: {
           createdById: ctx.session.user.id,
-          deletedAt: null
+          deletedAt: null,
         },
         orderBy: { createdAt: "desc" },
         select: {
@@ -515,8 +533,8 @@ export const playlistRouter = createTRPCRouter({
               audios: {
                 where: {
                   audio: {
-                    deletedAt: null
-                  }
+                    deletedAt: null,
+                  },
                 },
               },
             },
@@ -533,7 +551,7 @@ export const playlistRouter = createTRPCRouter({
       });
 
       // Transform the result to include audioCount and hasAudio at the top level
-      const playlistsWithAudioInfo = playlists.map(playlist => ({
+      const playlistsWithAudioInfo = playlists.map((playlist) => ({
         ...playlist,
         audioCount: playlist._count.audios,
         hasAudio: playlist.audios.length > 0,
@@ -592,7 +610,7 @@ export const playlistRouter = createTRPCRouter({
       });
 
       // Transform the result to include markerCount and isInPlaylist at the top level
-      const audiosWithPlaylistInfo = allAudios.map(audio => ({
+      const audiosWithPlaylistInfo = allAudios.map((audio) => ({
         ...audio,
         markerCount: audio._count.markers,
         isInPlaylist: audio.playlistAudios.length > 0,
@@ -612,7 +630,7 @@ export const playlistRouter = createTRPCRouter({
           id: true,
           isPublic: true,
           deletedAt: true,
-          createdById: true
+          createdById: true,
         },
       });
 
@@ -621,7 +639,8 @@ export const playlistRouter = createTRPCRouter({
       }
 
       // Check if user has access (public or owner)
-      const hasAccess = playlist.isPublic || (ctx.session?.user?.id === playlist.createdById);
+      const hasAccess =
+        playlist.isPublic || ctx.session?.user?.id === playlist.createdById;
       if (!hasAccess) {
         throw new Error("Unauthorized");
       }
@@ -638,20 +657,22 @@ export const playlistRouter = createTRPCRouter({
     }),
 
   getListenStatistics: protectedProcedure
-    .input(z.object({ 
-      id: z.string(),
-      days: z.number().min(7).max(365).default(30)
-    }))
+    .input(
+      z.object({
+        id: z.string(),
+        days: z.number().min(7).max(365).default(30),
+      }),
+    )
     .query(async ({ ctx, input }) => {
       // Verify user owns this playlist
       const playlist = await ctx.db.playlist.findUnique({
-        where: { 
+        where: {
           id: input.id,
           createdById: ctx.session.user.id,
-          deletedAt: null 
+          deletedAt: null,
         },
-        select: { 
-          id: true, 
+        select: {
+          id: true,
           name: true,
           createdAt: true,
           audios: {
@@ -696,7 +717,7 @@ export const playlistRouter = createTRPCRouter({
           listenedAt: true,
         },
         orderBy: {
-          listenedAt: 'asc',
+          listenedAt: "asc",
         },
       });
 
@@ -707,16 +728,20 @@ export const playlistRouter = createTRPCRouter({
 
       // Group by date
       const dailyStats: Record<string, number> = {};
-      
+
       // Initialize all dates in range with 0
-      for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
-        const dateKey = d.toISOString().split('T')[0]!;
+      for (
+        let d = new Date(startDate);
+        d <= endDate;
+        d.setDate(d.getDate() + 1)
+      ) {
+        const dateKey = d.toISOString().split("T")[0]!;
         dailyStats[dateKey] = 0;
       }
 
       // Count listens per day
       for (const record of listenRecords) {
-        const dateKey = record.listenedAt.toISOString().split('T')[0]!;
+        const dateKey = record.listenedAt.toISOString().split("T")[0]!;
         if (dailyStats[dateKey] !== undefined) {
           dailyStats[dateKey]++;
         }
@@ -729,72 +754,87 @@ export const playlistRouter = createTRPCRouter({
       }));
 
       // Fetch listen statistics for all audios in the playlist
-      const audioIds = playlist.audios.map(pa => pa.audio.id);
+      const audioIds = playlist.audios.map((pa) => pa.audio.id);
 
-      const audioListenRecords = audioIds.length > 0
-        ? await ctx.db.audioListenRecord.findMany({
-            where: {
-              audioId: { in: audioIds },
-              listenedAt: {
-                gte: startDate,
-                lte: endDate,
+      const audioListenRecords =
+        audioIds.length > 0
+          ? await ctx.db.audioListenRecord.findMany({
+              where: {
+                audioId: { in: audioIds },
+                listenedAt: {
+                  gte: startDate,
+                  lte: endDate,
+                },
               },
-            },
-            select: {
-              audioId: true,
-              listenedAt: true,
-            },
-          })
-        : [];
+              select: {
+                audioId: true,
+                listenedAt: true,
+              },
+            })
+          : [];
 
-      const audioTotalListens = audioIds.length > 0
-        ? await ctx.db.audioListenRecord.groupBy({
-            by: ['audioId'],
-            where: { audioId: { in: audioIds } },
-            _count: { id: true },
-          })
-        : [];
+      const audioTotalListens =
+        audioIds.length > 0
+          ? await ctx.db.audioListenRecord.groupBy({
+              by: ["audioId"],
+              where: { audioId: { in: audioIds } },
+              _count: { id: true },
+            })
+          : [];
 
       const totalListensByAudio = new Map(
-        audioTotalListens.map(r => [r.audioId, r._count.id])
+        audioTotalListens.map((r) => [r.audioId, r._count.id]),
       );
 
       // Group audio listen records by audioId and date
       const audioStatsMap = new Map<string, Record<string, number>>();
       for (const audioId of audioIds) {
         const daily: Record<string, number> = {};
-        for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
-          const dateKey = d.toISOString().split('T')[0]!;
+        for (
+          let d = new Date(startDate);
+          d <= endDate;
+          d.setDate(d.getDate() + 1)
+        ) {
+          const dateKey = d.toISOString().split("T")[0]!;
           daily[dateKey] = 0;
         }
         audioStatsMap.set(audioId, daily);
       }
 
       for (const record of audioListenRecords) {
-        const dateKey = record.listenedAt.toISOString().split('T')[0]!;
+        const dateKey = record.listenedAt.toISOString().split("T")[0]!;
         const daily = audioStatsMap.get(record.audioId);
         if (daily?.[dateKey] !== undefined) {
           daily[dateKey]++;
         }
       }
 
-      const audioStats = playlist.audios.map(pa => {
+      const audioStats = playlist.audios.map((pa) => {
         const daily = audioStatsMap.get(pa.audio.id) ?? {};
-        const periodListens = audioListenRecords.filter(r => r.audioId === pa.audio.id).length;
+        const periodListens = audioListenRecords.filter(
+          (r) => r.audioId === pa.audio.id,
+        ).length;
         const dailyChart = Object.entries(daily).map(([date, count]) => ({
           date,
           listens: count,
         }));
-        const maxListens = Math.max(0, ...dailyChart.map(d => d.listens));
-        const peakDay = dailyChart.find(d => d.listens === maxListens && maxListens > 0);
+        const maxListens = Math.max(0, ...dailyChart.map((d) => d.listens));
+        const peakDay = dailyChart.find(
+          (d) => d.listens === maxListens && maxListens > 0,
+        );
 
         return {
           audioId: pa.audio.id,
           audioName: pa.audio.name,
           totalListens: totalListensByAudio.get(pa.audio.id) ?? 0,
           periodListens,
-          avgPerDay: periodListens > 0 ? Number((periodListens / input.days).toFixed(1)) : 0,
-          peakDay: peakDay ? { date: peakDay.date, listens: peakDay.listens } : null,
+          avgPerDay:
+            periodListens > 0
+              ? Number((periodListens / input.days).toFixed(1))
+              : 0,
+          peakDay: peakDay
+            ? { date: peakDay.date, listens: peakDay.listens }
+            : null,
           dailyStats: dailyChart,
         };
       });

@@ -1,14 +1,14 @@
-import type { NextRequest } from 'next/server';
-import { NextResponse } from 'next/server';
-import { readFile, stat } from 'fs/promises';
-import path from 'path';
-import { db } from '~/server/db';
-import { auth } from '~/server/auth';
-import { env } from '~/env';
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
+import { readFile, stat } from "fs/promises";
+import path from "path";
+import { db } from "~/server/db";
+import { auth } from "~/server/auth";
+import { env } from "~/env";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ audioId: string }> }
+  { params }: { params: Promise<{ audioId: string }> },
 ) {
   try {
     const { audioId } = await params;
@@ -26,7 +26,7 @@ export async function GET(
     });
 
     if (!audio) {
-      return new NextResponse('Audio not found', { status: 404 });
+      return new NextResponse("Audio not found", { status: 404 });
     }
 
     // Check access permissions
@@ -35,22 +35,22 @@ export async function GET(
 
     // If authentication is required for public content and user is not logged in
     if (env.REQUIRE_AUTH_FOR_PUBLIC_CONTENT && !session) {
-      return new NextResponse('Authentication required', { status: 401 });
+      return new NextResponse("Authentication required", { status: 401 });
     }
 
     if (!hasAccess) {
-      return new NextResponse('Forbidden', { status: 403 });
+      return new NextResponse("Forbidden", { status: 403 });
     }
 
     // Construct file path from filename (filePath now contains only filename)
     const filename = audio.filePath;
-    const fullPath = path.join(process.cwd(), 'data', 'uploads', filename);
+    const fullPath = path.join(process.cwd(), "data", "uploads", filename);
 
     // Check if file exists
     try {
       await stat(fullPath);
     } catch {
-      return new NextResponse('Audio file not found on disk', { status: 404 });
+      return new NextResponse("Audio file not found on disk", { status: 404 });
     }
 
     // Read the file
@@ -60,14 +60,14 @@ export async function GET(
     return new NextResponse(fileBuffer as unknown as BodyInit, {
       status: 200,
       headers: {
-        'Content-Type': 'audio/mpeg',
-        'Content-Length': fileBuffer.length.toString(),
-        'Accept-Ranges': 'bytes',
-        'Cache-Control': 'public, max-age=31536000, immutable',
+        "Content-Type": "audio/mpeg",
+        "Content-Length": fileBuffer.length.toString(),
+        "Accept-Ranges": "bytes",
+        "Cache-Control": "public, max-age=31536000, immutable",
       },
     });
   } catch (error) {
-    console.error('Error serving audio file:', error);
-    return new NextResponse('Internal Server Error', { status: 500 });
+    console.error("Error serving audio file:", error);
+    return new NextResponse("Internal Server Error", { status: 500 });
   }
 }

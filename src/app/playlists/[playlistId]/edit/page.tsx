@@ -14,7 +14,9 @@ interface PlaylistEditPageProps {
   }>;
 }
 
-export default async function PlaylistEditPage({ params }: PlaylistEditPageProps) {
+export default async function PlaylistEditPage({
+  params,
+}: PlaylistEditPageProps) {
   const { playlistId } = await params;
   const session = await auth();
 
@@ -31,11 +33,13 @@ export default async function PlaylistEditPage({ params }: PlaylistEditPageProps
 
   return (
     <HydrateClient>
-      <Suspense fallback={
-        <div className="flex items-center justify-center py-8">
-          <p className="text-default-500">Loading playlist details...</p>
-        </div>
-      }>
+      <Suspense
+        fallback={
+          <div className="flex items-center justify-center py-8">
+            <p className="text-default-500">Loading playlist details...</p>
+          </div>
+        }
+      >
         <div className="w-full text-center max-w-4xl px-4">
           <Link
             href={`/playlists/${playlistId}/listen`}

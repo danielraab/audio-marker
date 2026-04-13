@@ -1,6 +1,6 @@
-import { execFile } from 'child_process';
-import { writeFile, unlink } from 'fs/promises';
-import path from 'path';
+import { execFile } from "child_process";
+import { writeFile, unlink } from "fs/promises";
+import path from "path";
 
 /**
  * Re-encode an MP3 file to CBR (constant bitrate) with fixed sample rate.
@@ -15,17 +15,21 @@ export async function reencodeMp3ToCbr(
   inputPath: string,
   outputPath: string,
   bitrate = 128,
-  sampleRate = 44100
+  sampleRate = 44100,
 ): Promise<void> {
   return new Promise((resolve, reject) => {
     execFile(
-      'ffmpeg',
+      "ffmpeg",
       [
-        '-y', // overwrite output
-        '-i', inputPath,
-        '-ar', String(sampleRate),
-        '-b:a', `${bitrate}k`,
-        '-codec:a', 'libmp3lame',
+        "-y", // overwrite output
+        "-i",
+        inputPath,
+        "-ar",
+        String(sampleRate),
+        "-b:a",
+        `${bitrate}k`,
+        "-codec:a",
+        "libmp3lame",
         outputPath,
       ],
       { maxBuffer: 10 * 1024 * 1024 },
@@ -35,7 +39,7 @@ export async function reencodeMp3ToCbr(
           return;
         }
         resolve();
-      }
+      },
     );
   });
 }
@@ -49,13 +53,16 @@ export async function reencodeMp3ToCbr(
 export async function replaceWithCbrMp3(
   filePath: string,
   bitrate = 128,
-  sampleRate = 44100
+  sampleRate = 44100,
 ): Promise<void> {
   const parsed = path.parse(filePath);
   const tempPath = path.join(parsed.dir, `${parsed.name}-cbr${parsed.ext}`);
   await reencodeMp3ToCbr(filePath, tempPath, bitrate, sampleRate);
   // Replace original file
   await unlink(filePath);
-  await writeFile(filePath, await (await import('fs/promises')).readFile(tempPath));
+  await writeFile(
+    filePath,
+    await (await import("fs/promises")).readFile(tempPath),
+  );
   await unlink(tempPath);
 }

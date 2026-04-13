@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { Button, Card, CardBody, Chip } from "@heroui/react";
 import { GripVertical, X, Play, Edit } from "lucide-react";
@@ -12,11 +12,14 @@ interface PlaylistAudioItemProps {
   isRemoving: boolean;
 }
 
-
-export function PlaylistAudioItem({ playlistAudio, onRemove, isRemoving }: PlaylistAudioItemProps) {
+export function PlaylistAudioItem({
+  playlistAudio,
+  onRemove,
+  isRemoving,
+}: PlaylistAudioItemProps) {
   const { audio } = playlistAudio;
-  const t = useTranslations('PlaylistAudioItem');
-  const tAudio = useTranslations('AudioListItem');
+  const t = useTranslations("PlaylistAudioItem");
+  const tAudio = useTranslations("AudioListItem");
 
   return (
     <Card className="shadow-sm">
@@ -27,12 +30,11 @@ export function PlaylistAudioItem({ playlistAudio, onRemove, isRemoving }: Playl
         </div>
         <div className="w-full">
           <div className="flex flex-row flex-wrap items-center gap-1">
-
             {/* Audio Info */}
             <h4 className="text-sm sm:text-md font-semibold">{audio.name}</h4>
             <div className="flex flex-row grow items-center justify-between">
               <Chip size="sm" variant="flat" color="primary" className="w-fit">
-                {tAudio('markers', { count: audio.markerCount })}
+                {tAudio("markers", { count: audio.markerCount })}
               </Chip>
 
               {/* Actions */}
@@ -44,7 +46,7 @@ export function PlaylistAudioItem({ playlistAudio, onRemove, isRemoving }: Playl
                   color="primary"
                   as="a"
                   href={`/audios/${audio.id}/listen`}
-                  title={t('actions.play')}
+                  title={t("actions.play")}
                 >
                   <Play size={16} />
                 </Button>
@@ -55,7 +57,7 @@ export function PlaylistAudioItem({ playlistAudio, onRemove, isRemoving }: Playl
                   color="secondary"
                   as="a"
                   href={`/audios/${audio.id}/edit`}
-                  title={t('actions.edit')}
+                  title={t("actions.edit")}
                 >
                   <Edit size={16} />
                 </Button>
@@ -66,7 +68,7 @@ export function PlaylistAudioItem({ playlistAudio, onRemove, isRemoving }: Playl
                   color="danger"
                   onPress={onRemove}
                   isLoading={isRemoving}
-                  title={t('actions.remove')}
+                  title={t("actions.remove")}
                 >
                   <X size={16} />
                 </Button>
@@ -75,8 +77,14 @@ export function PlaylistAudioItem({ playlistAudio, onRemove, isRemoving }: Playl
           </div>
 
           <div className="space-y-1 text-xs sm:text-sm text-default-500 mt-2">
-            <p><span className="font-medium">{t('labels.originalFile')}</span> {audio.originalFileName}</p>
-            <p><span className="font-medium">{t('labels.addedToPlaylist')}</span> {formatTimeAgo(new Date(playlistAudio.addedAt))}</p>
+            <p>
+              <span className="font-medium">{t("labels.originalFile")}</span>{" "}
+              {audio.originalFileName}
+            </p>
+            <p>
+              <span className="font-medium">{t("labels.addedToPlaylist")}</span>{" "}
+              {formatTimeAgo(new Date(playlistAudio.addedAt))}
+            </p>
           </div>
         </div>
       </CardBody>

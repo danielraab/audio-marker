@@ -4,8 +4,6 @@ import { api, HydrateClient } from "~/trpc/server";
 import { Suspense } from "react";
 import { AudioStatisticsView } from "~/app/_components/audio/statistics/AudioStatisticsView";
 
-
-
 interface StatisticsPageProps {
   params: Promise<{ audioId: string }>;
 }
@@ -13,7 +11,7 @@ interface StatisticsPageProps {
 export default async function StatisticsPage({ params }: StatisticsPageProps) {
   const { audioId } = await params;
   const session = await auth();
-  
+
   if (!session?.user?.id) {
     notFound();
   }
@@ -29,11 +27,13 @@ export default async function StatisticsPage({ params }: StatisticsPageProps) {
   return (
     <div className="w-full flex min-h-screen flex-col items-center gap-4 py-8">
       <HydrateClient>
-        <Suspense fallback={
-          <div className="flex items-center justify-center py-8">
-            <p className="text-default-500">Loading statistics...</p>
-          </div>
-        }>
+        <Suspense
+          fallback={
+            <div className="flex items-center justify-center py-8">
+              <p className="text-default-500">Loading statistics...</p>
+            </div>
+          }
+        >
           <AudioStatisticsView audioId={audioId} />
         </Suspense>
       </HydrateClient>
@@ -44,7 +44,7 @@ export default async function StatisticsPage({ params }: StatisticsPageProps) {
 export async function generateMetadata({ params }: StatisticsPageProps) {
   const { audioId } = await params;
   const session = await auth();
-  
+
   if (!session?.user?.id) {
     return {
       title: "Statistics - Audio Marker",

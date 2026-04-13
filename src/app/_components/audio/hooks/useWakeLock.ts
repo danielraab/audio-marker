@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef } from "react";
 
 /**
  * Manages the Screen Wake Lock API to keep the screen on during audio playback.
@@ -10,9 +10,9 @@ export function useWakeLock(active: boolean) {
 
   useEffect(() => {
     const acquire = async () => {
-      if ('wakeLock' in navigator) {
+      if ("wakeLock" in navigator) {
         try {
-          wakeLockRef.current = await navigator.wakeLock.request('screen');
+          wakeLockRef.current = await navigator.wakeLock.request("screen");
         } catch {
           // Can fail (e.g. low battery, background tab)
         }
@@ -44,18 +44,25 @@ export function useWakeLock(active: boolean) {
   // Re-acquire when tab becomes visible again
   useEffect(() => {
     const handleVisibilityChange = () => {
-      if (document.visibilityState === 'visible' && active && 'wakeLock' in navigator) {
-        navigator.wakeLock.request('screen').then((lock) => {
-          wakeLockRef.current = lock;
-        }).catch(() => {
-          // Best effort
-        });
+      if (
+        document.visibilityState === "visible" &&
+        active &&
+        "wakeLock" in navigator
+      ) {
+        navigator.wakeLock
+          .request("screen")
+          .then((lock) => {
+            wakeLockRef.current = lock;
+          })
+          .catch(() => {
+            // Best effort
+          });
       }
     };
 
-    document.addEventListener('visibilitychange', handleVisibilityChange);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
     return () => {
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, [active]);
 }

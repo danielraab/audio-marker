@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { Button, Card, CardBody, Chip } from "@heroui/react";
 import { Play } from "lucide-react";
@@ -11,7 +11,10 @@ interface ListenPlaylistAudioItemProps {
   playlistId: string;
 }
 
-export function ListenPlaylistAudioItem({ playlistAudio, playlistId }: ListenPlaylistAudioItemProps) {
+export function ListenPlaylistAudioItem({
+  playlistAudio,
+  playlistId,
+}: ListenPlaylistAudioItemProps) {
   const { audio } = playlistAudio;
   const t = useTranslations("PlaylistAudioItem");
   const tGlobal = useTranslations();
@@ -28,23 +31,29 @@ export function ListenPlaylistAudioItem({ playlistAudio, playlistId }: ListenPla
               {tGlobal("AudioListItem.markers", { count: audio.markerCount })}
             </Chip>
             {/* Actions */}
-              <Button
-                isIconOnly
-                size="sm"
-                variant="light"
-                color="primary"
-                as="a"
-                href={`/audios/${audio.id}/listen?playlistId=${playlistId}`}
-                title={t("actions.play")}
-              >
-                <Play size={16} />
-              </Button>
+            <Button
+              isIconOnly
+              size="sm"
+              variant="light"
+              color="primary"
+              as="a"
+              href={`/audios/${audio.id}/listen?playlistId=${playlistId}`}
+              title={t("actions.play")}
+            >
+              <Play size={16} />
+            </Button>
           </div>
         </div>
 
         <div className="space-y-1 text-xs sm:text-sm text-default-500">
-          <p><span className="font-medium">{t("labels.originalFile")}</span> {audio.originalFileName}</p>
-          <p><span className="font-medium">{t("labels.addedToPlaylist")}</span> {formatTimeAgo(new Date(playlistAudio.addedAt))}</p>
+          <p>
+            <span className="font-medium">{t("labels.originalFile")}</span>{" "}
+            {audio.originalFileName}
+          </p>
+          <p>
+            <span className="font-medium">{t("labels.addedToPlaylist")}</span>{" "}
+            {formatTimeAgo(new Date(playlistAudio.addedAt))}
+          </p>
         </div>
       </CardBody>
     </Card>

@@ -78,16 +78,19 @@ export const softDeletedContentRouter = createTRPCRouter({
 
       try {
         // Delete the physical file from the file system
-        const { unlink } = await import('fs/promises');
-        const path = await import('path');
-        
+        const { unlink } = await import("fs/promises");
+        const path = await import("path");
+
         // Convert the database filePath (e.g., "/uploads/filename.mp3") to absolute path
-        const absolutePath = path.join(process.cwd(), 'public', audio.filePath);
+        const absolutePath = path.join(process.cwd(), "public", audio.filePath);
         await unlink(absolutePath);
       } catch (fileError) {
         // Log the error but don't throw - we still want to delete the database record
         // even if the file doesn't exist or can't be deleted
-        console.error(`Failed to delete audio file: ${audio.filePath}`, fileError);
+        console.error(
+          `Failed to delete audio file: ${audio.filePath}`,
+          fileError,
+        );
       }
 
       // Delete the database record

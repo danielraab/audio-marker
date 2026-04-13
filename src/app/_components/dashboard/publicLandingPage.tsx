@@ -1,4 +1,10 @@
-import { Bookmark, FileMusic, FlagTriangleRight, Section, Share2 } from "lucide-react";
+import {
+  Bookmark,
+  FileMusic,
+  FlagTriangleRight,
+  Section,
+  Share2,
+} from "lucide-react";
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 

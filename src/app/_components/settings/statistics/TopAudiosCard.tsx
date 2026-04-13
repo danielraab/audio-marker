@@ -6,7 +6,8 @@ import { TrendingUp } from "lucide-react";
 import { useTranslations } from "next-intl";
 import type { RouterOutputs } from "~/trpc/react";
 
-type TopAudio = RouterOutputs["admin"]["statistics"]["getOverallStatistics"]["topAudios"][number];
+type TopAudio =
+  RouterOutputs["admin"]["statistics"]["getOverallStatistics"]["topAudios"][number];
 
 interface TopAudiosCardProps {
   topAudios: TopAudio[];
@@ -38,7 +39,9 @@ export default function TopAudiosCard({ topAudios }: TopAudiosCardProps) {
                   <span className="font-medium">{audio.name}</span>
                   <p className="text-xs text-default-400">
                     {t("topAudios.createdBy")}{" "}
-                    {audio.createdBy.name ?? audio.createdBy.email ?? t("topAudios.unknown")}
+                    {audio.createdBy.name ??
+                      audio.createdBy.email ??
+                      t("topAudios.unknown")}
                   </p>
                 </div>
               </div>

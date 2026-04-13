@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useState, useMemo } from "react";
 import { Input, Pagination } from "@heroui/react";
@@ -38,12 +38,12 @@ export function AudioFilesListClient({ audios }: AudioFilesListClientProps) {
       (audio) =>
         audio.name.toLowerCase().includes(query) ||
         audio.originalFileName.toLowerCase().includes(query) ||
-        (audio.description?.toLowerCase().includes(query) ?? false)
+        (audio.description?.toLowerCase().includes(query) ?? false),
     );
   }, [audios, searchQuery]);
 
   const totalPages = Math.ceil(filteredAudios.length / ITEMS_PER_PAGE);
-  
+
   const paginatedAudios = useMemo(() => {
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
     return filteredAudios.slice(startIndex, startIndex + ITEMS_PER_PAGE);

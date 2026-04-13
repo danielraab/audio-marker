@@ -5,8 +5,11 @@ import { Tabs, Tab } from "@heroui/tabs";
 import { Card, CardBody } from "@heroui/card";
 
 export default function LegalPage() {
-  const { data: legalInfos, isLoading, error } =
-    api.admin.legalInformation.getAllEnabledLegalInfo.useQuery();
+  const {
+    data: legalInfos,
+    isLoading,
+    error,
+  } = api.admin.legalInformation.getAllEnabledLegalInfo.useQuery();
 
   if (isLoading) {
     return (
@@ -39,7 +42,7 @@ export default function LegalPage() {
   if (legalInfos.length === 1) {
     const info = legalInfos[0];
     if (!info) return null;
-    
+
     return (
       <div className="container mx-auto max-w-4xl px-4 py-8">
         <div className="prose prose-slate dark:prose-invert max-w-none">

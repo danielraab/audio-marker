@@ -2,7 +2,14 @@
 
 import { useState } from "react";
 import { Card, CardBody, CardHeader } from "@heroui/card";
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@heroui/table";
+import {
+  Table,
+  TableHeader,
+  TableColumn,
+  TableBody,
+  TableRow,
+  TableCell,
+} from "@heroui/table";
 import { Chip } from "@heroui/chip";
 import { Avatar } from "@heroui/avatar";
 import { Spinner } from "@heroui/spinner";
@@ -13,7 +20,17 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "@heroui/dropdown";
-import { User, Shield, FileAudio, ListMusic, Plus, MoreVertical, Pencil, Trash2, Ban } from "lucide-react";
+import {
+  User,
+  Shield,
+  FileAudio,
+  ListMusic,
+  Plus,
+  MoreVertical,
+  Pencil,
+  Trash2,
+  Ban,
+} from "lucide-react";
 import { api } from "~/trpc/react";
 import UserModal from "./UserModal";
 import { useDisclosure } from "@heroui/use-disclosure";
@@ -35,8 +52,12 @@ interface UserData {
 }
 
 export default function UserListSection() {
-  const t = useTranslations('UserList');
-  const { data: users, isLoading, error } = api.admin.userManagement.getAllUsers.useQuery();
+  const t = useTranslations("UserList");
+  const {
+    data: users,
+    isLoading,
+    error,
+  } = api.admin.userManagement.getAllUsers.useQuery();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedUser, setSelectedUser] = useState<UserData | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -46,11 +67,11 @@ export default function UserListSection() {
   const deleteUserMutation = api.admin.userManagement.deleteUser.useMutation({
     onSuccess: () => {
       void utils.admin.userManagement.getAllUsers.invalidate();
-      setSuccessMessage(t('messages.userDeleted'));
+      setSuccessMessage(t("messages.userDeleted"));
       setTimeout(() => setSuccessMessage(null), 3000);
     },
     onError: (error) => {
-      alert(t('messages.deleteError', { message: error.message }));
+      alert(t("messages.deleteError", { message: error.message }));
     },
   });
 
@@ -65,13 +86,15 @@ export default function UserListSection() {
   };
 
   const handleDeleteUser = (userId: string) => {
-    if (confirm(t('confirm.deleteUser'))) {
+    if (confirm(t("confirm.deleteUser"))) {
       deleteUserMutation.mutate({ id: userId });
     }
   };
 
   const handleModalSuccess = () => {
-    setSuccessMessage(selectedUser ? t('messages.userUpdated') : t('messages.userCreated'));
+    setSuccessMessage(
+      selectedUser ? t("messages.userUpdated") : t("messages.userCreated"),
+    );
     setTimeout(() => setSuccessMessage(null), 3000);
   };
 
@@ -80,7 +103,7 @@ export default function UserListSection() {
       <Card>
         <CardBody>
           <div className="flex min-h-[400px] items-center justify-center">
-            <Spinner size="lg" label={t('loading')} />
+            <Spinner size="lg" label={t("loading")} />
           </div>
         </CardBody>
       </Card>
@@ -92,7 +115,9 @@ export default function UserListSection() {
       <Card>
         <CardBody>
           <div className="flex min-h-[400px] items-center justify-center">
-            <p className="text-danger">{t('errors.loadingUsers', { message: error.message })}</p>
+            <p className="text-danger">
+              {t("errors.loadingUsers", { message: error.message })}
+            </p>
           </div>
         </CardBody>
       </Card>
@@ -106,8 +131,10 @@ export default function UserListSection() {
           <div className="flex gap-3">
             <User className="h-5 w-5" />
             <div className="flex flex-col">
-              <p className="text-lg font-semibold">{t('title')}</p>
-              <p className="text-small text-default-500">{t('total', { count: users?.length ?? 0 })}</p>
+              <p className="text-lg font-semibold">{t("title")}</p>
+              <p className="text-small text-default-500">
+                {t("total", { count: users?.length ?? 0 })}
+              </p>
             </div>
           </div>
           <Button
@@ -115,7 +142,7 @@ export default function UserListSection() {
             startContent={<Plus className="h-4 w-4" />}
             onPress={handleAddUser}
           >
-            {t('actions.addUser')}
+            {t("actions.addUser")}
           </Button>
         </CardHeader>
         <CardBody>
@@ -124,37 +151,39 @@ export default function UserListSection() {
               {successMessage}
             </div>
           )}
-          <Table aria-label={t('table.ariaLabel')} className="min-h-[400px]">
+          <Table aria-label={t("table.ariaLabel")} className="min-h-[400px]">
             <TableHeader>
-              <TableColumn>{t('table.columns.user')}</TableColumn>
-              <TableColumn>{t('table.columns.email')}</TableColumn>
-              <TableColumn>{t('table.columns.role')}</TableColumn>
-              <TableColumn>{t('table.columns.status')}</TableColumn>
-              <TableColumn>{t('table.columns.audios')}</TableColumn>
-              <TableColumn>{t('table.columns.playlists')}</TableColumn>
-              <TableColumn>{t('table.columns.actions')}</TableColumn>
+              <TableColumn>{t("table.columns.user")}</TableColumn>
+              <TableColumn>{t("table.columns.email")}</TableColumn>
+              <TableColumn>{t("table.columns.role")}</TableColumn>
+              <TableColumn>{t("table.columns.status")}</TableColumn>
+              <TableColumn>{t("table.columns.audios")}</TableColumn>
+              <TableColumn>{t("table.columns.playlists")}</TableColumn>
+              <TableColumn>{t("table.columns.actions")}</TableColumn>
             </TableHeader>
-            <TableBody items={users ?? []} emptyContent={t('table.empty')}>
+            <TableBody items={users ?? []} emptyContent={t("table.empty")}>
               {(user) => (
                 <TableRow key={user.id}>
                   <TableCell>
                     <div className="flex items-center gap-3">
                       <Avatar
                         src={user.image ?? undefined}
-                        name={user.name ?? user.email ?? t('labels.user')}
+                        name={user.name ?? user.email ?? t("labels.user")}
                         size="sm"
                         fallback={<User className="h-4 w-4" />}
                       />
                       <div className="flex flex-col">
                         <p className="text-sm font-semibold">
-                          {user.name ?? t('labels.noName')}
+                          {user.name ?? t("labels.noName")}
                         </p>
                         <p className="text-xs text-default-400">{user.id}</p>
                       </div>
                     </div>
                   </TableCell>
                   <TableCell>
-                    <p className="text-sm">{user.email ?? t('labels.noEmail')}</p>
+                    <p className="text-sm">
+                      {user.email ?? t("labels.noEmail")}
+                    </p>
                   </TableCell>
                   <TableCell>
                     {user.isAdmin ? (
@@ -164,11 +193,11 @@ export default function UserListSection() {
                         size="sm"
                         variant="flat"
                       >
-                        {t('roles.admin')}
+                        {t("roles.admin")}
                       </Chip>
                     ) : (
                       <Chip color="default" size="sm" variant="flat">
-                        {t('roles.user')}
+                        {t("roles.user")}
                       </Chip>
                     )}
                   </TableCell>
@@ -181,15 +210,15 @@ export default function UserListSection() {
                           size="sm"
                           variant="flat"
                         >
-                          {t('status.disabled')}
+                          {t("status.disabled")}
                         </Chip>
                       ) : user.emailVerified ? (
                         <Chip color="success" size="sm" variant="flat">
-                          {t('status.active')}
+                          {t("status.active")}
                         </Chip>
                       ) : (
                         <Chip color="warning" size="sm" variant="flat">
-                          {t('status.unverified')}
+                          {t("status.unverified")}
                         </Chip>
                       )}
                     </div>
@@ -209,21 +238,17 @@ export default function UserListSection() {
                   <TableCell>
                     <Dropdown>
                       <DropdownTrigger>
-                        <Button
-                          isIconOnly
-                          size="sm"
-                          variant="light"
-                        >
+                        <Button isIconOnly size="sm" variant="light">
                           <MoreVertical className="h-4 w-4" />
                         </Button>
                       </DropdownTrigger>
-                      <DropdownMenu aria-label={t('actions.ariaLabel')}>
+                      <DropdownMenu aria-label={t("actions.ariaLabel")}>
                         <DropdownItem
                           key="edit"
                           startContent={<Pencil className="h-4 w-4" />}
                           onPress={() => handleEditUser(user)}
                         >
-                          {t('actions.edit')}
+                          {t("actions.edit")}
                         </DropdownItem>
                         <DropdownItem
                           key="delete"
@@ -232,7 +257,7 @@ export default function UserListSection() {
                           startContent={<Trash2 className="h-4 w-4" />}
                           onPress={() => handleDeleteUser(user.id)}
                         >
-                          {t('actions.delete')}
+                          {t("actions.delete")}
                         </DropdownItem>
                       </DropdownMenu>
                     </Dropdown>

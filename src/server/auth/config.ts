@@ -46,36 +46,42 @@ declare module "next-auth/adapters" {
  */
 export const authConfig = {
   providers: [
-    ...(env.AUTH_AUTHENTIK_ID ? [
-      Authentik({
-        name: env.AUTH_AUTHENTIK_LABEL ?? "Authentik",
-        clientId: env.AUTH_AUTHENTIK_ID,
-        clientSecret: env.AUTH_AUTHENTIK_SECRET,
-        issuer: env.AUTH_AUTHENTIK_ISSUER,
-      }),
-    ] : []),
-    ...(env.EMAIL_SERVER_HOST ? [
-      Nodemailer({
-        server: {
-          host: env.EMAIL_SERVER_HOST,
-          port: parseInt(env.EMAIL_SERVER_PORT ?? "587"),
-          auth: {
-            user: env.EMAIL_SERVER_USER,
-            pass: env.EMAIL_SERVER_PASSWORD,
-          },
-        },
-        from: env.EMAIL_FROM,
-      }),
-    ] : []),
+    ...(env.AUTH_AUTHENTIK_ID
+      ? [
+          Authentik({
+            name: env.AUTH_AUTHENTIK_LABEL ?? "Authentik",
+            clientId: env.AUTH_AUTHENTIK_ID,
+            clientSecret: env.AUTH_AUTHENTIK_SECRET,
+            issuer: env.AUTH_AUTHENTIK_ISSUER,
+          }),
+        ]
+      : []),
+    ...(env.EMAIL_SERVER_HOST
+      ? [
+          Nodemailer({
+            server: {
+              host: env.EMAIL_SERVER_HOST,
+              port: parseInt(env.EMAIL_SERVER_PORT ?? "587"),
+              auth: {
+                user: env.EMAIL_SERVER_USER,
+                pass: env.EMAIL_SERVER_PASSWORD,
+              },
+            },
+            from: env.EMAIL_FROM,
+          }),
+        ]
+      : []),
   ],
   adapter: PrismaAdapter(db) as Adapter,
   callbacks: {
     session: ({ session, user }) => {
       // Block disabled users from creating sessions
       if (user.isDisabled) {
-        throw new Error("Your account has been disabled. Please contact an administrator.");
+        throw new Error(
+          "Your account has been disabled. Please contact an administrator.",
+        );
       }
-      
+
       return {
         ...session,
         user: {
@@ -120,7 +126,9 @@ export const authConfig = {
         if (!existingUser) {
           // This is a new registration attempt, check if registration is enabled
           if (!env.MAIL_REGISTRATION_ENABLED) {
-            console.log(`❌ Registration attempt blocked for ${user.email} - registration is disabled.`);
+            console.log(
+              `❌ Registration attempt blocked for ${user.email} - registration is disabled.`,
+            );
             return false;
           }
         }

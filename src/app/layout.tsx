@@ -9,14 +9,15 @@ import Navbar from "./_components/global/layout/navbar/Navbar";
 import ServiceWorkerRegistration from "./_components/ServiceWorkerRegistration";
 import Footer from "./_components/global/layout/Footer";
 import { CookieConsent } from "./_components/global/CookieConsent";
-import { getLocale } from 'next-intl/server';
+import { getLocale } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
 import { getHeadInjection } from "~/lib/headInjection";
 import HeadInjection from "./_components/HeadInjection";
 
 export const metadata: Metadata = {
   title: "Audio Marker",
-  description: "Audio Marker - Upload, mark, and share your audio files with ease. By DRaab",
+  description:
+    "Audio Marker - Upload, mark, and share your audio files with ease. By DRaab",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
   manifest: "/manifest.json",
   appleWebApp: {

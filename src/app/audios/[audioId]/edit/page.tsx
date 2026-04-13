@@ -49,11 +49,13 @@ export default async function EditAudioPage({ params }: EditAudioPageProps) {
         </div>
       </div>
       <HydrateClient>
-        <Suspense fallback={
-          <div className="flex items-center justify-center py-8">
-            <p className="text-default-500">Loading audio details...</p>
-          </div>
-        }>
+        <Suspense
+          fallback={
+            <div className="flex items-center justify-center py-8">
+              <p className="text-default-500">Loading audio details...</p>
+            </div>
+          }
+        >
           <EditAudioForm audioId={audioId} />
           <EditPageContainer audioId={audioId} />
         </Suspense>

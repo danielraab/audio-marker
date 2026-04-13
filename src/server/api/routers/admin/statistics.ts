@@ -99,7 +99,9 @@ export const statisticsRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       requireAdmin(ctx.session);
 
-      const cutoffDate = new Date(Date.now() - input.daysInactive * 24 * 60 * 60 * 1000);
+      const cutoffDate = new Date(
+        Date.now() - input.daysInactive * 24 * 60 * 60 * 1000,
+      );
 
       // Get audios that have not been listened to in the specified time range
       // This includes audios with no listens OR audios whose last listen was before cutoff
@@ -145,8 +147,9 @@ export const statisticsRouter = createTRPCRouter({
         },
       });
 
-      console.log(`Found ${inactiveAudios.length} inactive audios (no listens or last listen before ${cutoffDate.toISOString()})`); 
-    
+      console.log(
+        `Found ${inactiveAudios.length} inactive audios (no listens or last listen before ${cutoffDate.toISOString()})`,
+      );
 
       return inactiveAudios.map((audio) => ({
         id: audio.id,
@@ -207,11 +210,18 @@ export const statisticsRouter = createTRPCRouter({
       ]);
 
       // Build a map with all dates in the range initialized to 0
-      const dateMap = new Map<string, { date: string; audioListens: number; playlistListens: number }>();
+      const dateMap = new Map<
+        string,
+        { date: string; audioListens: number; playlistListens: number }
+      >();
       for (let i = 0; i < input.days; i++) {
         const date = new Date(Date.now() - i * 24 * 60 * 60 * 1000);
         const dateStr = date.toISOString().split("T")[0]!;
-        dateMap.set(dateStr, { date: dateStr, audioListens: 0, playlistListens: 0 });
+        dateMap.set(dateStr, {
+          date: dateStr,
+          audioListens: 0,
+          playlistListens: 0,
+        });
       }
 
       for (const listen of audioListens) {
@@ -226,6 +236,8 @@ export const statisticsRouter = createTRPCRouter({
         if (entry) entry.playlistListens++;
       }
 
-      return Array.from(dateMap.values()).sort((a, b) => a.date.localeCompare(b.date));
+      return Array.from(dateMap.values()).sort((a, b) =>
+        a.date.localeCompare(b.date),
+      );
     }),
 });

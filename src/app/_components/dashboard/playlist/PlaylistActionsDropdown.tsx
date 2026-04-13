@@ -1,7 +1,21 @@
-'use client';
+"use client";
 
-import { Button, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@heroui/react";
-import { MoreVertical, Edit, Trash2, Play, Check, Link2, BarChart3 } from "lucide-react";
+import {
+  Button,
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
+} from "@heroui/react";
+import {
+  MoreVertical,
+  Edit,
+  Trash2,
+  Play,
+  Check,
+  Link2,
+  BarChart3,
+} from "lucide-react";
 import { useCallback, useState } from "react";
 import { useTranslations } from "next-intl";
 
@@ -16,10 +30,10 @@ export function PlaylistActionsDropdown({
   playlistId,
   onEditClick,
   onDeleteClick,
-  isDeleteDisabled = false
+  isDeleteDisabled = false,
 }: PlaylistActionsDropdownProps) {
   const [copySuccess, setCopySuccess] = useState(false);
-  const t = useTranslations('PlaylistActionsDropdown');
+  const t = useTranslations("PlaylistActionsDropdown");
 
   const handleCopyLink = useCallback(async () => {
     const listenUrl = `${window.location.origin}/playlists/${playlistId}/listen`;
@@ -39,12 +53,12 @@ export function PlaylistActionsDropdown({
           isIconOnly
           size="sm"
           variant="light"
-          aria-label={t('aria.actions')}
+          aria-label={t("aria.actions")}
         >
           <MoreVertical size={16} />
         </Button>
       </DropdownTrigger>
-      <DropdownMenu aria-label={t('aria.menu')}>
+      <DropdownMenu aria-label={t("aria.menu")}>
         <DropdownItem
           key="listen"
           startContent={<Play size={16} />}
@@ -52,7 +66,7 @@ export function PlaylistActionsDropdown({
           className="text-success"
           color="success"
         >
-          {t('listen')}
+          {t("listen")}
         </DropdownItem>
         <DropdownItem
           key="copy"
@@ -60,7 +74,7 @@ export function PlaylistActionsDropdown({
           onPress={handleCopyLink}
           className={copySuccess ? "text-success" : ""}
         >
-          {copySuccess ? t('copied') : t('copyListenLink')}
+          {copySuccess ? t("copied") : t("copyListenLink")}
         </DropdownItem>
         <DropdownItem
           key="edit"
@@ -69,7 +83,7 @@ export function PlaylistActionsDropdown({
           className="text-primary"
           color="primary"
         >
-          {t('edit')}
+          {t("edit")}
         </DropdownItem>
         <DropdownItem
           key="statistics"
@@ -78,7 +92,7 @@ export function PlaylistActionsDropdown({
           className="text-warning"
           color="warning"
         >
-          {t('statistics')}
+          {t("statistics")}
         </DropdownItem>
         <DropdownItem
           key="delete"
@@ -88,7 +102,7 @@ export function PlaylistActionsDropdown({
           onPress={onDeleteClick}
           isDisabled={isDeleteDisabled}
         >
-          {t('delete')}
+          {t("delete")}
         </DropdownItem>
       </DropdownMenu>
     </Dropdown>

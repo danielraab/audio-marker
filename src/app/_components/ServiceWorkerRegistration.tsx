@@ -1,22 +1,22 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
+import { useEffect } from "react";
 
 export default function ServiceWorkerRegistration() {
   useEffect(() => {
-    if (
-      typeof window !== 'undefined' &&
-      'serviceWorker' in navigator
-    ) {
+    if (typeof window !== "undefined" && "serviceWorker" in navigator) {
       // Pass environment mode to service worker via URL parameter
-      const isDev = process.env.NODE_ENV === 'development';
-      const swUrl = `/sw.js?env=${isDev ? 'development' : 'production'}`;
-      
+      const isDev = process.env.NODE_ENV === "development";
+      const swUrl = `/sw.js?env=${isDev ? "development" : "production"}`;
+
       // Register service worker
       navigator.serviceWorker
         .register(swUrl)
         .then((registration) => {
-          console.log('Service Worker registered successfully:', registration.scope);
+          console.log(
+            "Service Worker registered successfully:",
+            registration.scope,
+          );
 
           // Check for updates periodically
           setInterval(() => {
@@ -24,24 +24,22 @@ export default function ServiceWorkerRegistration() {
           }, 60000); // Check every minute
 
           // Handle updates
-          registration.addEventListener('updatefound', () => {
+          registration.addEventListener("updatefound", () => {
             const newWorker = registration.installing;
             if (newWorker) {
-              newWorker.addEventListener('statechange', () => {
+              newWorker.addEventListener("statechange", () => {
                 if (
-                  newWorker.state === 'installed' &&
+                  newWorker.state === "installed" &&
                   navigator.serviceWorker.controller
                 ) {
                   // New service worker available
-                  console.log('New service worker available');
-                  
+                  console.log("New service worker available");
+
                   // Optionally notify user about update
                   if (
-                    confirm(
-                      'A new version is available! Click OK to update.'
-                    )
+                    confirm("A new version is available! Click OK to update.")
                   ) {
-                    newWorker.postMessage({ type: 'SKIP_WAITING' });
+                    newWorker.postMessage({ type: "SKIP_WAITING" });
                     window.location.reload();
                   }
                 }
@@ -50,12 +48,12 @@ export default function ServiceWorkerRegistration() {
           });
         })
         .catch((error) => {
-          console.error('Service Worker registration failed:', error);
+          console.error("Service Worker registration failed:", error);
         });
 
       // Handle controller change (new service worker activated)
-      navigator.serviceWorker.addEventListener('controllerchange', () => {
-        console.log('Service Worker controller changed');
+      navigator.serviceWorker.addEventListener("controllerchange", () => {
+        console.log("Service Worker controller changed");
       });
     }
   }, []);

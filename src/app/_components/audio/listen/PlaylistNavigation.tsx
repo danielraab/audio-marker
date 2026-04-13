@@ -1,7 +1,13 @@
-'use client';
+"use client";
 
 import { Card, CardBody, Button, Chip, Switch } from "@heroui/react";
-import { ChevronLeft, ChevronRight, ChevronDown, ChevronUp, List } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  ChevronDown,
+  ChevronUp,
+  List,
+} from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import type { PlaylistWithAudios } from "~/types/Playlist";
@@ -21,10 +27,12 @@ export function PlaylistNavigation({
   autoplayEnabled,
   onAutoplayToggle,
 }: PlaylistNavigationProps) {
-  const t = useTranslations('PlaylistNavigation');
+  const t = useTranslations("PlaylistNavigation");
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const currentIndex = playlist.audios.findIndex(pa => pa.audio.id === currentAudioId);
+  const currentIndex = playlist.audios.findIndex(
+    (pa) => pa.audio.id === currentAudioId,
+  );
   const hasPrev = currentIndex > 0;
   const hasNext = currentIndex < playlist.audios.length - 1;
 
@@ -62,15 +70,23 @@ export function PlaylistNavigation({
               size="sm"
               variant="light"
               onPress={() => setIsExpanded(!isExpanded)}
-              aria-label={isExpanded ? t('collapse') : t('expand')}
+              aria-label={isExpanded ? t("collapse") : t("expand")}
             >
               {isExpanded ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
             </Button>
             <List size={18} className="text-primary flex-shrink-0" />
             <h3 className="text-md font-semibold truncate">{playlist.name}</h3>
           </div>
-          <Chip size="sm" variant="flat" color="secondary" className="self-start sm:self-center">
-            {t('position', { current: currentIndex + 1, total: playlist.audios.length })}
+          <Chip
+            size="sm"
+            variant="flat"
+            color="secondary"
+            className="self-start sm:self-center"
+          >
+            {t("position", {
+              current: currentIndex + 1,
+              total: playlist.audios.length,
+            })}
           </Chip>
         </div>
 
@@ -79,34 +95,38 @@ export function PlaylistNavigation({
           <>
             {/* Audio list */}
             <div className="space-y-1 max-h-60 overflow-y-auto">
-          {visibleAudios.map((playlistAudio, idx) => {
-            const isCurrent = playlistAudio.audio.id === currentAudioId;
-            const actualIndex = visibleStart + idx;
-            
-            return (
-              <div
-                key={playlistAudio.audio.id}
-                className={`flex items-center gap-2 p-2 rounded-lg transition-colors ${
-                  isCurrent 
-                    ? 'bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-800' 
-                    : 'hover:bg-default-100 cursor-pointer'
-                }`}
-                onClick={() => !isCurrent && onNavigate(playlistAudio.audio.id)}
-              >
-                <span className="text-xs text-default-500 min-w-[2rem] text-right">
-                  {actualIndex + 1}.
-                </span>
-                <span className={`text-sm flex-1 truncate ${isCurrent ? 'font-semibold text-primary' : ''}`}>
-                  {playlistAudio.audio.name}
-                </span>
-                {isCurrent && (
-                  <Chip size="sm" color="primary" variant="flat">
-                    {t('playing')}
-                  </Chip>
-                )}
-              </div>
-            );
-          })}
+              {visibleAudios.map((playlistAudio, idx) => {
+                const isCurrent = playlistAudio.audio.id === currentAudioId;
+                const actualIndex = visibleStart + idx;
+
+                return (
+                  <div
+                    key={playlistAudio.audio.id}
+                    className={`flex items-center gap-2 p-2 rounded-lg transition-colors ${
+                      isCurrent
+                        ? "bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-800"
+                        : "hover:bg-default-100 cursor-pointer"
+                    }`}
+                    onClick={() =>
+                      !isCurrent && onNavigate(playlistAudio.audio.id)
+                    }
+                  >
+                    <span className="text-xs text-default-500 min-w-[2rem] text-right">
+                      {actualIndex + 1}.
+                    </span>
+                    <span
+                      className={`text-sm flex-1 truncate ${isCurrent ? "font-semibold text-primary" : ""}`}
+                    >
+                      {playlistAudio.audio.name}
+                    </span>
+                    {isCurrent && (
+                      <Chip size="sm" color="primary" variant="flat">
+                        {t("playing")}
+                      </Chip>
+                    )}
+                  </div>
+                );
+              })}
             </div>
 
             {/* Navigation buttons and autoplay */}
@@ -118,17 +138,17 @@ export function PlaylistNavigation({
                 onPress={handlePrev}
                 isDisabled={!hasPrev}
               >
-                {t('previous')}
+                {t("previous")}
               </Button>
-              
+
               <Switch
                 size="sm"
                 isSelected={autoplayEnabled}
                 onValueChange={onAutoplayToggle}
               >
-                <span className="text-sm">{t('autoplay')}</span>
+                <span className="text-sm">{t("autoplay")}</span>
               </Switch>
-              
+
               <Button
                 size="sm"
                 variant="flat"
@@ -136,7 +156,7 @@ export function PlaylistNavigation({
                 onPress={handleNext}
                 isDisabled={!hasNext}
               >
-                {t('next')}
+                {t("next")}
               </Button>
             </div>
           </>

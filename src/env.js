@@ -10,7 +10,7 @@ export const env = createEnv({
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),
-    DEFAULT_LOCALE: z.enum(['en', 'de']).default("en"),
+    DEFAULT_LOCALE: z.enum(["en", "de"]).default("en"),
     DATABASE_URL: z.string().url(),
 
     AUTH_SECRET:
@@ -19,17 +19,27 @@ export const env = createEnv({
         : z.string().optional(),
     AUTH_AUTHENTIK_LABEL: z.string().optional(),
     AUTH_AUTHENTIK_ID: z.string().optional(),
-    AUTH_AUTHENTIK_SECRET: process.env.AUTH_AUTHENTIK_ID ? z.string() : z.string().optional(),
-    AUTH_AUTHENTIK_ISSUER: process.env.AUTH_AUTHENTIK_ID ? z.string().url() : z.string().url().optional(),
+    AUTH_AUTHENTIK_SECRET: process.env.AUTH_AUTHENTIK_ID
+      ? z.string()
+      : z.string().optional(),
+    AUTH_AUTHENTIK_ISSUER: process.env.AUTH_AUTHENTIK_ID
+      ? z.string().url()
+      : z.string().url().optional(),
     // Email configuration for magic links
     EMAIL_SERVER_HOST: z.string().optional(),
     EMAIL_SERVER_PORT: z.string().optional(),
     EMAIL_SERVER_USER: z.string().optional(),
     EMAIL_SERVER_PASSWORD: z.string().optional(),
     EMAIL_FROM: z.string().email().optional(),
-    MAIL_REGISTRATION_ENABLED: z.string().transform((val) => val !== "false").default("true"),
-    
-    REQUIRE_AUTH_FOR_PUBLIC_CONTENT: z.string().transform((val) => val === "true").default("false"),
+    MAIL_REGISTRATION_ENABLED: z
+      .string()
+      .transform((val) => val !== "false")
+      .default("true"),
+
+    REQUIRE_AUTH_FOR_PUBLIC_CONTENT: z
+      .string()
+      .transform((val) => val === "true")
+      .default("false"),
   },
 
   /**
@@ -68,7 +78,8 @@ export const env = createEnv({
     EMAIL_FROM: process.env.EMAIL_FROM,
     MAIL_REGISTRATION_ENABLED: process.env.MAIL_REGISTRATION_ENABLED,
 
-    REQUIRE_AUTH_FOR_PUBLIC_CONTENT: process.env.REQUIRE_AUTH_FOR_PUBLIC_CONTENT,
+    REQUIRE_AUTH_FOR_PUBLIC_CONTENT:
+      process.env.REQUIRE_AUTH_FOR_PUBLIC_CONTENT,
 
     NEXT_PUBLIC_SENTRY_DSN: process.env.NEXT_PUBLIC_SENTRY_DSN,
     NEXT_PUBLIC_SENTRY_LOG_LEVELS: process.env.NEXT_PUBLIC_SENTRY_LOG_LEVELS,

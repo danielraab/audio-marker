@@ -14,7 +14,9 @@ interface ListenPlaylistPageProps {
   }>;
 }
 
-export default async function ListenPlaylistPage({ params }: ListenPlaylistPageProps) {
+export default async function ListenPlaylistPage({
+  params,
+}: ListenPlaylistPageProps) {
   const { playlistId } = await params;
   const session = await auth();
 
@@ -24,16 +26,16 @@ export default async function ListenPlaylistPage({ params }: ListenPlaylistPageP
   }
 
   try {
-    const playlist = session ?
-      await api.playlist.getUserPlaylistById({ id: playlistId }) :
-      await api.playlist.getPublicPlaylistById({ id: playlistId });
+    const playlist = session
+      ? await api.playlist.getUserPlaylistById({ id: playlistId })
+      : await api.playlist.getPublicPlaylistById({ id: playlistId });
 
-      // Check if user has access
-      const isCreator = session?.user?.id === playlist.createdBy.id;
-      if (!(playlist.isPublic || isCreator)) {
-        notFound();
-      }
-      
+    // Check if user has access
+    const isCreator = session?.user?.id === playlist.createdBy.id;
+    if (!(playlist.isPublic || isCreator)) {
+      notFound();
+    }
+
     return (
       <HydrateClient>
         <VisibilityBanner isPublic={playlist.isPublic} isCreator={isCreator} />
@@ -61,16 +63,15 @@ export default async function ListenPlaylistPage({ params }: ListenPlaylistPageP
   } catch {
     notFound();
   }
-
 }
 
 export async function generateMetadata({ params }: ListenPlaylistPageProps) {
   const { playlistId } = await params;
   const session = await auth();
   try {
-    const playlist = session ?
-      await api.playlist.getUserPlaylistById({ id: playlistId }) :
-      await api.playlist.getPublicPlaylistById({ id: playlistId });
+    const playlist = session
+      ? await api.playlist.getUserPlaylistById({ id: playlistId })
+      : await api.playlist.getPublicPlaylistById({ id: playlistId });
     return {
       title: `${playlist.name} - Playlist`,
       description: `Listen to ${playlist.name}`,

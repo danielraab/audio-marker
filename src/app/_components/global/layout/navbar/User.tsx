@@ -1,9 +1,6 @@
 "use client";
 
-import {
-  NavbarContent,
-  NavbarItem
-} from "@heroui/navbar";
+import { NavbarContent, NavbarItem } from "@heroui/navbar";
 import { Avatar } from "@heroui/avatar";
 import {
   Dropdown,

@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useState } from "react";
 import {
@@ -12,7 +12,7 @@ import {
   CardBody,
   Chip,
   Spinner,
-  Input
+  Input,
 } from "@heroui/react";
 import { Plus, Search, Music, Check } from "lucide-react";
 import { api } from "~/trpc/react";
@@ -26,16 +26,21 @@ interface AddToPlaylistModalProps {
   audioId: string;
 }
 
-export function AddToPlaylistModal({ isOpen, onClose, audioId }: AddToPlaylistModalProps) {
+export function AddToPlaylistModal({
+  isOpen,
+  onClose,
+  audioId,
+}: AddToPlaylistModalProps) {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
-  const utils  = api.useUtils();
+  const utils = api.useUtils();
   const t = useTranslations("AddToPlaylistModal");
 
-  const { data: playlists, isLoading } = api.playlist.getUserPlaylistsForAudio.useQuery(
-    { audioId },
-    { enabled: isOpen }
-  );
+  const { data: playlists, isLoading } =
+    api.playlist.getUserPlaylistsForAudio.useQuery(
+      { audioId },
+      { enabled: isOpen },
+    );
 
   const addAudioMutation = api.playlist.addAudioToPlaylist.useMutation({
     onSuccess: () => {
@@ -54,22 +59,15 @@ export function AddToPlaylistModal({ isOpen, onClose, audioId }: AddToPlaylistMo
     });
   };
 
-  const filteredPlaylists = playlists?.filter(playlist =>
-    playlist.name.toLowerCase().includes(searchTerm.toLowerCase())
-  ) ?? [];
-
+  const filteredPlaylists =
+    playlists?.filter((playlist) =>
+      playlist.name.toLowerCase().includes(searchTerm.toLowerCase()),
+    ) ?? [];
 
   return (
-    <Modal
-      isOpen={isOpen}
-      onClose={onClose}
-      size="2xl"
-      scrollBehavior="inside"
-    >
+    <Modal isOpen={isOpen} onClose={onClose} size="2xl" scrollBehavior="inside">
       <ModalContent>
-        <ModalHeader className="flex flex-col gap-1">
-          {t('title')}
-        </ModalHeader>
+        <ModalHeader className="flex flex-col gap-1">{t("title")}</ModalHeader>
         <ModalBody>
           {isLoading ? (
             <div className="flex justify-center py-8">
@@ -79,7 +77,7 @@ export function AddToPlaylistModal({ isOpen, onClose, audioId }: AddToPlaylistMo
             <>
               {/* Search */}
               <Input
-                placeholder={t('searchPlaceholder')}
+                placeholder={t("searchPlaceholder")}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 startContent={<Search size={16} />}
@@ -90,11 +88,11 @@ export function AddToPlaylistModal({ isOpen, onClose, audioId }: AddToPlaylistMo
               {filteredPlaylists.length === 0 ? (
                 <div className="text-center py-8">
                   <p className="text-default-500">
-                    {searchTerm ? t('empty.noMatches') : t('empty.noneFound')}
+                    {searchTerm ? t("empty.noMatches") : t("empty.noneFound")}
                   </p>
                   {!searchTerm && (
                     <p className="text-small text-default-400 mt-2">
-                      {t('empty.suggestion')}
+                      {t("empty.suggestion")}
                     </p>
                   )}
                 </div>
@@ -106,9 +104,13 @@ export function AddToPlaylistModal({ isOpen, onClose, audioId }: AddToPlaylistMo
                         <div className="flex flex-row justify-between items-center gap-2">
                           <div className="grow flex items-center gap-2">
                             <Music size={16} className="text-primary" />
-                            <h4 className="text-md font-semibold truncate">{playlist.name}</h4>
+                            <h4 className="text-md font-semibold truncate">
+                              {playlist.name}
+                            </h4>
                             <Chip size="sm" variant="flat" color="secondary">
-                              {t('chipAudioCount', { count: playlist.audioCount })}
+                              {t("chipAudioCount", {
+                                count: playlist.audioCount,
+                              })}
                             </Chip>
                           </div>
                           {playlist.hasAudio ? (
@@ -119,7 +121,7 @@ export function AddToPlaylistModal({ isOpen, onClose, audioId }: AddToPlaylistMo
                               isDisabled
                               variant="flat"
                             >
-                              {t('button.added')}
+                              {t("button.added")}
                             </Button>
                           ) : (
                             <Button
@@ -129,13 +131,25 @@ export function AddToPlaylistModal({ isOpen, onClose, audioId }: AddToPlaylistMo
                               onPress={() => handleAddToPlaylist(playlist.id)}
                               isLoading={addAudioMutation.isPending}
                             >
-                              {t('button.add')}
+                              {t("button.add")}
                             </Button>
                           )}
                         </div>
                         <div className="space-y-1 text-sm text-default-500">
-                          <p><span className="font-medium">{t('labels.created')}</span> {formatTimeAgo(new Date(playlist.createdAt))}</p>
-                          <p><span className="font-medium">{t('labels.visibility')}</span> {playlist.isPublic ? t('visibility.public') : t('visibility.private')}</p>
+                          <p>
+                            <span className="font-medium">
+                              {t("labels.created")}
+                            </span>{" "}
+                            {formatTimeAgo(new Date(playlist.createdAt))}
+                          </p>
+                          <p>
+                            <span className="font-medium">
+                              {t("labels.visibility")}
+                            </span>{" "}
+                            {playlist.isPublic
+                              ? t("visibility.public")
+                              : t("visibility.private")}
+                          </p>
                         </div>
                       </CardBody>
                     </Card>
@@ -147,7 +161,7 @@ export function AddToPlaylistModal({ isOpen, onClose, audioId }: AddToPlaylistMo
         </ModalBody>
         <ModalFooter>
           <Button color="default" variant="light" onPress={onClose}>
-            {t('close')}
+            {t("close")}
           </Button>
         </ModalFooter>
       </ModalContent>

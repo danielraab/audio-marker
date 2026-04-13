@@ -36,7 +36,7 @@ export default function UserModal({
   user,
   onSuccess,
 }: UserModalProps) {
-  const t = useTranslations('UserModal');
+  const t = useTranslations("UserModal");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
@@ -97,12 +97,12 @@ export default function UserModal({
     // Validation
     const newErrors: { name?: string; email?: string } = {};
     if (!name.trim()) {
-      newErrors.name = t('errors.nameRequired');
+      newErrors.name = t("errors.nameRequired");
     }
     if (!email.trim()) {
-      newErrors.email = t('errors.emailRequired');
+      newErrors.email = t("errors.emailRequired");
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      newErrors.email = t('errors.emailInvalid');
+      newErrors.email = t("errors.emailInvalid");
     }
 
     if (Object.keys(newErrors).length > 0) {
@@ -128,14 +128,15 @@ export default function UserModal({
     }
   };
 
-  const isLoading = createUserMutation.isPending || updateUserMutation.isPending;
+  const isLoading =
+    createUserMutation.isPending || updateUserMutation.isPending;
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} placement="center">
       <ModalContent>
         <form onSubmit={handleSubmit}>
           <ModalHeader className="flex flex-col gap-1">
-            {isEditMode ? t('title.edit') : t('title.add')}
+            {isEditMode ? t("title.edit") : t("title.add")}
           </ModalHeader>
           <ModalBody>
             {errors.general && (
@@ -145,8 +146,8 @@ export default function UserModal({
             )}
 
             <Input
-              label={t('fields.name.label')}
-              placeholder={t('fields.name.placeholder')}
+              label={t("fields.name.label")}
+              placeholder={t("fields.name.placeholder")}
               value={name}
               onValueChange={setName}
               isInvalid={!!errors.name}
@@ -156,8 +157,8 @@ export default function UserModal({
             />
 
             <Input
-              label={t('fields.email.label')}
-              placeholder={t('fields.email.placeholder')}
+              label={t("fields.email.label")}
+              placeholder={t("fields.email.placeholder")}
               type="email"
               value={email}
               onValueChange={setEmail}
@@ -174,8 +175,10 @@ export default function UserModal({
               }}
             >
               <div className="flex flex-col gap-1">
-                <p className="text-medium">{t('fields.isAdmin.label')}</p>
-                <p className="text-tiny text-default-400">{t('fields.isAdmin.description')}</p>
+                <p className="text-medium">{t("fields.isAdmin.label")}</p>
+                <p className="text-tiny text-default-400">
+                  {t("fields.isAdmin.description")}
+                </p>
               </div>
               {isAdmin && <Shield className="h-4 w-4 text-warning" />}
             </Switch>
@@ -188,8 +191,10 @@ export default function UserModal({
               }}
             >
               <div className="flex flex-col gap-1">
-                <p className="text-medium">{t('fields.isDisabled.label')}</p>
-                <p className="text-tiny text-default-400">{t('fields.isDisabled.description')}</p>
+                <p className="text-medium">{t("fields.isDisabled.label")}</p>
+                <p className="text-tiny text-default-400">
+                  {t("fields.isDisabled.description")}
+                </p>
               </div>
               {isDisabled && <Ban className="h-4 w-4 text-danger" />}
             </Switch>
@@ -201,14 +206,10 @@ export default function UserModal({
               onPress={onClose}
               isDisabled={isLoading}
             >
-              {t('actions.cancel')}
+              {t("actions.cancel")}
             </Button>
-            <Button
-              color="primary"
-              type="submit"
-              isLoading={isLoading}
-            >
-              {isEditMode ? t('actions.update') : t('actions.create')}
+            <Button color="primary" type="submit" isLoading={isLoading}>
+              {isEditMode ? t("actions.update") : t("actions.create")}
             </Button>
           </ModalFooter>
         </form>

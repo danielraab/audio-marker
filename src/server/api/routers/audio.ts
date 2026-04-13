@@ -11,7 +11,7 @@ export const audioRouter = createTRPCRouter({
     const audios = await ctx.db.audio.findMany({
       where: {
         createdById: ctx.session.user.id,
-        deletedAt: null // Only fetch non-deleted audios
+        deletedAt: null, // Only fetch non-deleted audios
       },
       orderBy: { createdAt: "desc" },
       select: {
@@ -37,7 +37,7 @@ export const audioRouter = createTRPCRouter({
     });
 
     // Transform the result to include markerCount, listenCounter, and lastListenAt
-    const audiosWithMarkerCount = audios.map(audio => ({
+    const audiosWithMarkerCount = audios.map((audio) => ({
       ...audio,
       markerCount: audio._count.markers,
       listenCounter: audio._count.listenRecords,
@@ -135,14 +135,19 @@ export const audioRouter = createTRPCRouter({
 
       return { success: true };
     }),
-  
+
   updateAudio: protectedProcedure
-    .input(z.object({
-      id: z.string(),
-      name: z.string().min(1, "Name is required").max(100, "Name is too long"),
-      description: z.string().max(500, "Description is too long").optional(),
-      isPublic: z.boolean(),
-    }))
+    .input(
+      z.object({
+        id: z.string(),
+        name: z
+          .string()
+          .min(1, "Name is required")
+          .max(100, "Name is too long"),
+        description: z.string().max(500, "Description is too long").optional(),
+        isPublic: z.boolean(),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       const audio = await ctx.db.audio.findUnique({
         where: { id: input.id },
@@ -184,7 +189,7 @@ export const audioRouter = createTRPCRouter({
           id: true,
           isPublic: true,
           deletedAt: true,
-          createdById: true
+          createdById: true,
         },
       });
 
@@ -193,7 +198,8 @@ export const audioRouter = createTRPCRouter({
       }
 
       // Check if user has access (public or owner)
-      const hasAccess = audio.isPublic || (ctx.session?.user?.id === audio.createdById);
+      const hasAccess =
+        audio.isPublic || ctx.session?.user?.id === audio.createdById;
       if (!hasAccess) {
         throw new Error("Unauthorized");
       }
@@ -210,22 +216,24 @@ export const audioRouter = createTRPCRouter({
     }),
 
   getListenStatistics: protectedProcedure
-    .input(z.object({ 
-      id: z.string(),
-      days: z.number().min(7).max(365).default(30)
-    }))
+    .input(
+      z.object({
+        id: z.string(),
+        days: z.number().min(7).max(365).default(30),
+      }),
+    )
     .query(async ({ ctx, input }) => {
       // Verify user owns this audio
       const audio = await ctx.db.audio.findUnique({
-        where: { 
+        where: {
           id: input.id,
           createdById: ctx.session.user.id,
-          deletedAt: null 
+          deletedAt: null,
         },
-        select: { 
-          id: true, 
+        select: {
+          id: true,
           name: true,
-          createdAt: true
+          createdAt: true,
         },
       });
 
@@ -252,7 +260,7 @@ export const audioRouter = createTRPCRouter({
           listenedAt: true,
         },
         orderBy: {
-          listenedAt: 'asc',
+          listenedAt: "asc",
         },
       });
 
@@ -263,16 +271,20 @@ export const audioRouter = createTRPCRouter({
 
       // Group by date
       const dailyStats: Record<string, number> = {};
-      
+
       // Initialize all dates in range with 0
-      for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
-        const dateKey = d.toISOString().split('T')[0]!;
+      for (
+        let d = new Date(startDate);
+        d <= endDate;
+        d.setDate(d.getDate() + 1)
+      ) {
+        const dateKey = d.toISOString().split("T")[0]!;
         dailyStats[dateKey] = 0;
       }
 
       // Count listens per day
       for (const record of listenRecords) {
-        const dateKey = record.listenedAt.toISOString().split('T')[0]!;
+        const dateKey = record.listenedAt.toISOString().split("T")[0]!;
         if (dailyStats[dateKey] !== undefined) {
           dailyStats[dateKey]++;
         }

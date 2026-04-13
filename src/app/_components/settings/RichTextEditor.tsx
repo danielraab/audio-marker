@@ -143,9 +143,7 @@ export default function RichTextEditor({
 
         <Button
           size="sm"
-          variant={
-            editor.isActive({ textAlign: "left" }) ? "flat" : "light"
-          }
+          variant={editor.isActive({ textAlign: "left" }) ? "flat" : "light"}
           isIconOnly
           onPress={() => editor.chain().focus().setTextAlign("left").run()}
         >
@@ -153,9 +151,7 @@ export default function RichTextEditor({
         </Button>
         <Button
           size="sm"
-          variant={
-            editor.isActive({ textAlign: "center" }) ? "flat" : "light"
-          }
+          variant={editor.isActive({ textAlign: "center" }) ? "flat" : "light"}
           isIconOnly
           onPress={() => editor.chain().focus().setTextAlign("center").run()}
         >
@@ -163,9 +159,7 @@ export default function RichTextEditor({
         </Button>
         <Button
           size="sm"
-          variant={
-            editor.isActive({ textAlign: "right" }) ? "flat" : "light"
-          }
+          variant={editor.isActive({ textAlign: "right" }) ? "flat" : "light"}
           isIconOnly
           onPress={() => editor.chain().focus().setTextAlign("right").run()}
         >

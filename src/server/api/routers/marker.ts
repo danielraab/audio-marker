@@ -14,20 +14,22 @@ export const markerRouter = createTRPCRouter({
           audioId: input.audioId,
         },
         orderBy: {
-          timestamp: 'asc',
+          timestamp: "asc",
         },
       });
       return markers;
     }),
 
   createMarker: protectedProcedure
-    .input(z.object({
-      audioId: z.string(),
-      label: z.string().min(1),
-      timestamp: z.number().min(0),
-      endTimestamp: z.number().min(0).optional().nullable(),
-      color: z.string().optional(),
-    }))
+    .input(
+      z.object({
+        audioId: z.string(),
+        label: z.string().min(1),
+        timestamp: z.number().min(0),
+        endTimestamp: z.number().min(0).optional().nullable(),
+        color: z.string().optional(),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       // First verify the user owns the audio
       const audio = await ctx.db.audio.findUnique({
@@ -56,9 +58,11 @@ export const markerRouter = createTRPCRouter({
     }),
 
   deleteMarker: protectedProcedure
-    .input(z.object({
-      id: z.string(),
-    }))
+    .input(
+      z.object({
+        id: z.string(),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       // First verify the user owns the associated audio
       const marker = await ctx.db.marker.findUnique({
@@ -87,13 +91,15 @@ export const markerRouter = createTRPCRouter({
     }),
 
   updateMarker: protectedProcedure
-    .input(z.object({
-      id: z.string(),
-      timestamp: z.number().min(0).optional(),
-      endTimestamp: z.number().min(0).optional().nullable(),
-      label: z.string().min(1).optional(),
-      color: z.string().optional(),
-    }))
+    .input(
+      z.object({
+        id: z.string(),
+        timestamp: z.number().min(0).optional(),
+        endTimestamp: z.number().min(0).optional().nullable(),
+        label: z.string().min(1).optional(),
+        color: z.string().optional(),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       // First verify the user owns the associated audio
       const marker = await ctx.db.marker.findUnique({
@@ -119,7 +125,9 @@ export const markerRouter = createTRPCRouter({
         },
         data: {
           ...(input.timestamp !== undefined && { timestamp: input.timestamp }),
-          ...(input.endTimestamp !== undefined && { endTimestamp: input.endTimestamp }),
+          ...(input.endTimestamp !== undefined && {
+            endTimestamp: input.endTimestamp,
+          }),
           ...(input.label !== undefined && { label: input.label }),
           ...(input.color !== undefined && { color: input.color }),
         },

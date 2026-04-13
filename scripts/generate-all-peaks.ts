@@ -1,14 +1,14 @@
-import { readdir } from 'fs/promises';
-import path from 'path';
-import { generateAndSavePeaks } from '../src/lib/peaks';
+import { readdir } from "fs/promises";
+import path from "path";
+import { generateAndSavePeaks } from "../src/lib/peaks";
 
 async function main() {
-  const uploadsDir = path.join(process.cwd(), 'data', 'uploads');
+  const uploadsDir = path.join(process.cwd(), "data", "uploads");
   const files = await readdir(uploadsDir);
-  const mp3Files = files.filter(f => f.endsWith('.mp3'));
+  const mp3Files = files.filter((f) => f.endsWith(".mp3"));
 
   if (mp3Files.length === 0) {
-    console.log('No MP3 files found in uploads directory.');
+    console.log("No MP3 files found in uploads directory.");
     return;
   }
 
@@ -23,10 +23,10 @@ async function main() {
       console.error(`Failed to generate peaks for ${file}:`, err);
     }
   }
-  console.log('All files processed.');
+  console.log("All files processed.");
 }
 
-main().catch(err => {
-  console.error('Script error:', err);
+main().catch((err) => {
+  console.error("Script error:", err);
   process.exit(1);
 });

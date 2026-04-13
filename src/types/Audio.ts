@@ -1,4 +1,3 @@
-
 export interface AudioMarker {
   id: string;
   timestamp: number;

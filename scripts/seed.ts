@@ -33,7 +33,11 @@ function generateListenDates(count: number, maxDaysAgo: number): Date[] {
 }
 
 // Generate listen records only in the past (for inactive audio testing)
-function generatePastListenDates(count: number, minDaysAgo: number, maxDaysAgo: number): Date[] {
+function generatePastListenDates(
+  count: number,
+  minDaysAgo: number,
+  maxDaysAgo: number,
+): Date[] {
   const dates: Date[] = [];
   const range = maxDaysAgo - minDaysAgo;
   for (let i = 0; i < count; i++) {
@@ -126,7 +130,8 @@ async function seed() {
       create: {
         id: "seed-audio-1",
         name: "Introduction to TypeScript",
-        description: "A comprehensive guide to TypeScript fundamentals, covering types, interfaces, and best practices.",
+        description:
+          "A comprehensive guide to TypeScript fundamentals, covering types, interfaces, and best practices.",
         originalFileName: "intro-typescript.mp3",
         filePath: "uploads/seed/intro-typescript.mp3",
         createdById: adminUser.id,
@@ -141,7 +146,8 @@ async function seed() {
       create: {
         id: "seed-audio-2",
         name: "React Hooks Deep Dive",
-        description: "An in-depth exploration of React Hooks including useState, useEffect, useContext, and custom hooks.",
+        description:
+          "An in-depth exploration of React Hooks including useState, useEffect, useContext, and custom hooks.",
         originalFileName: "react-hooks.mp3",
         filePath: "uploads/seed/react-hooks.mp3",
         createdById: adminUser.id,
@@ -156,7 +162,8 @@ async function seed() {
       create: {
         id: "seed-audio-3",
         name: "Database Design Patterns",
-        description: "Learn about common database design patterns and when to apply them in your applications.",
+        description:
+          "Learn about common database design patterns and when to apply them in your applications.",
         originalFileName: "db-patterns.mp3",
         filePath: "uploads/seed/db-patterns.mp3",
         createdById: regularUser1.id,
@@ -171,7 +178,8 @@ async function seed() {
       create: {
         id: "seed-audio-4",
         name: "Private Meeting Recording",
-        description: "Internal team meeting discussing Q4 planning and roadmap.",
+        description:
+          "Internal team meeting discussing Q4 planning and roadmap.",
         originalFileName: "team-meeting.mp3",
         filePath: "uploads/seed/team-meeting.mp3",
         createdById: regularUser1.id,
@@ -186,7 +194,8 @@ async function seed() {
       create: {
         id: "seed-audio-5",
         name: "Podcast: Tech Trends 2026",
-        description: "Discussion about emerging technology trends and their impact on software development.",
+        description:
+          "Discussion about emerging technology trends and their impact on software development.",
         originalFileName: "tech-trends-podcast.mp3",
         filePath: "uploads/seed/tech-trends-podcast.mp3",
         createdById: regularUser2.id,
@@ -201,7 +210,8 @@ async function seed() {
       create: {
         id: "seed-audio-6",
         name: "Interview: Software Architecture",
-        description: "Expert interview on software architecture principles and microservices.",
+        description:
+          "Expert interview on software architecture principles and microservices.",
         originalFileName: "architecture-interview.mp3",
         filePath: "uploads/seed/architecture-interview.mp3",
         createdById: regularUser2.id,
@@ -217,7 +227,8 @@ async function seed() {
       create: {
         id: "seed-audio-7",
         name: "Legacy Tutorial: jQuery Basics",
-        description: "An older tutorial covering jQuery fundamentals. This audio has not been listened to recently.",
+        description:
+          "An older tutorial covering jQuery fundamentals. This audio has not been listened to recently.",
         originalFileName: "jquery-basics.mp3",
         filePath: "uploads/seed/jquery-basics.mp3",
         createdById: adminUser.id,
@@ -237,9 +248,19 @@ async function seed() {
     const markersAudio1 = [
       { label: "Introduction", timestamp: 0, color: MARKER_COLORS[0] },
       { label: "Basic Types", timestamp: 120.5, color: MARKER_COLORS[1] },
-      { label: "Interfaces", timestamp: 300, endTimestamp: 480, color: MARKER_COLORS[2] }, // Section
+      {
+        label: "Interfaces",
+        timestamp: 300,
+        endTimestamp: 480,
+        color: MARKER_COLORS[2],
+      }, // Section
       { label: "Type Guards", timestamp: 540, color: MARKER_COLORS[3] },
-      { label: "Generics Section", timestamp: 720, endTimestamp: 900, color: MARKER_COLORS[4] }, // Section
+      {
+        label: "Generics Section",
+        timestamp: 720,
+        endTimestamp: 900,
+        color: MARKER_COLORS[4],
+      }, // Section
       { label: "Q&A", timestamp: 1020, color: MARKER_COLORS[5] },
     ];
 
@@ -247,9 +268,19 @@ async function seed() {
     const markersAudio2 = [
       { label: "What are Hooks?", timestamp: 0, color: MARKER_COLORS[0] },
       { label: "useState", timestamp: 180, color: MARKER_COLORS[1] },
-      { label: "useEffect Deep Dive", timestamp: 360, endTimestamp: 600, color: MARKER_COLORS[2] }, // Section
+      {
+        label: "useEffect Deep Dive",
+        timestamp: 360,
+        endTimestamp: 600,
+        color: MARKER_COLORS[2],
+      }, // Section
       { label: "useContext", timestamp: 660, color: MARKER_COLORS[3] },
-      { label: "Custom Hooks", timestamp: 840, endTimestamp: 1020, color: MARKER_COLORS[6] }, // Section
+      {
+        label: "Custom Hooks",
+        timestamp: 840,
+        endTimestamp: 1020,
+        color: MARKER_COLORS[6],
+      }, // Section
       { label: "Best Practices", timestamp: 1080, color: MARKER_COLORS[7] },
     ];
 
@@ -257,14 +288,24 @@ async function seed() {
     const markersAudio3 = [
       { label: "Overview", timestamp: 0, color: MARKER_COLORS[0] },
       { label: "Normalization", timestamp: 150, color: MARKER_COLORS[1] },
-      { label: "Indexing Strategies", timestamp: 400, endTimestamp: 600, color: MARKER_COLORS[4] }, // Section
+      {
+        label: "Indexing Strategies",
+        timestamp: 400,
+        endTimestamp: 600,
+        color: MARKER_COLORS[4],
+      }, // Section
       { label: "Query Optimization", timestamp: 750, color: MARKER_COLORS[5] },
     ];
 
     // Markers for Audio 5 - Podcast
     const markersAudio5 = [
       { label: "Intro", timestamp: 0, color: MARKER_COLORS[0] },
-      { label: "AI & ML Trends", timestamp: 300, endTimestamp: 720, color: MARKER_COLORS[1] }, // Section
+      {
+        label: "AI & ML Trends",
+        timestamp: 300,
+        endTimestamp: 720,
+        color: MARKER_COLORS[1],
+      }, // Section
       { label: "Cloud Computing", timestamp: 780, color: MARKER_COLORS[2] },
       { label: "Edge Computing", timestamp: 1200, color: MARKER_COLORS[3] },
       { label: "Closing Thoughts", timestamp: 1500, color: MARKER_COLORS[7] },
@@ -272,7 +313,12 @@ async function seed() {
 
     for (const marker of markersAudio1) {
       await prisma.marker.upsert({
-        where: { audioId_timestamp: { audioId: audio1.id, timestamp: marker.timestamp } },
+        where: {
+          audioId_timestamp: {
+            audioId: audio1.id,
+            timestamp: marker.timestamp,
+          },
+        },
         update: {},
         create: {
           audioId: audio1.id,
@@ -287,7 +333,12 @@ async function seed() {
 
     for (const marker of markersAudio2) {
       await prisma.marker.upsert({
-        where: { audioId_timestamp: { audioId: audio2.id, timestamp: marker.timestamp } },
+        where: {
+          audioId_timestamp: {
+            audioId: audio2.id,
+            timestamp: marker.timestamp,
+          },
+        },
         update: {},
         create: {
           audioId: audio2.id,
@@ -302,7 +353,12 @@ async function seed() {
 
     for (const marker of markersAudio3) {
       await prisma.marker.upsert({
-        where: { audioId_timestamp: { audioId: audio3.id, timestamp: marker.timestamp } },
+        where: {
+          audioId_timestamp: {
+            audioId: audio3.id,
+            timestamp: marker.timestamp,
+          },
+        },
         update: {},
         create: {
           audioId: audio3.id,
@@ -317,7 +373,12 @@ async function seed() {
 
     for (const marker of markersAudio5) {
       await prisma.marker.upsert({
-        where: { audioId_timestamp: { audioId: audio5.id, timestamp: marker.timestamp } },
+        where: {
+          audioId_timestamp: {
+            audioId: audio5.id,
+            timestamp: marker.timestamp,
+          },
+        },
         update: {},
         create: {
           audioId: audio5.id,
@@ -330,7 +391,11 @@ async function seed() {
       });
     }
 
-    const totalMarkers = markersAudio1.length + markersAudio2.length + markersAudio3.length + markersAudio5.length;
+    const totalMarkers =
+      markersAudio1.length +
+      markersAudio2.length +
+      markersAudio3.length +
+      markersAudio5.length;
     console.log(`  ✅ Created ${totalMarkers} markers`);
 
     // =========================================
@@ -344,7 +409,8 @@ async function seed() {
       create: {
         id: "seed-playlist-1",
         name: "Web Development Essentials",
-        description: "A curated collection of essential web development tutorials covering TypeScript, React, and more.",
+        description:
+          "A curated collection of essential web development tutorials covering TypeScript, React, and more.",
         isPublic: true,
         createdById: adminUser.id,
         createdAt: daysAgo(10),
@@ -357,7 +423,8 @@ async function seed() {
       create: {
         id: "seed-playlist-2",
         name: "Backend Development",
-        description: "Resources for backend development including database design and architecture patterns.",
+        description:
+          "Resources for backend development including database design and architecture patterns.",
         isPublic: true,
         createdById: regularUser1.id,
         createdAt: daysAgo(8),
@@ -386,7 +453,9 @@ async function seed() {
 
     // Web Development Essentials playlist
     await prisma.playlistAudio.upsert({
-      where: { playlistId_audioId: { playlistId: playlist1.id, audioId: audio1.id } },
+      where: {
+        playlistId_audioId: { playlistId: playlist1.id, audioId: audio1.id },
+      },
       update: {},
       create: {
         playlistId: playlist1.id,
@@ -397,7 +466,9 @@ async function seed() {
     });
 
     await prisma.playlistAudio.upsert({
-      where: { playlistId_audioId: { playlistId: playlist1.id, audioId: audio2.id } },
+      where: {
+        playlistId_audioId: { playlistId: playlist1.id, audioId: audio2.id },
+      },
       update: {},
       create: {
         playlistId: playlist1.id,
@@ -409,7 +480,9 @@ async function seed() {
 
     // Backend Development playlist
     await prisma.playlistAudio.upsert({
-      where: { playlistId_audioId: { playlistId: playlist2.id, audioId: audio3.id } },
+      where: {
+        playlistId_audioId: { playlistId: playlist2.id, audioId: audio3.id },
+      },
       update: {},
       create: {
         playlistId: playlist2.id,
@@ -420,7 +493,9 @@ async function seed() {
     });
 
     await prisma.playlistAudio.upsert({
-      where: { playlistId_audioId: { playlistId: playlist2.id, audioId: audio6.id } },
+      where: {
+        playlistId_audioId: { playlistId: playlist2.id, audioId: audio6.id },
+      },
       update: {},
       create: {
         playlistId: playlist2.id,
@@ -432,7 +507,9 @@ async function seed() {
 
     // Private collection
     await prisma.playlistAudio.upsert({
-      where: { playlistId_audioId: { playlistId: playlist3.id, audioId: audio5.id } },
+      where: {
+        playlistId_audioId: { playlistId: playlist3.id, audioId: audio5.id },
+      },
       update: {},
       create: {
         playlistId: playlist3.id,
@@ -443,7 +520,9 @@ async function seed() {
     });
 
     await prisma.playlistAudio.upsert({
-      where: { playlistId_audioId: { playlistId: playlist3.id, audioId: audio1.id } },
+      where: {
+        playlistId_audioId: { playlistId: playlist3.id, audioId: audio1.id },
+      },
       update: {},
       create: {
         playlistId: playlist3.id,
@@ -463,7 +542,17 @@ async function seed() {
     // Delete existing seed listen records to avoid duplicates
     await prisma.audioListenRecord.deleteMany({
       where: {
-        audioId: { in: [audio1.id, audio2.id, audio3.id, audio4.id, audio5.id, audio6.id, audio7.id] },
+        audioId: {
+          in: [
+            audio1.id,
+            audio2.id,
+            audio3.id,
+            audio4.id,
+            audio5.id,
+            audio6.id,
+            audio7.id,
+          ],
+        },
       },
     });
 
@@ -558,7 +647,10 @@ async function seed() {
       });
     }
 
-    const totalPlaylistListens = playlist1Listens.length + playlist2Listens.length + playlist3Listens.length;
+    const totalPlaylistListens =
+      playlist1Listens.length +
+      playlist2Listens.length +
+      playlist3Listens.length;
     console.log(`  ✅ Created ${totalPlaylistListens} playlist listen records`);
 
     // =========================================

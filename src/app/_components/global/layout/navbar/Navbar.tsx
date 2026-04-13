@@ -1,9 +1,6 @@
 "use client";
 
-import {
-  Navbar as HeroNavbar,
-  NavbarBrand
-} from "@heroui/navbar";
+import { Navbar as HeroNavbar, NavbarBrand } from "@heroui/navbar";
 import UserMenu from "./User";
 import Link from "next/link";
 import Image from "next/image";
@@ -14,7 +11,10 @@ interface NavbarProps {
   logoSrc?: string;
 }
 
-export default function Navbar({ title = "Audio Marker", logoSrc }: NavbarProps) {
+export default function Navbar({
+  title = "Audio Marker",
+  logoSrc,
+}: NavbarProps) {
   const t = useTranslations("Navbar");
 
   return (
@@ -39,7 +39,7 @@ export default function Navbar({ title = "Audio Marker", logoSrc }: NavbarProps)
               className="h-8 w-8 object-contain transition-transform hover:scale-105"
             />
           )}
-          <span className="font-bold text-inherit">{ title }</span>
+          <span className="font-bold text-inherit">{title}</span>
         </Link>
       </NavbarBrand>
 

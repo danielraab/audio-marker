@@ -36,12 +36,14 @@ async function createAdmin(email: string) {
       user = await prisma.user.create({
         data: {
           email,
-          isAdmin: true
+          isAdmin: true,
         },
       });
 
       console.log(`✅ Successfully created new admin user: ${email}`);
-      console.log(`ℹ️  Note: User will need to sign in via configured auth provider.`);
+      console.log(
+        `ℹ️  Note: User will need to sign in via configured auth provider.`,
+      );
     }
 
     console.log(`\nUser Details:`);

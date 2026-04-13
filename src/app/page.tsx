@@ -11,16 +11,18 @@ export default async function Home() {
 
   return (
     <HydrateClient>
-      {session?.user && <>
-        <div className="w-full flex flex-col justify-center gap-2">
-          <CreateAudioForm />
-          <AudioFilesList />
-        </div>
-        <div className="w-full flex flex-col justify-center gap-2">
-          <CreatePlaylistForm/>
-          <PlaylistsList />
-        </div>
-      </>}
+      {session?.user && (
+        <>
+          <div className="w-full flex flex-col justify-center gap-2">
+            <CreateAudioForm />
+            <AudioFilesList />
+          </div>
+          <div className="w-full flex flex-col justify-center gap-2">
+            <CreatePlaylistForm />
+            <PlaylistsList />
+          </div>
+        </>
+      )}
       {!session?.user && <PublicLandingPage />}
     </HydrateClient>
   );

@@ -1,6 +1,13 @@
-'use client';
+"use client";
 
-import { Button, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter } from "@heroui/react";
+import {
+  Button,
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+} from "@heroui/react";
 import { useTranslations } from "next-intl";
 
 interface UnsavedChangesModalProps {
@@ -14,28 +21,19 @@ export function UnsavedChangesModal({
   isOpen,
   onClose,
   onDiscard,
-  onSave
+  onSave,
 }: UnsavedChangesModalProps) {
   const t = useTranslations("UnsavedChangesModal");
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalContent>
         <ModalHeader>{t("title")}</ModalHeader>
-        <ModalBody>
-          {t("body")}
-        </ModalBody>
+        <ModalBody>{t("body")}</ModalBody>
         <ModalFooter>
-          <Button 
-            color="danger" 
-            variant="light" 
-            onPress={onDiscard}
-          >
+          <Button color="danger" variant="light" onPress={onDiscard}>
             {t("discard")}
           </Button>
-          <Button 
-            color="primary" 
-            onPress={onSave}
-          >
+          <Button color="primary" onPress={onSave}>
             {t("save")}
           </Button>
         </ModalFooter>

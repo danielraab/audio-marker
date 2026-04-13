@@ -5,7 +5,8 @@ import { Users, Music, ListMusic, Headphones } from "lucide-react";
 import { useTranslations } from "next-intl";
 import type { RouterOutputs } from "~/trpc/react";
 
-type OverallStats = RouterOutputs["admin"]["statistics"]["getOverallStatistics"];
+type OverallStats =
+  RouterOutputs["admin"]["statistics"]["getOverallStatistics"];
 
 interface OverviewStatsCardsProps {
   stats: OverallStats;
@@ -64,10 +65,16 @@ export default function OverviewStatsCards({ stats }: OverviewStatsCardsProps) {
             <Headphones className="text-warning" size={24} />
           </div>
           <div>
-            <p className="text-sm text-default-500">{t("stats.totalListens")}</p>
-            <p className="text-2xl font-bold">{stats.listens.totalAudioListens}</p>
+            <p className="text-sm text-default-500">
+              {t("stats.totalListens")}
+            </p>
+            <p className="text-2xl font-bold">
+              {stats.listens.totalAudioListens}
+            </p>
             <p className="text-xs text-default-400">
-              {t("stats.recentListens", { count: stats.listens.recentAudioListens })}
+              {t("stats.recentListens", {
+                count: stats.listens.recentAudioListens,
+              })}
             </p>
           </div>
         </CardBody>

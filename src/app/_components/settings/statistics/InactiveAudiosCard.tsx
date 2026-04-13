@@ -24,7 +24,9 @@ interface InactiveAudiosCardProps {
   onDelete?: () => void;
 }
 
-export default function InactiveAudiosCard({ onDelete }: InactiveAudiosCardProps) {
+export default function InactiveAudiosCard({
+  onDelete,
+}: InactiveAudiosCardProps) {
   const t = useTranslations("AdminStatistics");
   const [daysInactive, setDaysInactive] = useState(30);
 

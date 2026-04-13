@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useState, useMemo } from "react";
 import { Input, Pagination } from "@heroui/react";
@@ -37,7 +37,7 @@ export function PlaylistsListClient({ playlists }: PlaylistsListClientProps) {
     return playlists.filter(
       (playlist) =>
         playlist.name.toLowerCase().includes(query) ||
-        (playlist.description?.toLowerCase().includes(query) ?? false)
+        (playlist.description?.toLowerCase().includes(query) ?? false),
     );
   }, [playlists, searchQuery]);
 

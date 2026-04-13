@@ -11,7 +11,6 @@ interface ListenPageProps {
   params: Promise<{ audioId: string }>;
 }
 
-
 export default async function ListenPage({ params }: ListenPageProps) {
   const { audioId } = await params;
   const session = await auth();
@@ -22,9 +21,9 @@ export default async function ListenPage({ params }: ListenPageProps) {
   }
 
   try {
-    const audio = session ?
-      await api.audio.getUserAudioById({ id: audioId }) :
-      await api.audio.getPublicAudioById({ id: audioId });
+    const audio = session
+      ? await api.audio.getUserAudioById({ id: audioId })
+      : await api.audio.getPublicAudioById({ id: audioId });
     void api.marker.getMarkers.prefetch({ audioId: audio.id });
 
     // Check if user has access
@@ -74,9 +73,9 @@ export async function generateMetadata({ params }: ListenPageProps) {
   const { audioId } = await params;
   const session = await auth();
   try {
-    const audio = session ?
-      await api.audio.getUserAudioById({ id: audioId }) :
-      await api.audio.getPublicAudioById({ id: audioId });
+    const audio = session
+      ? await api.audio.getUserAudioById({ id: audioId })
+      : await api.audio.getPublicAudioById({ id: audioId });
     return {
       title: `${audio.name} - Audio Marker`,
       description: audio.description ?? `Listen to ${audio.name}`,

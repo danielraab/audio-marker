@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import React, { useEffect, useRef, useState } from 'react';
-import { Button, Slider } from '@heroui/react';
-import { Volume2 } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import React, { useEffect, useRef, useState } from "react";
+import { Button, Slider } from "@heroui/react";
+import { Volume2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface VolumeControlProps {
   volume: number;
@@ -11,8 +11,12 @@ interface VolumeControlProps {
   isDisabled?: boolean;
 }
 
-export default function VolumeControl({ volume, onVolumeChange, isDisabled }: VolumeControlProps) {
-  const t = useTranslations('AudioPlayer');
+export default function VolumeControl({
+  volume,
+  onVolumeChange,
+  isDisabled,
+}: VolumeControlProps) {
+  const t = useTranslations("AudioPlayer");
   const containerRef = useRef<HTMLDivElement>(null);
   const [showSlider, setShowSlider] = useState(false);
 
@@ -21,18 +25,21 @@ export default function VolumeControl({ volume, onVolumeChange, isDisabled }: Vo
     if (!showSlider) return;
 
     const handleClickOutside = (event: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
+      ) {
         setShowSlider(false);
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [showSlider]);
 
   const handleChange = (value: number | number[]) => {
     const vol = Array.isArray(value) ? value[0] : value;
-    if (typeof vol === 'number') {
+    if (typeof vol === "number") {
       onVolumeChange(vol);
     }
   };
@@ -46,7 +53,7 @@ export default function VolumeControl({ volume, onVolumeChange, isDisabled }: Vo
         variant="flat"
         onPress={() => setShowSlider(!showSlider)}
         isDisabled={isDisabled}
-        aria-label={t('volume.toggleLabel')}
+        aria-label={t("volume.toggleLabel")}
         startContent={<Volume2 size={24} />}
       />
 
@@ -63,7 +70,7 @@ export default function VolumeControl({ volume, onVolumeChange, isDisabled }: Vo
               className="flex-1"
               color="primary"
               isDisabled={isDisabled}
-              aria-label={t('volume.ariaLabel')}
+              aria-label={t("volume.ariaLabel")}
             />
             <span className="text-xs text-default-500 min-w-12">{volume}%</span>
           </div>

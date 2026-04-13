@@ -1,7 +1,7 @@
-import { execFile } from 'child_process';
-import { promisify } from 'util';
-import { writeFile } from 'fs/promises';
-import path from 'path';
+import { execFile } from "child_process";
+import { promisify } from "util";
+import { writeFile } from "fs/promises";
+import path from "path";
 
 const execFileAsync = promisify(execFile);
 
@@ -33,7 +33,10 @@ export interface PeaksData {
  * @returns The peaks data object
  */
 export async function generatePeaks(audioFilePath: string): Promise<PeaksData> {
-  const waveformData = await generateWaveformData(audioFilePath, PEAKS_PER_SECOND);
+  const waveformData = await generateWaveformData(
+    audioFilePath,
+    PEAKS_PER_SECOND,
+  );
 
   // audiowaveform returns data array with alternating min/max values
   // We take the absolute max of each min/max pair for our peaks
@@ -65,7 +68,9 @@ export async function generatePeaks(audioFilePath: string): Promise<PeaksData> {
  * @param audioFilePath - Absolute path to the audio file
  * @returns The path to the generated JSON file
  */
-export async function generateAndSavePeaks(audioFilePath: string): Promise<string> {
+export async function generateAndSavePeaks(
+  audioFilePath: string,
+): Promise<string> {
   const peaksData = await generatePeaks(audioFilePath);
 
   // Same filename with .json extension
@@ -92,34 +97,42 @@ interface AudiowaveformData {
 
 /**
  * Generate waveform data using audiowaveform.
- * 
+ *
  * @param filePath - Path to the audio file
  * @param pixelsPerSecond - Number of data points per second
  * @returns Parsed audiowaveform JSON output
  */
-async function generateWaveformData(filePath: string, pixelsPerSecond: number): Promise<AudiowaveformData> {
+async function generateWaveformData(
+  filePath: string,
+  pixelsPerSecond: number,
+): Promise<AudiowaveformData> {
   try {
     const { stdout } = await execFileAsync(
-      'audiowaveform',
+      "audiowaveform",
       [
-        '-i', filePath,
-        '--pixels-per-second', String(pixelsPerSecond),
-        '-b', '8',              // 8-bit output (smaller, sufficient detail)
-        '--output-format', 'json',
-        '-o', '-',              // output to stdout
+        "-i",
+        filePath,
+        "--pixels-per-second",
+        String(pixelsPerSecond),
+        "-b",
+        "8", // 8-bit output (smaller, sufficient detail)
+        "--output-format",
+        "json",
+        "-o",
+        "-", // output to stdout
       ],
       { maxBuffer: 10 * 1024 * 1024 }, // 10MB buffer for large files
     );
 
     const data = JSON.parse(stdout) as AudiowaveformData;
     if (!data.data || !Array.isArray(data.data) || data.data.length === 0) {
-      throw new Error('audiowaveform returned invalid data');
+      throw new Error("audiowaveform returned invalid data");
     }
 
     return data;
   } catch (error) {
     const err = error as { message: string; stderr?: string };
-    const stderrMsg = err.stderr ? '\n' + err.stderr : '';
+    const stderrMsg = err.stderr ? "\n" + err.stderr : "";
     throw new Error(`audiowaveform failed: ${err.message}${stderrMsg}`);
   }
 }

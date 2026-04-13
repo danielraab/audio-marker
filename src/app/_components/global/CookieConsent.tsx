@@ -31,9 +31,7 @@ export function CookieConsent() {
       <div className="container mx-auto max-w-6xl">
         <div className="flex flex-col items-start sm:items-center justify-between gap-2">
           <div className="flex flex-row justify-between w-full flex-1">
-            <h3 className="font-semibold text-lg mb-1">
-              🍪 We use cookies
-            </h3>
+            <h3 className="font-semibold text-lg mb-1">🍪 We use cookies</h3>
             <Button
               size="sm"
               variant="light"

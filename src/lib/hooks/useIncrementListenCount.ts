@@ -1,12 +1,15 @@
-'use client';
+"use client";
 
-import { useRef } from 'react';
+import { useRef } from "react";
 
 interface UseIncrementListenCountOptions {
   id: string;
-  type: 'audio' | 'playlist';
+  type: "audio" | "playlist";
   incrementMutation: {
-    mutate: (params: { id: string }, options?: { onSuccess?: () => void }) => void;
+    mutate: (
+      params: { id: string },
+      options?: { onSuccess?: () => void },
+    ) => void;
   };
 }
 
@@ -31,7 +34,7 @@ export function useIncrementListenCount({
 
   // Only attempt to increment if we haven't already done so for this item
   // Also check if we're in the browser (not SSR)
-  if (!hasIncrementedRef.current && typeof window !== 'undefined') {
+  if (!hasIncrementedRef.current && typeof window !== "undefined") {
     const storageKey = `${type}_listen_${id}`;
     const lastListenStr = localStorage.getItem(storageKey);
     const now = Date.now();
@@ -49,10 +52,13 @@ export function useIncrementListenCount({
 
     // Increment the counter and update localStorage
     hasIncrementedRef.current = true; // Set immediately to prevent multiple calls
-    incrementMutation.mutate({ id }, {
-      onSuccess: () => {
-        localStorage.setItem(storageKey, now.toString());
+    incrementMutation.mutate(
+      { id },
+      {
+        onSuccess: () => {
+          localStorage.setItem(storageKey, now.toString());
+        },
       },
-    });
+    );
   }
 }

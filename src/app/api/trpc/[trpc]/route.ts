@@ -54,7 +54,7 @@ const handler = async (req: NextRequest) => {
 
       if (env.NODE_ENV === "development") {
         console.error(
-          `❌ tRPC failed on ${path ?? "<no-path>"}: ${error.message}`
+          `❌ tRPC failed on ${path ?? "<no-path>"}: ${error.message}`,
         );
       }
     },

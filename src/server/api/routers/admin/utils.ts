@@ -18,7 +18,10 @@ export function requireAdmin(session: Session) {
  * Checks if the current user is an admin for user management operations
  * Throws FORBIDDEN error if not admin
  */
-export function requireAdminForUserManagement(session: Session, operation: string) {
+export function requireAdminForUserManagement(
+  session: Session,
+  operation: string,
+) {
   if (!session.user.isAdmin) {
     throw new TRPCError({
       code: "FORBIDDEN",

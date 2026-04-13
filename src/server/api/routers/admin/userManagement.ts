@@ -41,7 +41,7 @@ export const userManagementRouter = createTRPCRouter({
         email: z.string().email("Invalid email address"),
         isAdmin: z.boolean().default(false),
         isDisabled: z.boolean().default(false),
-      })
+      }),
     )
     .mutation(async ({ ctx, input }) => {
       // Check if user is admin
@@ -80,7 +80,7 @@ export const userManagementRouter = createTRPCRouter({
         email: z.string().email("Invalid email address").optional(),
         isAdmin: z.boolean().optional(),
         isDisabled: z.boolean().optional(),
-      })
+      }),
     )
     .mutation(async ({ ctx, input }) => {
       // Check if user is admin

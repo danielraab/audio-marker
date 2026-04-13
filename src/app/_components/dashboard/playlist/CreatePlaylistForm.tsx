@@ -1,7 +1,15 @@
-'use client';
+"use client";
 
 import { useState } from "react";
-import { Button, Input, Switch, Card, CardBody, CardHeader, Textarea } from "@heroui/react";
+import {
+  Button,
+  Input,
+  Switch,
+  Card,
+  CardBody,
+  CardHeader,
+  Textarea,
+} from "@heroui/react";
 import { ListMusic, Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { api } from "~/trpc/react";
@@ -13,7 +21,7 @@ export function CreatePlaylistForm() {
   const [description, setDescription] = useState("");
   const [isPublic, setIsPublic] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
-  const t = useTranslations('CreatePlaylistForm');
+  const t = useTranslations("CreatePlaylistForm");
 
   const createPlaylistMutation = api.playlist.createPlaylist.useMutation({
     onSuccess: () => {
@@ -54,7 +62,7 @@ export function CreatePlaylistForm() {
           startContent={<Plus size={16} />}
           onPress={() => setIsExpanded(true)}
         >
-          {t('cta')} <ListMusic />
+          {t("cta")} <ListMusic />
         </Button>
       </div>
     );
@@ -64,40 +72,40 @@ export function CreatePlaylistForm() {
     <div className="max-w-4xl mx-auto">
       <Card>
         <CardHeader>
-          <h3 className="text-lg font-semibold">{t('title')}</h3>
+          <h3 className="text-lg font-semibold">{t("title")}</h3>
         </CardHeader>
         <CardBody>
           <form onSubmit={handleSubmit} className="space-y-4">
             <Input
-              label={t('name.label')}
-              placeholder={t('name.placeholder')}
+              label={t("name.label")}
+              placeholder={t("name.placeholder")}
               value={name}
               onChange={(e) => setName(e.target.value)}
               isRequired
               maxLength={100}
-              description={t('name.description')}
+              description={t("name.description")}
               autoFocus
             />
-            
+
             <Textarea
-              label={t('description.label')}
-              placeholder={t('description.placeholder')}
+              label={t("description.label")}
+              placeholder={t("description.placeholder")}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               maxLength={500}
               minRows={3}
             />
-            
+
             <div className="flex items-center gap-2">
               <Switch
                 isSelected={isPublic}
                 onValueChange={setIsPublic}
                 size="sm"
               >
-                {t('visibility.makePublic')}
+                {t("visibility.makePublic")}
               </Switch>
             </div>
-            
+
             <div className="flex justify-betweens gap-2">
               <Button
                 type="button"
@@ -105,7 +113,7 @@ export function CreatePlaylistForm() {
                 onPress={handleCancel}
                 isDisabled={createPlaylistMutation.isPending}
               >
-                {t('cancel')}
+                {t("cancel")}
               </Button>
               <Button
                 type="submit"
@@ -113,7 +121,7 @@ export function CreatePlaylistForm() {
                 isLoading={createPlaylistMutation.isPending}
                 isDisabled={!name.trim()}
               >
-                {t('submit')}
+                {t("submit")}
               </Button>
             </div>
           </form>

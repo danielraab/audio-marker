@@ -48,7 +48,8 @@ export default function LegalInformationSection() {
   const utils = api.useUtils();
 
   // Queries
-  const { data: legalInfos, isLoading } = api.admin.legalInformation.getAllLegalInfo.useQuery();
+  const { data: legalInfos, isLoading } =
+    api.admin.legalInformation.getAllLegalInfo.useQuery();
 
   // Sync local state with server data
   useEffect(() => {
@@ -58,33 +59,40 @@ export default function LegalInformationSection() {
   }, [legalInfos]);
 
   // Mutations
-  const createMutation = api.admin.legalInformation.createLegalInfo.useMutation({
-    onSuccess: () => {
-      void utils.admin.legalInformation.getAllLegalInfo.invalidate();
-      closeModal();
+  const createMutation = api.admin.legalInformation.createLegalInfo.useMutation(
+    {
+      onSuccess: () => {
+        void utils.admin.legalInformation.getAllLegalInfo.invalidate();
+        closeModal();
+      },
     },
-  });
+  );
 
-  const updateMutation = api.admin.legalInformation.updateLegalInfo.useMutation({
-    onSuccess: () => {
-      void utils.admin.legalInformation.getAllLegalInfo.invalidate();
-      closeModal();
+  const updateMutation = api.admin.legalInformation.updateLegalInfo.useMutation(
+    {
+      onSuccess: () => {
+        void utils.admin.legalInformation.getAllLegalInfo.invalidate();
+        closeModal();
+      },
     },
-  });
+  );
 
-  const deleteMutation = api.admin.legalInformation.deleteLegalInfo.useMutation({
-    onSuccess: () => {
-      void utils.admin.legalInformation.getAllLegalInfo.invalidate();
+  const deleteMutation = api.admin.legalInformation.deleteLegalInfo.useMutation(
+    {
+      onSuccess: () => {
+        void utils.admin.legalInformation.getAllLegalInfo.invalidate();
+      },
     },
-  });
+  );
 
-  const updateSortOrderMutation = api.admin.legalInformation.updateSortOrder.useMutation({
-    onError: (error) => {
-      console.error("Reorder error:", error);
-      // On error, refetch to restore correct state
-      void utils.admin.legalInformation.getAllLegalInfo.invalidate();
-    },
-  });
+  const updateSortOrderMutation =
+    api.admin.legalInformation.updateSortOrder.useMutation({
+      onError: (error) => {
+        console.error("Reorder error:", error);
+        // On error, refetch to restore correct state
+        void utils.admin.legalInformation.getAllLegalInfo.invalidate();
+      },
+    });
 
   const openCreateModal = () => {
     setEditingItem(null);
@@ -207,16 +215,38 @@ export default function LegalInformationSection() {
                               <Switch
                                 isSelected={item.enabled}
                                 onValueChange={(enabled) =>
-                                  updateMutation.mutate({ id: item.id, enabled })
+                                  updateMutation.mutate({
+                                    id: item.id,
+                                    enabled,
+                                  })
                                 }
                                 size="sm"
                               />
                               <div>
                                 <h3 className="font-semibold">{item.label}</h3>
                                 <p className="text-xs text-default-500">
-                                  Last updated: {new Date(item.updatedAt).toLocaleDateString()}
+                                  Last updated:{" "}
+                                  {new Date(
+                                    item.updatedAt,
+                                  ).toLocaleDateString()}
                                   {item.updatedBy && (
-                                    <> by {(item.updatedBy as { name: string | null; email: string | null }).name ?? (item.updatedBy as { name: string | null; email: string | null }).email ?? "Unknown"}</>
+                                    <>
+                                      {" "}
+                                      by{" "}
+                                      {(
+                                        item.updatedBy as {
+                                          name: string | null;
+                                          email: string | null;
+                                        }
+                                      ).name ??
+                                        (
+                                          item.updatedBy as {
+                                            name: string | null;
+                                            email: string | null;
+                                          }
+                                        ).email ??
+                                        "Unknown"}
+                                    </>
                                   )}
                                 </p>
                               </div>
@@ -297,9 +327,7 @@ export default function LegalInformationSection() {
                 </label>
                 <RichTextEditor
                   content={formData.content}
-                  onChange={(content) =>
-                    setFormData({ ...formData, content })
-                  }
+                  onChange={(content) => setFormData({ ...formData, content })}
                 />
               </div>
 
