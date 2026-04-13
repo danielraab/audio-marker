@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **audiowaveform installation**: Replaced Ubuntu PPA approach with direct `.deb` download from GitHub releases, fixing compatibility with Debian 13 (trixie)
 - **Dependency overrides**: Migrated `overrides` field in `package.json` to `pnpm.overrides`
 - **Code Quality Tooling**: Switched linting and formatting from ESLint + Prettier to Biome
+- **GitHub Actions package manager**: Migrated workflow install, script, and audit steps from npm to pnpm
 
 ### Fixed
 
