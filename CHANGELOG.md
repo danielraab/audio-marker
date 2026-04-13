@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - **Audio autoplay**: Fixed autoplay not working on playlist navigation by ensuring WaveSurfer initializes only once after peaks data is resolved, preventing the player from re-initializing during playback and consuming the autoplay flag
+- **Playlist navigation**: Fixed playlist navigation not working for private playlists when logged in; now uses `getUserPlaylistById` for authenticated users and `getPublicPlaylistById` for public access
 
 ### Security
 
