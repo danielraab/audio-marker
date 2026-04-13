@@ -1,13 +1,13 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import { readFile, stat } from "fs/promises";
-import path from "path";
+import { readFile, stat } from "node:fs/promises";
+import path from "node:path";
 import { db } from "~/server/db";
 import { auth } from "~/server/auth";
 import { env } from "~/env";
 
 export async function GET(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: { params: Promise<{ audioId: string }> },
 ) {
   try {

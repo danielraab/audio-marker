@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useCallback, useMemo, useEffect } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
 import AudioPlayer from "../AudioPlayer";
 import BrowserMarkerManager from "./BrowserMarkerManager";
 import type { AudioMarker } from "~/types/Audio";

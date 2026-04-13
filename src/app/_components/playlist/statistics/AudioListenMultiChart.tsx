@@ -139,7 +139,7 @@ export function AudioListenMultiChart({
 
   // Truncate long names for the legend
   const truncate = (name: string, max = 24) =>
-    name.length > max ? name.slice(0, max - 1) + "…" : name;
+    name.length > max ? `${name.slice(0, max - 1)}…` : name;
 
   return (
     <div className="w-full h-[350px]">

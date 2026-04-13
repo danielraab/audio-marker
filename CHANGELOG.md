@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **Dev container setup**: Added `.devcontainer/devcontainer.json` and `setup.sh` for a reproducible development environment with Node 20, ffmpeg, audiowaveform, and pnpm
 - **pnpm package manager**: Switched from npm to pnpm; added `pnpm-lock.yaml` and `.npmrc` with `resolution-min-age=7d` to guard against newly published packages
+- **prefile file name**: When a file is selected, the name field will be prefilled with the selected filename.
 
 ### Changed
 

@@ -1,6 +1,6 @@
-import { execFile } from "child_process";
-import { writeFile, unlink } from "fs/promises";
-import path from "path";
+import { execFile } from "node:child_process";
+import { writeFile, unlink } from "node:fs/promises";
+import path from "node:path";
 
 /**
  * Re-encode an MP3 file to CBR (constant bitrate) with fixed sample rate.
@@ -62,7 +62,7 @@ export async function replaceWithCbrMp3(
   await unlink(filePath);
   await writeFile(
     filePath,
-    await (await import("fs/promises")).readFile(tempPath),
+    await (await import("node:fs/promises")).readFile(tempPath),
   );
   await unlink(tempPath);
 }

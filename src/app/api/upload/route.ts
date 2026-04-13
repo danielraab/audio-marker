@@ -2,9 +2,9 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { auth } from "~/server/auth";
 import { db } from "~/server/db";
-import { writeFile } from "fs/promises";
+import { writeFile } from "node:fs/promises";
 import { v4 as uuidv4 } from "uuid";
-import path from "path";
+import path from "node:path";
 import { generateAndSavePeaks } from "~/lib/peaks";
 import { replaceWithCbrMp3 } from "~/lib/audioReencode";
 

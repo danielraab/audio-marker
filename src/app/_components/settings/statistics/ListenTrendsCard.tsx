@@ -92,7 +92,7 @@ export default function ListenTrendsCard() {
                   dataKey="date"
                   tick={{ fontSize: 12 }}
                   tickFormatter={(value: string) => {
-                    const d = new Date(value + "T00:00:00");
+                    const d = new Date(`${value}T00:00:00`);
                     return d.toLocaleDateString(undefined, {
                       month: "short",
                       day: "numeric",
@@ -106,7 +106,7 @@ export default function ListenTrendsCard() {
                 <YAxis allowDecimals={false} tick={{ fontSize: 12 }} />
                 <Tooltip
                   labelFormatter={(value) => {
-                    const d = new Date(String(value) + "T00:00:00");
+                    const d = new Date(`${String(value)}T00:00:00`);
                     return d.toLocaleDateString(undefined, {
                       year: "numeric",
                       month: "long",

@@ -54,6 +54,10 @@ export default function CreateAudioForm() {
       }
 
       setFile(selectedFile);
+      if (!audioName) {
+        const nameWithoutExtension = selectedFile.name.replace(/\.[^.]+$/, "");
+        setAudioName(nameWithoutExtension);
+      }
       setStatus(""); // Clear any previous error messages
     }
   };
@@ -171,6 +175,26 @@ export default function CreateAudioForm() {
       <CardBody>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <Input
+            type="file"
+            accept="audio/mpeg,audio/mp3,.mp3"
+            onChange={handleFileChange}
+            label={t("fileLabel")}
+            labelPlacement="outside"
+            variant="bordered"
+            isRequired
+            description={
+              file
+                ? t("selectedFile", { fileName: file.name })
+                : t("selectFile")
+            }
+            classNames={{
+              input:
+                "file:mr-4 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-sm file:font-medium file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100 cursor-pointer",
+              inputWrapper: "hover:border-primary-300",
+            }}
+          />
+
+          <Input
             type="text"
             label={t("namePlaceholder")}
             placeholder={t("namePlaceholder")}
@@ -191,26 +215,6 @@ export default function CreateAudioForm() {
             labelPlacement="outside"
             maxLength={500}
             minRows={3}
-          />
-
-          <Input
-            type="file"
-            accept="audio/mpeg,audio/mp3,.mp3"
-            onChange={handleFileChange}
-            label={t("fileLabel")}
-            labelPlacement="outside"
-            variant="bordered"
-            isRequired
-            description={
-              file
-                ? t("selectedFile", { fileName: file.name })
-                : t("selectFile")
-            }
-            classNames={{
-              input:
-                "file:mr-4 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-sm file:font-medium file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100 cursor-pointer",
-              inputWrapper: "hover:border-primary-300",
-            }}
           />
 
           <div className="flex justify-between gap-2">

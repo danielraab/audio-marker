@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button, Slider } from "@heroui/react";
 import { Volume2 } from "lucide-react";
 import { useTranslations } from "next-intl";

@@ -5,7 +5,7 @@
 import "./src/env.js";
 // Sentry wrapper (imported lazily to avoid build issues if not installed yet)
 import * as Sentry from "@sentry/nextjs";
-import { execSync } from "child_process";
+import { execSync } from "node:child_process";
 import createNextIntlPlugin from "next-intl/plugin";
 
 // Get git version at build time
@@ -42,7 +42,7 @@ const getGitVersion = () => {
 
     // Fall back to short commit hash
     return execSync("git rev-parse --short HEAD").toString().trim();
-  } catch (error) {
+  } catch (_error) {
     return "dev";
   }
 };

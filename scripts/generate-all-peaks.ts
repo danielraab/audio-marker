@@ -1,5 +1,5 @@
-import { readdir } from "fs/promises";
-import path from "path";
+import { readdir } from "node:fs/promises";
+import path from "node:path";
 import { generateAndSavePeaks } from "../src/lib/peaks";
 
 async function main() {
