@@ -20,6 +20,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **Audio autoplay**: Fixed autoplay not working on playlist navigation by ensuring WaveSurfer initializes only once after peaks data is resolved, preventing the player from re-initializing during playback and consuming the autoplay flag
+
 ### Security
 
 ## [0.9.3] - 2026-03-30
