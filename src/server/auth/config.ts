@@ -1,5 +1,5 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import { type DefaultSession, type NextAuthConfig } from "next-auth";
+import type { DefaultSession, NextAuthConfig } from "next-auth";
 import type { Adapter } from "next-auth/adapters";
 import { env } from "~/env";
 import Authentik from "next-auth/providers/authentik";

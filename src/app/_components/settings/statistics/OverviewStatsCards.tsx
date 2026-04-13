@@ -3,7 +3,7 @@
 import { Card, CardBody } from "@heroui/card";
 import { Users, Music, ListMusic, Headphones } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { type RouterOutputs } from "~/trpc/react";
+import type { RouterOutputs } from "~/trpc/react";
 
 type OverallStats = RouterOutputs["admin"]["statistics"]["getOverallStatistics"];
 

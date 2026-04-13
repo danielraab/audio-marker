@@ -23,7 +23,7 @@ Always act as a senior developer which has clean code and clean architecutre pri
 - Fix any test or type errors until the whole suite is green.
 - Add or update tests for the code you change, even if nobody asked.
 - From the package root you can just call `pnpm run check` for formating, linting, biome check and astro check.
-- After moving files or changing imports, run `pnpm run lint` to be sure ESLint and TypeScript rules still pass.
+- After moving files or changing imports, run `pnpm run lint` to be sure Biome and TypeScript rules still pass.
 
 ## PR and commit instructions
 

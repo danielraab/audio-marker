@@ -6,7 +6,7 @@ export const formatTime = (seconds: number) => {
 };
 
 export const roundTime = (seconds: number, decimals = 2): number => {
-  const factor = Math.pow(10, decimals);
+  const factor = 10 ** decimals;
   return Math.round(seconds * factor) / factor;
 };
 

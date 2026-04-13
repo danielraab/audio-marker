@@ -38,6 +38,7 @@ Built with the [T3 Stack](https://create.t3.gg/), it combines type-safety, moder
 ## ✨ Features
 
 ### 🎵 Audio Management
+
 - **Upload & Store**: Upload audio files with automatic storage and metadata management
 - **Smart Organization**: Manage your audio library with soft-delete functionality and easy restoration
 - **Listen Statistics**: Track play counts and last listen timestamps for all audio files
@@ -46,6 +47,7 @@ Built with the [T3 Stack](https://create.t3.gg/), it combines type-safety, moder
 ![Audio Library Dashboard](./docs/screenshots/audioLibrary.png)
 
 ### 📍 Time-Based Markers
+
 - **Precision Marking**: Add markers at specific timestamps in your audio files
 - **Section Support**: Create sections with start and end times, or point markers for single moments
 - **Region Selection**: Drag on waveform to select regions and automatically create sections
@@ -59,6 +61,7 @@ Built with the [T3 Stack](https://create.t3.gg/), it combines type-safety, moder
 ![Audio Listen View](./docs/screenshots/audioListenView.png)
 
 ### 📝 Playlist Creation
+
 - **Organize Content**: Group related audio files into playlists
 - **Drag & Drop**: Reorder audio files within playlists using intuitive drag-and-drop
 - **Sequential Playback**: Automatically play through playlist items in order
@@ -68,6 +71,7 @@ Built with the [T3 Stack](https://create.t3.gg/), it combines type-safety, moder
 ![Audio Edit View](./docs/screenshots/playlistEdit.png)
 
 ### 🔐 User Authentication & Authorization
+
 - **Secure Login**: Authentication powered by NextAuth.js
 - **Multiple Providers**: Support for email (magic links) and OAuth providers
 - **Role-Based Access**: Admin and regular user roles with appropriate permissions
@@ -75,6 +79,7 @@ Built with the [T3 Stack](https://create.t3.gg/), it combines type-safety, moder
 - **Privacy Controls**: Set audio files and playlists as public or private
 
 ### ⚖️ Legal & Compliance
+
 - **Privacy Policy**: Comprehensive privacy policy covering GDPR and CCPA requirements
 - **Terms of Service**: Clear terms outlining user responsibilities and acceptable use
 - **DMCA Compliance**: Built-in DMCA takedown process for copyright protection
@@ -82,23 +87,27 @@ Built with the [T3 Stack](https://create.t3.gg/), it combines type-safety, moder
 - **Data Rights**: User rights management (access, deletion, data portability)
 
 ### 🌐 Sharing & Collaboration
+
 - **Public/Private Toggle**: Share audio files and playlists publicly or keep them private
 - **Direct Links**: Share specific audio files or playlists via URL
 - **Embed Ready**: Clean public interface for shared content
 - **Access Control**: Owner-only editing with public viewing when shared
 
 ### 🌍 Internationalization
+
 - **Multi-Language Support**: Built-in i18n with English and German translations
 - **Easy Extension**: Add new languages with simple JSON configuration
 - **User Preferences**: Language selection per user session
 
 ### 📱 Progressive Web App (PWA)
+
 - **Installable**: Add to home screen on mobile and desktop
 - **Offline Ready**: Service worker for improved performance and offline capabilities
 - **Responsive Design**: Optimized for mobile, tablet, and desktop viewing
 - **Modern UI**: Beautiful interface built with Hero UI and Tailwind CSS
 
 ### 🔧 Developer Features
+
 - **Type-Safe API**: End-to-end type safety with tRPC
 - **Database Management**: Prisma ORM with SQLite (easily swappable to PostgreSQL/MySQL)
 - **Error Tracking**: Integrated Sentry for production error monitoring
@@ -109,6 +118,7 @@ Built with the [T3 Stack](https://create.t3.gg/), it combines type-safety, moder
 ## 🛠 Tech Stack
 
 **Frontend:**
+
 - [Next.js 15](https://nextjs.org/) - React framework with App Router
 - [React 19](https://react.dev/) - UI library
 - [TypeScript](https://www.typescriptlang.org/) - Type safety
@@ -119,12 +129,14 @@ Built with the [T3 Stack](https://create.t3.gg/), it combines type-safety, moder
 - [Lucide React](https://lucide.dev/) - Icon library
 
 **Backend:**
+
 - [tRPC](https://trpc.io/) - End-to-end typesafe APIs
 - [Prisma](https://www.prisma.io/) - Next-generation ORM
 - [NextAuth.js](https://next-auth.js.org/) - Authentication
 - [Zod](https://zod.dev/) - Schema validation
 
 **Infrastructure:**
+
 - [Docker](https://www.docker.com/) - Containerization
 - [SQLite](https://www.sqlite.org/) - Database (development)
 - [Sentry](https://sentry.io/) - Error tracking
@@ -141,37 +153,42 @@ Built with the [T3 Stack](https://create.t3.gg/), it combines type-safety, moder
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/danielraab/AudioMarker.git
    cd AudioMarker
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Set up environment variables**
-   
+
    Create a `.env` file in the root directory. Use the `.env.example` as a template.
 
 4. **Initialize the database**
+
    ```bash
    npm run db:push
    ```
 
 5. **Create an admin user**
+
    ```bash
    npm run admin:create your-email@example.com
    ```
 
 6. **Start the development server**
+
    ```bash
    npm run dev
    ```
 
 7. **Open your browser**
-   
+
    Navigate to [http://localhost:3000](http://localhost:3000)
 
 ### Quick Start Scripts
@@ -180,7 +197,7 @@ Built with the [T3 Stack](https://create.t3.gg/), it combines type-safety, moder
 # Development
 npm run dev              # Start development server with Turbopack
 npm run db:studio        # Open Prisma Studio to view/edit data
-npm run lint             # Run ESLint
+npm run lint             # Run Biome linting
 npm run typecheck        # Run TypeScript type checking
 
 # Production
@@ -220,6 +237,7 @@ For detailed setup instructions, see [Docker Documentation](./docker/README.Dock
 ### Production Deployment
 
 For production deployments, make sure to:
+
 - Use a proper database (PostgreSQL recommended)
 - Set appropriate environment variables
 - Configure reverse proxy (nginx recommended)
@@ -254,6 +272,7 @@ docker exec -it <container-name> npm run admin:create <email>
 ```
 
 Example:
+
 ```bash
 # Development
 npm run admin:create admin@example.com
@@ -324,6 +343,7 @@ Contributions are welcome! Please feel free to submit a Pull Request. For major 
 5. Open a Pull Request
 
 Please make sure to:
+
 - Create/Update tests as appropriate
 - Follow the existing code style
 - Run `npm run check` before committing
@@ -349,7 +369,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [ ] allow more audio file types
 - [x] Add description field for audio, playlist and markers
 - [x] Add Regions (like markers with start and end, with possible loopplay)
-- [x] Filter or load more button with for the audios on the dashboard incl search functionallity 
+- [x] Filter or load more button with for the audios on the dashboard incl search functionallity
 - [x] Make existing markers editable
 - [ ] Save shared audio and playlist listen links (only if logged in)
 - [ ] Share audio files in edit mode (to logged in only)

@@ -4,7 +4,7 @@ import { Card, CardBody, CardHeader } from "@heroui/card";
 import { Chip } from "@heroui/chip";
 import { TrendingUp } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { type RouterOutputs } from "~/trpc/react";
+import type { RouterOutputs } from "~/trpc/react";
 
 type TopAudio = RouterOutputs["admin"]["statistics"]["getOverallStatistics"]["topAudios"][number];
 
