@@ -625,5 +625,15 @@
       "lastListened": "Last listened {date}",
       "neverListened": "Never listened"
     }
+  },
+  "SignIn": {
+    "title": "Sign In",
+    "emailLabel": "Email address",
+    "emailPlaceholder": "Enter your email",
+    "sendLinkButton": "Send magic link",
+    "sendingButton": "Sending...",
+    "linkSent": "A sign-in link has been sent to your email.",
+    "orDivider": "or",
+    "authentikButton": "Sign in with {name}"
   }
 }

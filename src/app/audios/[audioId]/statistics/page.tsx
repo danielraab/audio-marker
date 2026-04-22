@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { auth } from "~/server/auth";
+import { getServerSession } from "~/server/auth";
 import { api, HydrateClient } from "~/trpc/server";
 import { Suspense } from "react";
 import { AudioStatisticsView } from "~/app/_components/audio/statistics/AudioStatisticsView";
@@ -10,7 +10,7 @@ interface StatisticsPageProps {
 
 export default async function StatisticsPage({ params }: StatisticsPageProps) {
   const { audioId } = await params;
-  const session = await auth();
+  const session = await getServerSession();
 
   if (!session?.user?.id) {
     notFound();
@@ -43,7 +43,7 @@ export default async function StatisticsPage({ params }: StatisticsPageProps) {
 
 export async function generateMetadata({ params }: StatisticsPageProps) {
   const { audioId } = await params;
-  const session = await auth();
+  const session = await getServerSession();
 
   if (!session?.user?.id) {
     return {

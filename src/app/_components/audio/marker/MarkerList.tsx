@@ -61,7 +61,7 @@ export default function MarkerList({
                 <p className="text-sm font-medium">{marker.label}</p>
                 <p className="text-xs text-default-500">
                   {markerIsSection
-                    ? `${formatTime(marker.timestamp)} - ${formatTime(marker.endTimestamp!)}`
+                    ? `${formatTime(marker.timestamp)} - ${formatTime(marker.endTimestamp ?? 0)}`
                     : formatTime(marker.timestamp)}
                 </p>
               </div>

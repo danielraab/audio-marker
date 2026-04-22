@@ -1,11 +1,11 @@
-import { auth } from "~/server/auth";
+import { getServerSession } from "~/server/auth";
 import { AudioFilesListClient } from "~/app/_components/dashboard/audio/AudioFilesListClient";
 import { api } from "~/trpc/server";
 import { Music4 } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
 export default async function AudioFilesList() {
-  const session = await auth();
+  const session = await getServerSession();
   const userId = session?.user?.id;
   if (!userId) {
     return null;

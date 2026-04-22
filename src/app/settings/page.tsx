@@ -1,9 +1,9 @@
 import { redirect } from "next/navigation";
-import { auth } from "~/server/auth";
+import { getServerSession } from "~/server/auth";
 import SettingsPage from "~/app/_components/settings/SettingsPage";
 
 export default async function Settings() {
-  const session = await auth();
+  const session = await getServerSession();
 
   // Redirect if not logged in
   if (!session?.user) {

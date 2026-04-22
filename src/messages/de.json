@@ -625,5 +625,15 @@
       "lastListened": "Zuletzt gehört am {date}",
       "neverListened": "Nie gehört"
     }
+  },
+  "SignIn": {
+    "title": "Anmelden",
+    "emailLabel": "E-Mail-Adresse",
+    "emailPlaceholder": "E-Mail eingeben",
+    "sendLinkButton": "Magic Link senden",
+    "sendingButton": "Sende...",
+    "linkSent": "Ein Anmelde-Link wurde an deine E-Mail gesendet.",
+    "orDivider": "oder",
+    "authentikButton": "Anmelden mit {name}"
   }
 }

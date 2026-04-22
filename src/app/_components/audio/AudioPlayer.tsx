@@ -167,7 +167,7 @@ export default function AudioPlayer({
 
         const opts = {
           start: marker.timestamp,
-          end: section ? marker.endTimestamp! : undefined,
+          end: section ? (marker.endTimestamp ?? undefined) : undefined,
           color,
           content: marker.label,
           drag: editing,

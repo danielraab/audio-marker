@@ -11,7 +11,12 @@ import { replaceWithCbrMp3 } from "~/lib/audioReencode";
 export async function POST(req: NextRequest) {
   try {
     // Check authentication
-    const session = await auth();
+    const betterAuthSession = await auth.api.getSession({
+      headers: req.headers,
+    });
+    const session = betterAuthSession
+      ? { user: { id: betterAuthSession.user.id } }
+      : null;
     if (!session?.user?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }

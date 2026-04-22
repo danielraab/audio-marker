@@ -1,11 +1,14 @@
 import { TRPCError } from "@trpc/server";
-import type { Session } from "next-auth";
+
+interface SessionWithUser {
+  user: { isAdmin: boolean };
+}
 
 /**
  * Checks if the current user is an admin
  * Throws FORBIDDEN error if not admin
  */
-export function requireAdmin(session: Session) {
+export function requireAdmin(session: SessionWithUser) {
   if (!session.user.isAdmin) {
     throw new TRPCError({
       code: "FORBIDDEN",
@@ -19,7 +22,7 @@ export function requireAdmin(session: Session) {
  * Throws FORBIDDEN error if not admin
  */
 export function requireAdminForUserManagement(
-  session: Session,
+  session: SessionWithUser,
   operation: string,
 ) {
   if (!session.user.isAdmin) {

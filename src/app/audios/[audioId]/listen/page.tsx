@@ -1,7 +1,7 @@
 import { api } from "~/trpc/server";
 import ListenOnlyAudioPlayer from "~/app/_components/audio/listen/ListenOnlyAudioPlayer";
 import { notFound } from "next/navigation";
-import { auth } from "~/server/auth";
+import { getServerSession } from "~/server/auth";
 import { VisibilityBanner } from "~/app/_components/global/VisibilityBanner";
 import { env } from "~/env";
 import { BarChart3, Edit } from "lucide-react";
@@ -13,7 +13,7 @@ interface ListenPageProps {
 
 export default async function ListenPage({ params }: ListenPageProps) {
   const { audioId } = await params;
-  const session = await auth();
+  const session = await getServerSession();
 
   // If authentication is required for public content and user is not logged in, redirect to not found
   if (env.REQUIRE_AUTH_FOR_PUBLIC_CONTENT && !session) {
@@ -71,7 +71,7 @@ export default async function ListenPage({ params }: ListenPageProps) {
 
 export async function generateMetadata({ params }: ListenPageProps) {
   const { audioId } = await params;
-  const session = await auth();
+  const session = await getServerSession();
   try {
     const audio = session
       ? await api.audio.getUserAudioById({ id: audioId })

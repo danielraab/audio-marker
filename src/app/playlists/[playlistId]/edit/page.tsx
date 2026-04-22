@@ -1,4 +1,4 @@
-import { auth } from "~/server/auth";
+import { getServerSession } from "~/server/auth";
 import { api } from "~/trpc/server";
 import { HydrateClient } from "~/trpc/server";
 import { PlaylistEditContainer } from "~/app/_components/playlist/edit/PlaylistEditContainer";
@@ -18,7 +18,7 @@ export default async function PlaylistEditPage({
   params,
 }: PlaylistEditPageProps) {
   const { playlistId } = await params;
-  const session = await auth();
+  const session = await getServerSession();
 
   if (!session?.user) {
     return null;

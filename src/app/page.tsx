@@ -1,5 +1,5 @@
 import CreateAudioForm from "~/app/_components/dashboard/audio/CreateAudioForm";
-import { auth } from "~/server/auth";
+import { getServerSession } from "~/server/auth";
 import { HydrateClient } from "~/trpc/server";
 import PublicLandingPage from "./_components/dashboard/publicLandingPage";
 import AudioFilesList from "~/app/_components/dashboard/audio/AudioFilesList";
@@ -7,7 +7,7 @@ import { CreatePlaylistForm } from "./_components/dashboard/playlist/CreatePlayl
 import PlaylistsList from "~/app/_components/dashboard/playlist/PlaylistsList";
 
 export default async function Home() {
-  const session = await auth();
+  const session = await getServerSession();
 
   return (
     <HydrateClient>

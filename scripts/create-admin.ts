@@ -36,6 +36,7 @@ async function createAdmin(email: string) {
       user = await prisma.user.create({
         data: {
           email,
+          name: "",
           isAdmin: true,
         },
       });

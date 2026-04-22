@@ -78,8 +78,8 @@ export const softDeletedContentRouter = createTRPCRouter({
 
       try {
         // Delete the physical file from the file system
-        const { unlink } = await import("fs/promises");
-        const path = await import("path");
+        const { unlink } = await import("node:fs/promises");
+        const path = await import("node:path");
 
         // Convert the database filePath (e.g., "/uploads/filename.mp3") to absolute path
         const absolutePath = path.join(process.cwd(), "public", audio.filePath);

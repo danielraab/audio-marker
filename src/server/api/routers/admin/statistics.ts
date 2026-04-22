@@ -216,7 +216,7 @@ export const statisticsRouter = createTRPCRouter({
       >();
       for (let i = 0; i < input.days; i++) {
         const date = new Date(Date.now() - i * 24 * 60 * 60 * 1000);
-        const dateStr = date.toISOString().split("T")[0]!;
+        const dateStr = date.toISOString().substring(0, 10);
         dateMap.set(dateStr, {
           date: dateStr,
           audioListens: 0,
@@ -225,13 +225,13 @@ export const statisticsRouter = createTRPCRouter({
       }
 
       for (const listen of audioListens) {
-        const dateStr = listen.listenedAt.toISOString().split("T")[0]!;
+        const dateStr = listen.listenedAt.toISOString().substring(0, 10);
         const entry = dateMap.get(dateStr);
         if (entry) entry.audioListens++;
       }
 
       for (const listen of playlistListens) {
-        const dateStr = listen.listenedAt.toISOString().split("T")[0]!;
+        const dateStr = listen.listenedAt.toISOString().substring(0, 10);
         const entry = dateMap.get(dateStr);
         if (entry) entry.playlistListens++;
       }

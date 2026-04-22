@@ -19,7 +19,21 @@ const createContext = async (req: NextRequest) => {
 
 const handler = async (req: NextRequest) => {
   // Resolve the current session so we can enrich Sentry events with user info
-  const session = await auth();
+  const betterAuthSession = await auth.api.getSession({ headers: req.headers });
+  const session = betterAuthSession
+    ? {
+        user: {
+          id: betterAuthSession.user.id,
+          name: betterAuthSession.user.name,
+          email: betterAuthSession.user.email,
+          isAdmin:
+            (betterAuthSession.user as { isAdmin?: boolean }).isAdmin ?? false,
+          isDisabled:
+            (betterAuthSession.user as { isDisabled?: boolean }).isDisabled ??
+            false,
+        },
+      }
+    : null;
 
   return fetchRequestHandler({
     endpoint: "/api/trpc",

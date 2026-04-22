@@ -100,17 +100,13 @@ export default function InactiveAudiosCard({
                         audio.createdBy.email ??
                         t("inactiveAudios.unknown")}{" "}
                       •{" "}
-                      {audio.totalListens > 0 ? (
-                        <>
-                          {t("inactiveAudios.lastListened", {
+                      {audio.totalListens > 0
+                        ? t("inactiveAudios.lastListened", {
                             date: new Date(
-                              audio.lastListenedAt!,
+                              audio.lastListenedAt ?? "",
                             ).toLocaleDateString(),
-                          })}
-                        </>
-                      ) : (
-                        t("inactiveAudios.neverListened")
-                      )}
+                          })
+                        : t("inactiveAudios.neverListened")}
                     </p>
                   </div>
                 </div>

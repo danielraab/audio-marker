@@ -79,7 +79,7 @@ async function seed() {
         email: "admin@example.com",
         name: "Admin User",
         isAdmin: true,
-        emailVerified: daysAgo(30),
+        emailVerified: true,
       },
     });
 
@@ -90,7 +90,7 @@ async function seed() {
         email: "user1@example.com",
         name: "John Doe",
         isAdmin: false,
-        emailVerified: daysAgo(25),
+        emailVerified: true,
       },
     });
 
@@ -101,7 +101,7 @@ async function seed() {
         email: "user2@example.com",
         name: "Jane Smith",
         isAdmin: false,
-        emailVerified: daysAgo(20),
+        emailVerified: true,
       },
     });
 
@@ -113,7 +113,7 @@ async function seed() {
         name: "Disabled User",
         isAdmin: false,
         isDisabled: true,
-        emailVerified: daysAgo(60),
+        emailVerified: true,
       },
     });
 
@@ -733,7 +733,7 @@ async function seed() {
     // =========================================
     // Summary
     // =========================================
-    console.log("\n" + "=".repeat(50));
+    console.log(`\n${"=".repeat(50)}`);
     console.log("🎉 Database seeding completed successfully!");
     console.log("=".repeat(50));
     console.log("\nSummary:");

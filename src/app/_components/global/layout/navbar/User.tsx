@@ -9,19 +9,19 @@ import {
   DropdownItem,
 } from "@heroui/dropdown";
 import { User, LogIn, LogOut, Settings } from "lucide-react";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { authClient } from "~/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 
 export default function UserMenu() {
-  const { data: session, status } = useSession();
+  const { data: session, isPending } = authClient.useSession();
   const router = useRouter();
   const t = useTranslations("Navbar.UserMenu");
 
   return (
     <NavbarContent as="div" justify="end" className="grow-0">
       <NavbarItem>
-        {status === "loading" ? (
+        {isPending ? (
           <div className="h-8 w-8 animate-pulse rounded-full bg-default-200" />
         ) : session?.user ? (
           <Dropdown placement="bottom-end">
@@ -41,7 +41,7 @@ export default function UserMenu() {
                 <p className="font-semibold">{t("signedInAs")}</p>
                 <p className="font-semibold">{session.user.email}</p>
               </DropdownItem>
-              {session.user.isAdmin ? (
+              {(session.user as { isAdmin?: boolean }).isAdmin ? (
                 <DropdownItem
                   key="settings"
                   startContent={<Settings className="h-4 w-4" />}
@@ -54,7 +54,7 @@ export default function UserMenu() {
                 key="logout"
                 color="danger"
                 startContent={<LogOut className="h-4 w-4" />}
-                onPress={() => signOut()}
+                onPress={() => authClient.signOut()}
               >
                 {t("signOut")}
               </DropdownItem>
@@ -75,7 +75,7 @@ export default function UserMenu() {
               <DropdownItem
                 key="signin"
                 startContent={<LogIn className="h-4 w-4" />}
-                onPress={() => signIn()}
+                onPress={() => router.push("/sign-in")}
               >
                 {t("signIn")}
               </DropdownItem>

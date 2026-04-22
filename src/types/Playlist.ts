@@ -1,4 +1,9 @@
-import type { User } from "next-auth";
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  image?: string | null;
+}
 
 export interface Playlist {
   id: string;

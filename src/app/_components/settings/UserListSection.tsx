@@ -40,7 +40,7 @@ interface UserData {
   id: string;
   name: string | null;
   email: string | null;
-  emailVerified: Date | null;
+  emailVerified: boolean | null;
   isAdmin: boolean;
   isDisabled: boolean;
   image: string | null;

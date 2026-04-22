@@ -10,7 +10,7 @@ import { useIncrementListenCount } from "~/lib/hooks/useIncrementListenCount";
 import { AutoplayCountdownModal } from "./AutoplayCountdownModal";
 import { PlaylistNavigation } from "./PlaylistNavigation";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useSession } from "next-auth/react";
+import { authClient } from "~/lib/auth-client";
 
 interface AudioPlayerWithMarkersProps {
   audioUrl: string;
@@ -33,7 +33,7 @@ export default function ListenOnlyAudioPlayer({
   const searchParams = useSearchParams();
   const playlistId = searchParams.get("playlistId");
   const autoplayParam = searchParams.get("autoplay") === "true";
-  const { data: session } = useSession();
+  const { data: session } = authClient.useSession();
 
   const [markers, setMarkers] = useState<AudioMarker[]>([]);
   const { data: storedMarkers = [] } = api.marker.getMarkers.useQuery({
@@ -72,12 +72,12 @@ export default function ListenOnlyAudioPlayer({
 
   // Fetch playlist data - use user's playlist if logged in, otherwise use public playlist
   const { data: playlistFromUser } = api.playlist.getUserPlaylistById.useQuery(
-    { id: playlistId! },
+    { id: playlistId ?? "" },
     { enabled: !!playlistId && !!session },
   );
 
   const { data: playlistPublic } = api.playlist.getPublicPlaylistById.useQuery(
-    { id: playlistId! },
+    { id: playlistId ?? "" },
     { enabled: !!playlistId && !session },
   );
 

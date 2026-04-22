@@ -27,7 +27,25 @@ import { db } from "~/server/db";
  * @see https://trpc.io/docs/server/context
  */
 export const createTRPCContext = async (opts: { headers: Headers }) => {
-  const session = await auth();
+  const betterAuthSession = await auth.api.getSession({
+    headers: opts.headers,
+  });
+
+  const session = betterAuthSession
+    ? {
+        user: {
+          id: betterAuthSession.user.id,
+          name: betterAuthSession.user.name ?? null,
+          email: betterAuthSession.user.email ?? null,
+          image: betterAuthSession.user.image ?? null,
+          isAdmin:
+            (betterAuthSession.user as { isAdmin?: boolean }).isAdmin ?? false,
+          isDisabled:
+            (betterAuthSession.user as { isDisabled?: boolean }).isDisabled ??
+            false,
+        },
+      }
+    : null;
 
   return {
     db,

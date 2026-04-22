@@ -13,7 +13,7 @@ export async function GET(
 ) {
   try {
     const { audioId } = await params;
-    const session = await auth();
+    const session = await auth.api.getSession({ headers: _request.headers });
 
     // Get audio metadata from database
     const audio = await db.audio.findUnique({

@@ -64,9 +64,8 @@ export function PlaylistStatisticsView({
   );
   const mostListenedAudio =
     statistics.audioStats.length > 0
-      ? statistics.audioStats.reduce(
-          (max, a) => (a.totalListens > max.totalListens ? a : max),
-          statistics.audioStats[0]!,
+      ? statistics.audioStats.reduce((max, a) =>
+          a.totalListens > max.totalListens ? a : max,
         )
       : null;
 

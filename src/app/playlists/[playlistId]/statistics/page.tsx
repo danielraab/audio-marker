@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { auth } from "~/server/auth";
+import { getServerSession } from "~/server/auth";
 import { api, HydrateClient } from "~/trpc/server";
 import { Suspense } from "react";
 import { PlaylistStatisticsView } from "~/app/_components/playlist/statistics/PlaylistStatisticsView";
@@ -10,7 +10,7 @@ interface StatisticsPageProps {
 
 export default async function StatisticsPage({ params }: StatisticsPageProps) {
   const { playlistId } = await params;
-  const session = await auth();
+  const session = await getServerSession();
 
   if (!session?.user?.id) {
     notFound();
@@ -46,7 +46,7 @@ export default async function StatisticsPage({ params }: StatisticsPageProps) {
 
 export async function generateMetadata({ params }: StatisticsPageProps) {
   const { playlistId } = await params;
-  const session = await auth();
+  const session = await getServerSession();
 
   if (!session?.user?.id) {
     return {

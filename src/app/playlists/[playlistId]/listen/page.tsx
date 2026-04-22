@@ -2,7 +2,7 @@ import { api } from "~/trpc/server";
 import { HydrateClient } from "~/trpc/server";
 import { ListenPlaylistView } from "~/app/_components/playlist/listen/ListenPlaylistView";
 import { notFound } from "next/navigation";
-import { auth } from "~/server/auth";
+import { getServerSession } from "~/server/auth";
 import { VisibilityBanner } from "~/app/_components/global/VisibilityBanner";
 import { env } from "~/env";
 import { BarChart3, Edit } from "lucide-react";
@@ -18,7 +18,7 @@ export default async function ListenPlaylistPage({
   params,
 }: ListenPlaylistPageProps) {
   const { playlistId } = await params;
-  const session = await auth();
+  const session = await getServerSession();
 
   // If authentication is required for public content and user is not logged in, redirect to not found
   if (env.REQUIRE_AUTH_FOR_PUBLIC_CONTENT && !session) {
@@ -67,7 +67,7 @@ export default async function ListenPlaylistPage({
 
 export async function generateMetadata({ params }: ListenPlaylistPageProps) {
   const { playlistId } = await params;
-  const session = await auth();
+  const session = await getServerSession();
   try {
     const playlist = session
       ? await api.playlist.getUserPlaylistById({ id: playlistId })

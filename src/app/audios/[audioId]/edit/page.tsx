@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { auth } from "~/server/auth";
+import { getServerSession } from "~/server/auth";
 import { api } from "~/trpc/server";
 import { EditPageContainer } from "~/app/_components/audio/edit/EditPageContainer";
 import { HydrateClient } from "~/trpc/server";
@@ -14,7 +14,7 @@ interface EditAudioPageProps {
 
 export default async function EditAudioPage({ params }: EditAudioPageProps) {
   const { audioId } = await params;
-  const session = await auth();
+  const session = await getServerSession();
   if (!session?.user?.id) {
     return null;
   }
