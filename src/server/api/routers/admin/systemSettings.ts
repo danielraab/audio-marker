@@ -38,7 +38,7 @@ export const systemSettingsRouter = createTRPCRouter({
         update: { value: input.value },
       });
 
-      after(() => revalidateTag(HEAD_INJECTION_CACHE_TAG));
+      after(() => revalidateTag(HEAD_INJECTION_CACHE_TAG, { expire: 0 }));
 
       return { success: true };
     }),
