@@ -11,11 +11,6 @@ on:
         required: false
         type: boolean
         default: false
-      bypass_audit:
-        description: "Bypass security audit (use only if audit failure is a known false-positive)"
-        required: false
-        type: boolean
-        default: false
 
 env:
   REGISTRY: ghcr.io
@@ -59,16 +54,12 @@ jobs:
           DATABASE_URL: "postgresql://test:test@localhost:5432/test"
           AUTH_SECRET: "test-secret-key-for-ci-only"
 
-      - name: Audit bypass notice
-        if: inputs.bypass_audit == true
-        run: echo "::warning::Security audit bypass is active. This was triggered manually — ensure vulnerabilities are reviewed before merging."
-
       - name: Run pnpm audit
-        continue-on-error: ${{ inputs.bypass_audit == true }}
+        continue-on-error: true
         run: pnpm audit --audit-level=high
 
       - name: Check for known vulnerabilities
-        continue-on-error: ${{ inputs.bypass_audit == true }}
+        continue-on-error: true
         run: |
           echo "Checking for high and critical vulnerabilities..."
           pnpm audit --json > audit-report.json || true

@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- **CI security audit**: `pnpm audit` steps in the CI and Docker workflows are now non-blocking; findings are still reported as annotations but no longer fail the pipeline. The now redundant `bypass_audit` workflow input was removed
+
 ### Fixed
 
 ### Security
