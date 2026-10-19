@@ -8,7 +8,7 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "@heroui/dropdown";
-import { User, LogIn, LogOut, Settings } from "lucide-react";
+import { User, UserRound, LogIn, LogOut, Settings } from "lucide-react";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
@@ -42,6 +42,13 @@ export default function UserMenu() {
               <DropdownItem key="profile" className="h-14 gap-2">
                 <p className="font-semibold">{t("signedInAs")}</p>
                 <p className="font-semibold">{session.user.email}</p>
+              </DropdownItem>
+              <DropdownItem
+                key="userProfile"
+                startContent={<UserRound className="h-4 w-4" />}
+                onPress={() => router.push("/profile")}
+              >
+                {t("profile")}
               </DropdownItem>
               {session.user.isAdmin ? (
                 <DropdownItem

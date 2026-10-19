@@ -36,11 +36,14 @@ model Account {
 }
 
 model Session {
-    id           String   @id @default(cuid())
-    sessionToken String   @unique
+    id           String    @id @default(cuid())
+    sessionToken String    @unique
     userId       String
     expires      DateTime
-    user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    createdAt    DateTime  @default(now())
+    // set only for sign-ins via email or Authentik; opens the passkey registration window
+    freshAuthAt  DateTime?
+    user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model User {
@@ -53,9 +56,29 @@ model User {
     isDisabled        Boolean            @default(false)
     accounts          Account[]
     sessions          Session[]
+    authenticators    Authenticator[]
     audios            Audio[]
     playlists         Playlist[]
     legalInformations LegalInformation[]
+}
+
+// Auth.js WebAuthn shape (credentialID / credentialPublicKey are standard base64) + app-specific fields
+model Authenticator {
+    credentialID         String    @unique
+    userId               String
+    providerAccountId    String
+    credentialPublicKey  String
+    counter              Int
+    credentialDeviceType String
+    credentialBackedUp   Boolean
+    transports           String?
+    aaguid               String?
+    label                String?
+    createdAt            DateTime  @default(now())
+    lastUsedAt           DateTime?
+    user                 User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@id([userId, credentialID])
 }
 
 model VerificationToken {

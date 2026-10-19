@@ -17,6 +17,11 @@ export const env = createEnv({
       process.env.NODE_ENV === "production"
         ? z.string()
         : z.string().optional(),
+    AUTH_URL: z.string().url().optional(),
+    AUTH_PASSKEY_DISABLED: z
+      .string()
+      .transform((val) => val === "true")
+      .default("false"),
     AUTH_AUTHENTIK_LABEL: z.string().optional(),
     AUTH_AUTHENTIK_ID: z.string().optional(),
     AUTH_AUTHENTIK_SECRET: process.env.AUTH_AUTHENTIK_ID
@@ -66,6 +71,8 @@ export const env = createEnv({
     DATABASE_URL: process.env.DATABASE_URL,
 
     AUTH_SECRET: process.env.AUTH_SECRET,
+    AUTH_URL: process.env.AUTH_URL,
+    AUTH_PASSKEY_DISABLED: process.env.AUTH_PASSKEY_DISABLED,
     AUTH_AUTHENTIK_LABEL: process.env.AUTH_AUTHENTIK_LABEL,
     AUTH_AUTHENTIK_ID: process.env.AUTH_AUTHENTIK_ID,
     AUTH_AUTHENTIK_SECRET: process.env.AUTH_AUTHENTIK_SECRET,

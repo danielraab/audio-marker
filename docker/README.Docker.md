@@ -50,7 +50,8 @@ The application uses two persistent volumes:
 | Variable | Description | Default |
 |----------|-------------|---------|
 | `DATABASE_URL` | SQLite database path | `file:/app/data/db.sqlite` |
-| `AUTH_URL` | Application URL for authentication | `http://localhost:3000` |
+| `AUTH_URL` | Public application URL for authentication; also defines the passkey domain | `http://localhost:3000` |
+| `AUTH_PASSKEY_DISABLED` | Set to `true` to disable passkey sign-in | `false` |
 | `AUTH_SECRET` | Secret key for NextAuth.js | Required |
 | `AUTH_AUTHENTIK_ID` | Authentik OAuth client ID | Required |
 | `AUTH_AUTHENTIK_SECRET` | Authentik OAuth client secret | Required |
@@ -215,9 +216,10 @@ docker run -it --rm \
 
 1. **Change default secrets**: Always use strong, unique values for `AUTH_SECRET`
 2. **Use HTTPS in production**: Update `AUTH_URL` to use HTTPS
-3. **Secure your Authentik instance**: Ensure your OAuth provider is properly configured
-4. **Regular backups**: Implement regular backup procedures for your data
-5. **Update regularly**: Keep the Docker image updated with security patches
+3. **Passkeys**: Passkeys require HTTPS (except on `localhost`) and are bound to the hostname of `AUTH_URL`. `AUTH_URL` must match the public URL behind your reverse proxy, otherwise passkey registration and sign-in fail. Changing the domain later invalidates all registered passkeys; users can still sign in via email or Authentik and add new ones. Passkeys are disabled when `AUTH_URL` is not set
+4. **Secure your Authentik instance**: Ensure your OAuth provider is properly configured
+5. **Regular backups**: Implement regular backup procedures for your data
+6. **Update regularly**: Keep the Docker image updated with security patches
 
 ## Production Deployment
 
