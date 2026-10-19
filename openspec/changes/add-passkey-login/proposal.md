@@ -4,7 +4,7 @@ Users can currently sign in only via Authentik (OIDC) or an email magic link, bo
 
 ## What Changes
 
-- Add passkey sign-in using the Auth.js Passkey (WebAuthn) provider; the default Auth.js sign-in page shows the generated "Sign in with Passkey" button.
+- Add passkey sign-in using the Auth.js Passkey (WebAuthn) provider; the custom, translated sign-in page shows a "Sign in with passkey" button.
 - Passkeys are enabled by default and can be turned off via a new env flag `AUTH_PASSKEY_DISABLED`. Passkeys are also treated as disabled when `AUTH_URL` is not set (relying party cannot be derived reliably).
 - Passkeys can only be **added** by an already signed-in user, and only within 5 minutes after a fresh sign-in with email or Authentik. A sign-in via passkey does not open this window. Auth.js's own "register" action (which could create new accounts and bypass `MAIL_REGISTRATION_ENABLED`) is blocked.
 - New `/profile` page reachable for every signed-in user via a new "Profile" entry in the user menu. It is structured into sections so further profile features can be added later; the first section is "Passkeys".

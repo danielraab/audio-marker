@@ -13,14 +13,14 @@ Constraints discovered while exploring:
 ## Goals / Non-Goals
 
 **Goals:**
-- Passkey sign-in via the default sign-in page.
+- Passkey sign-in via the custom, translated sign-in page.
 - Full control over registration: fresh-login window (email/Authentik only, 5 min), max 10, AAGUID capture, optional label, no account creation.
 - Vendor name + icon per passkey from a local AAGUID snapshot.
 - Extensible `/profile` page for all users; admin "revoke all passkeys".
 - One source of truth for the relying party.
 
 **Non-Goals:**
-- Custom sign-in page or conditional UI (passkey autofill).
+- Conditional UI (passkey autofill).
 - Enforcing vendor allow/deny lists or attestation verification (`attestation: "none"`).
 - Passkey-only accounts / sign-up via passkey.
 - Admin visibility of individual passkeys.
@@ -41,10 +41,13 @@ Both rows are created/deleted together in one transaction.
 
 ### D2: Block Auth.js `register`
 Auth.js can start a registration in two ways, both closed:
-- Signed-out with an unknown email (implicit sign-up): the provider's `getUserInfo` returns `null`, so Auth.js never infers `register`; `formFields: {}` removes the email field from the sign-in page.
+- Signed-out with an unknown email (implicit sign-up): the provider's `getUserInfo` returns `null`, so Auth.js never infers `register`, and the custom sign-in page offers no field to enter one.
 - Signed-in with explicit `action=register`: `src/app/api/auth/[...nextauth]/route.ts` wraps `GET` and returns 403 for `/webauthn-options/passkey?action=register`. Without these options no signed register challenge cookie exists, so the `register` callback cannot succeed either.
 
-`enableConditionalUI` is set to `false`: with no form field carrying `autocomplete="webauthn"`, Auth.js otherwise rejects the whole configuration (`MissingWebAuthnAutocomplete`), breaking all providers.
+### D2a: Custom, translated sign-in page
+The default Auth.js sign-in page cannot be translated (hardcoded English labels, provider names fixed at startup) and only loads its WebAuthn client script with conditional UI; without it the passkey button posts the bare form and Auth.js fails with "Invalid action parameter". A custom page `/signin` (next-intl) replaces it via `pages.signIn`, also serving as `pages.error`, plus `/signin/verify-request` for the email link notice. It renders the configured providers (reduced to `id`, `name`, `type`): OAuth buttons and the email form via `next-auth/react`, the passkey button via `next-auth/webauthn`.
+
+`enableConditionalUI` stays `false` with `formFields: {}`; otherwise Auth.js requires a form field with `autocomplete="webauthn"` (`MissingWebAuthnAutocomplete`).
 
 ### D3: Fresh-login window on the session row
 Prisma `Session` gets `createdAt DateTime @default(now())` and `freshAuthAt DateTime?`. `events.signIn` sets `freshAuthAt = now()` on the user's newest session when `account.provider ∈ {"authentik", "nodemailer"}`; passkey sign-ins leave it `null`. The `session` callback exposes a derived `passkeyAddableUntil = freshAuthAt + 5 min` (or `null`) server-side; the tRPC procedures re-check it on `getRegistrationOptions` and `verifyRegistration`.

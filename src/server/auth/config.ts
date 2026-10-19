@@ -109,6 +109,11 @@ export const authConfig = {
       : []),
   ],
   adapter,
+  pages: {
+    signIn: "/signin",
+    error: "/signin",
+    verifyRequest: "/signin/verify-request",
+  },
   experimental: { enableWebAuthn: passkeyConfig.enabled },
   events: {
     signIn: async ({ user, account }) => {
