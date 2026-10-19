@@ -9,6 +9,10 @@ export const roundTime = (seconds: number, decimals = 2): number => {
   return Math.round(seconds * factor) / factor;
 };
 
+/** Returns the UTC calendar date as `YYYY-MM-DD`. */
+export const toDateKey = (date: Date): string =>
+  date.toISOString().slice(0, 10);
+
 export const formatTimeAgo = (date: Date, locale?: string) => {
   const now = new Date();
   const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);

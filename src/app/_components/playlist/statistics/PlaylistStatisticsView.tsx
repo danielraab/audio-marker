@@ -62,13 +62,9 @@ export function PlaylistStatisticsView({
     (sum, a) => sum + a.periodListens,
     0,
   );
-  const mostListenedAudio =
-    statistics.audioStats.length > 0
-      ? statistics.audioStats.reduce(
-          (max, a) => (a.totalListens > max.totalListens ? a : max),
-          statistics.audioStats[0]!,
-        )
-      : null;
+  const mostListenedAudio = statistics.audioStats.reduce<
+    (typeof statistics.audioStats)[number] | null
+  >((max, a) => (!max || a.totalListens > max.totalListens ? a : max), null);
 
   return (
     <div className="w-full max-w-4xl px-4 flex flex-col gap-6">

@@ -97,10 +97,9 @@ export function AudioListenMultiChart({
 
   for (const audio of audioStats) {
     for (const day of audio.dailyStats) {
-      if (!dateMap.has(day.date)) {
-        dateMap.set(day.date, {});
-      }
-      dateMap.get(day.date)![audio.audioId] = day.listens;
+      const entry = dateMap.get(day.date) ?? {};
+      entry[audio.audioId] = day.listens;
+      dateMap.set(day.date, entry);
     }
   }
 
