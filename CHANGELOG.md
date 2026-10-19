@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.10.0] - 2026-10-19
+
 ### Added
 
 - **Passkey sign-in**: Users can sign in with passkeys via the sign-in page. Passkeys are enabled when `AUTH_URL` is set (it defines the passkey domain) and can be disabled with `AUTH_PASSKEY_DISABLED=true`. Disabled users cannot sign in with a passkey
