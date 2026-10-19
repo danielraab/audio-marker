@@ -1,7 +1,7 @@
 ## ADDED Requirements
 
 ### Requirement: Passkey sign-in
-The system SHALL allow a user with at least one registered passkey to sign in using that passkey via the default Auth.js sign-in page.
+The system SHALL allow a user with at least one registered passkey to sign in using that passkey via the sign-in page.
 
 #### Scenario: Sign-in button shown
 - **WHEN** passkeys are enabled and a visitor opens the sign-in page

@@ -778,5 +778,28 @@
     "heading": "Bei {host} anmelden",
     "button": "Anmelden",
     "ignoreNotice": "Falls du diese E-Mail nicht angefordert hast, kannst du sie einfach ignorieren."
+  },
+  "SignInPage": {
+    "title": "Anmelden",
+    "description": "Wähle, wie du dich anmelden möchtest.",
+    "signInWith": "Mit {provider} anmelden",
+    "email": {
+      "label": "E-Mail",
+      "placeholder": "du@beispiel.at",
+      "submit": "Mit E-Mail anmelden"
+    },
+    "passkey": "Mit Passkey anmelden",
+    "errors": {
+      "accessDenied": "Die Anmeldung wurde abgelehnt. Möglicherweise ist dein Konto deaktiviert oder die Registrierung geschlossen.",
+      "verification": "Der Anmeldelink ist ungültig oder abgelaufen. Bitte fordere einen neuen an.",
+      "accountNotLinked": "Diese E-Mail ist bereits mit einer anderen Anmeldemethode verknüpft. Bitte verwende diese.",
+      "passkey": "Die Anmeldung mit Passkey ist fehlgeschlagen. Bitte versuche es erneut oder nutze eine andere Methode.",
+      "passkeyCancelled": "Die Anmeldung mit Passkey wurde abgebrochen.",
+      "default": "Die Anmeldung ist fehlgeschlagen. Bitte versuche es erneut."
+    }
+  },
+  "VerifyRequestPage": {
+    "title": "Prüfe deine E-Mails",
+    "description": "Ein Anmeldelink wurde an deine E-Mail-Adresse gesendet."
   }
 }

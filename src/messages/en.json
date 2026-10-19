@@ -778,5 +778,28 @@
     "heading": "Sign in to {host}",
     "button": "Sign in",
     "ignoreNotice": "If you did not request this email you can safely ignore it."
+  },
+  "SignInPage": {
+    "title": "Sign in",
+    "description": "Choose how you want to sign in.",
+    "signInWith": "Sign in with {provider}",
+    "email": {
+      "label": "Email",
+      "placeholder": "you@example.com",
+      "submit": "Sign in with email"
+    },
+    "passkey": "Sign in with passkey",
+    "errors": {
+      "accessDenied": "Sign-in was denied. Your account may be disabled or registration is closed.",
+      "verification": "The sign-in link is invalid or has expired. Please request a new one.",
+      "accountNotLinked": "This email is already linked to another sign-in method. Please use that method.",
+      "passkey": "Sign-in with passkey failed. Please try again or use another method.",
+      "passkeyCancelled": "Passkey sign-in was cancelled.",
+      "default": "Sign-in failed. Please try again."
+    }
+  },
+  "VerifyRequestPage": {
+    "title": "Check your email",
+    "description": "A sign-in link has been sent to your email address."
   }
 }
