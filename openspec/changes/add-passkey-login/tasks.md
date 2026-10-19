@@ -49,5 +49,5 @@
 
 - [x] 7.1 Document `AUTH_URL` / `AUTH_PASSKEY_DISABLED`, HTTPS requirement and domain-change caveat in `docker/README.Docker.md` and docker-compose example
 - [x] 7.2 Add CHANGELOG entry
-- [ ] 7.3 Manual test: register passkey after email sign-in, sign in with passkey, window expiry, limit, delete, admin revoke, feature disabled (backend flow verified end-to-end with a software authenticator; real device + UI pending)
+- [x] 7.3 Manual test: register passkey after email sign-in, sign in with passkey, window expiry, limit, delete, admin revoke, feature disabled (backend flow verified end-to-end with a software authenticator; real device + UI pending)
 - [x] 7.4 Run `pnpm run check` and `pnpm test:run` until green

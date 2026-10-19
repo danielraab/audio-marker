@@ -43,6 +43,8 @@ The application uses two persistent volumes:
 - **`audio_uploads`**: Stores uploaded audio files (`/app/data/uploads`)
 - **`database_data`**: Stores the SQLite database and other data (`/app/data`)
 
+The Dockerfile declares `/app/data` as a `VOLUME`. If you don't mount a volume there, Docker creates an anonymous volume, which is not reused when the container is recreated. Always mount a named volume or host directory to `/app/data` to keep your data.
+
 ### Environment Variables
 
 **Runtime Environment Variables** (set in docker-compose.yml or passed to `docker run`):
@@ -153,7 +155,7 @@ For more details, see [scripts/README.md](../scripts/README.md).
 ## Data Persistence
 
 ### Audio Files
-All uploaded audio files are stored in the `audio_uploads` volume, which maps to `/app/public/uploads` inside the container. Files are immediately available without container restart.
+All uploaded audio files are stored in the `audio_uploads` volume, which maps to `/app/data/uploads` inside the container. Files are immediately available without container restart.
 
 ### Database
 The SQLite database is stored in the `database_data` volume, which maps to `/app/data` inside the container.

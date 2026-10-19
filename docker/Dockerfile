@@ -76,6 +76,7 @@ COPY --from=builder /app/.next/static ./.next/static
 
 # Create data directories for uploads and database
 RUN mkdir -p data/uploads
+VOLUME ["/app/data"]
 
 # Copy Prisma files and full node_modules for CLI access
 COPY --from=builder /app/prisma ./prisma

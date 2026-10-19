@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Profile page**: New `/profile` page for all users, reachable via "Profile" in the user menu. Its first section manages passkeys: add (max. 10, only within 5 minutes after signing in with email or Authentik), optional label, vendor name and icon (from a snapshot of the community passkey AAGUID list, refresh with `pnpm run passkey:update-aaguids`), created and last used date, delete
 - **Admin passkey revocation**: Admins can revoke all passkeys of a user in the user management dialog without seeing the individual passkeys
 
+### Changed
+
+- **Docker volume**: The Dockerfile declares `/app/data` (SQLite database and uploads) as a volume, so data is persisted in a volume even when no volume is mounted explicitly
+
 ### Security
 
 - **Session payload**: The session returned to the browser no longer contains the database session row (including the session token); only whitelisted fields are exposed
