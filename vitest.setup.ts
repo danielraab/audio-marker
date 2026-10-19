@@ -16,4 +16,4 @@ const localStorageMock: Storage = {
   key: vi.fn(),
   length: 0,
 };
-global.localStorage = localStorageMock;
+vi.stubGlobal("localStorage", localStorageMock);

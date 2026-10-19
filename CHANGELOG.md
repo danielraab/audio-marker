@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **Test setup with Vitest 5**: The `localStorage` mock is now installed via `vi.stubGlobal`, as Vitest 5's jsdom environment no longer allows assigning `global.localStorage` directly. The Vitest config uses `import.meta.dirname` instead of `__dirname`
 - **Lint warnings**: Resolved all Biome lint warnings (non-null assertions, template literals, `node:` import protocol, useless fragment). `isSection` is now a type guard and date keys for listen statistics use a shared, tested `toDateKey` helper
 
 ## [0.9.7] - 2026-10-19
