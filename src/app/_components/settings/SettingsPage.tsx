@@ -42,7 +42,7 @@ export default function SettingsPage() {
             <SoftDeletedSection />
           </div>
         </Tab>
-        <Tab key="legal" title="Legal Pages">
+        <Tab key="legal" title={t("tabs.legal")}>
           <div className="py-4">
             <LegalInformationSection />
           </div>

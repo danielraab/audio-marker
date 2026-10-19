@@ -7,6 +7,7 @@ import { VisibilityBanner } from "~/app/_components/global/VisibilityBanner";
 import { env } from "~/env";
 import { BarChart3, Edit } from "lucide-react";
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 
 interface ListenPlaylistPageProps {
   params: Promise<{
@@ -36,6 +37,8 @@ export default async function ListenPlaylistPage({
       notFound();
     }
 
+    const t = await getTranslations("PlaylistPages");
+
     return (
       <HydrateClient>
         <VisibilityBanner isPublic={playlist.isPublic} isCreator={isCreator} />
@@ -46,14 +49,14 @@ export default async function ListenPlaylistPage({
               className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-primary bg-primary/10 hover:bg-primary/20 rounded-lg transition-colors"
             >
               <Edit size={18} />
-              Edit Playlist
+              {t("editPlaylist")}
             </Link>
             <Link
               href={`/playlists/${playlistId}/statistics`}
               className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-warning bg-warning/10 hover:bg-warning/20 rounded-lg transition-colors"
             >
               <BarChart3 size={18} />
-              Statistics
+              {t("statistics")}
             </Link>
           </div>
         )}
@@ -68,18 +71,19 @@ export default async function ListenPlaylistPage({
 export async function generateMetadata({ params }: ListenPlaylistPageProps) {
   const { playlistId } = await params;
   const session = await auth();
+  const t = await getTranslations("PlaylistPages.metadata");
   try {
     const playlist = session
       ? await api.playlist.getUserPlaylistById({ id: playlistId })
       : await api.playlist.getPublicPlaylistById({ id: playlistId });
     return {
-      title: `${playlist.name} - Playlist`,
-      description: `Listen to ${playlist.name}`,
+      title: t("listenTitle", { name: playlist.name }),
+      description: t("listenDescription", { name: playlist.name }),
     };
   } catch {
     return {
-      title: "Playlist",
-      description: "Listen to playlists",
+      title: t("listenFallbackTitle"),
+      description: t("listenFallbackDescription"),
     };
   }
 }

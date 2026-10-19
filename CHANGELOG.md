@@ -7,15 +7,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.7] - 2026-10-19
+
 ### Added
+
+- **Translated sign-in email**: The magic link email sent by the email (Nodemailer) login is now translated to German and English based on the selected language, using the same layout as the previous Auth.js default email
+- **Translation test**: New test ensures English and German message files contain the same keys, no empty values and matching placeholders
+
+### Fixed
+
+- **Missing translations**: Replaced remaining hardcoded English texts with German and English translations (legal pages and admin legal settings, cookie banner, browser markers, footer, rich text editor, service worker update prompt, audio/playlist page links, loading states and page metadata). Added missing aria-labels to the legal page settings icon buttons
+
+## [0.9.6] - 2026-10-16
 
 ### Changed
 
 - **CI security audit**: `pnpm audit` steps in the CI and Docker workflows are now non-blocking; findings are still reported as annotations but no longer fail the pipeline. The now redundant `bypass_audit` workflow input was removed
 
+### Security
+
+- **Dependency updates**: Bumped `nodemailer` to 9.1.1 and `fast-uri` to 3.1.7
+
+## [0.9.5] - 2026-08-13
+
+### Added
+
+- **Dependabot**: Added `.github/dependabot.yml` for automated npm dependency updates
+
 ### Fixed
 
+- **CI workflow**: Workflow now targets the `master` branch, installs pnpm before the pnpm cache resolution of `setup-node` and no longer conflicts with the `packageManager` pnpm version
+- **Type check**: Passed the required cache-life profile to `revalidateTag`
+
 ### Security
+
+- **Dependency updates**: Bumped `next`, `next-auth`, `next-intl`, `nodemailer`, `uuid`, `postcss`, `vite` and `sharp`
+- **Vulnerable transitive dependencies**: Pinned patched versions of `@auth/core`, `brace-expansion`, `linkify-it`, `markdown-it`, `ws`, `uuid`, `esbuild`, `@babel/core` and `@opentelemetry/core` via `pnpm.overrides`
 
 ## [0.9.4] - 2026-04-13
 

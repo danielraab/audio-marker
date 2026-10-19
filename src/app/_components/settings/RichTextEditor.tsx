@@ -21,6 +21,7 @@ import {
   Undo,
   Redo,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface RichTextEditorProps {
   content: string;
@@ -31,6 +32,7 @@ export default function RichTextEditor({
   content,
   onChange,
 }: RichTextEditorProps) {
+  const t = useTranslations("RichTextEditor");
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -63,7 +65,7 @@ export default function RichTextEditor({
   }
 
   const setLink = () => {
-    const url = window.prompt("Enter URL:");
+    const url = window.prompt(t("enterUrl"));
     if (url) {
       editor.chain().focus().setLink({ href: url }).run();
     }

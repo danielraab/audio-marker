@@ -1,8 +1,14 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import { useTranslations } from "next-intl";
 
 export default function ServiceWorkerRegistration() {
+  const t = useTranslations("ServiceWorker");
+  // Ref keeps the mount-only effect below free of a dependency on `t`
+  const updateMessageRef = useRef(t("updateAvailable"));
+  updateMessageRef.current = t("updateAvailable");
+
   useEffect(() => {
     if (typeof window !== "undefined" && "serviceWorker" in navigator) {
       // Pass environment mode to service worker via URL parameter
@@ -36,9 +42,7 @@ export default function ServiceWorkerRegistration() {
                   console.log("New service worker available");
 
                   // Optionally notify user about update
-                  if (
-                    confirm("A new version is available! Click OK to update.")
-                  ) {
+                  if (confirm(updateMessageRef.current)) {
                     newWorker.postMessage({ type: "SKIP_WAITING" });
                     window.location.reload();
                   }

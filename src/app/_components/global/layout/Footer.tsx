@@ -26,7 +26,7 @@ export default async function Footer() {
           size="sm"
           className="text-gray-600 dark:text-gray-400"
         >
-          Legal Information
+          {t("legalInformation")}
         </Link>
       </div>
     </footer>

@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { auth } from "~/server/auth";
 import { api, HydrateClient } from "~/trpc/server";
 import { Suspense } from "react";
+import { getTranslations } from "next-intl/server";
 import { PlaylistStatisticsView } from "~/app/_components/playlist/statistics/PlaylistStatisticsView";
 
 interface StatisticsPageProps {
@@ -27,13 +28,15 @@ export default async function StatisticsPage({ params }: StatisticsPageProps) {
     notFound();
   }
 
+  const t = await getTranslations("PlaylistPages");
+
   return (
     <div className="w-full flex min-h-screen flex-col items-center gap-4 py-8">
       <HydrateClient>
         <Suspense
           fallback={
             <div className="flex items-center justify-center py-8">
-              <p className="text-default-500">Loading statistics...</p>
+              <p className="text-default-500">{t("loadingStatistics")}</p>
             </div>
           }
         >
@@ -47,24 +50,23 @@ export default async function StatisticsPage({ params }: StatisticsPageProps) {
 export async function generateMetadata({ params }: StatisticsPageProps) {
   const { playlistId } = await params;
   const session = await auth();
+  const t = await getTranslations("PlaylistPages.metadata");
+  const fallback = {
+    title: t("statisticsFallbackTitle"),
+    description: t("statisticsFallbackDescription"),
+  };
 
   if (!session?.user?.id) {
-    return {
-      title: "Statistics - Audio Marker",
-      description: "View playlist statistics",
-    };
+    return fallback;
   }
 
   try {
     const playlist = await api.playlist.getUserPlaylistById({ id: playlistId });
     return {
-      title: `Statistics - ${playlist.name} - Audio Marker`,
-      description: `Listen statistics for ${playlist.name}`,
+      title: t("statisticsTitle", { name: playlist.name }),
+      description: t("statisticsDescription", { name: playlist.name }),
     };
   } catch {
-    return {
-      title: "Statistics - Audio Marker",
-      description: "View playlist statistics",
-    };
+    return fallback;
   }
 }
