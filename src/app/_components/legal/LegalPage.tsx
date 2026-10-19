@@ -3,8 +3,10 @@
 import { api } from "~/trpc/react";
 import { Tabs, Tab } from "@heroui/tabs";
 import { Card, CardBody } from "@heroui/card";
+import { useTranslations } from "next-intl";
 
 export default function LegalPage() {
+  const t = useTranslations("LegalPage");
   const {
     data: legalInfos,
     isLoading,
@@ -28,10 +30,8 @@ export default function LegalPage() {
       <div className="container mx-auto max-w-4xl px-4 py-8">
         <Card>
           <CardBody className="text-center py-12">
-            <h1 className="text-2xl font-bold mb-4">Legal Information</h1>
-            <p className="text-default-500">
-              No legal information is currently available.
-            </p>
+            <h1 className="text-2xl font-bold mb-4">{t("title")}</h1>
+            <p className="text-default-500">{t("empty")}</p>
           </CardBody>
         </Card>
       </div>
@@ -48,7 +48,9 @@ export default function LegalPage() {
         <div className="prose prose-slate dark:prose-invert max-w-none">
           <h1>{info.label}</h1>
           <p className="text-sm text-gray-600 dark:text-gray-400">
-            Last updated: {new Date(info.updatedAt).toLocaleDateString()}
+            {t("lastUpdated", {
+              date: new Date(info.updatedAt).toLocaleDateString(),
+            })}
           </p>
           <div dangerouslySetInnerHTML={{ __html: info.content }} />
         </div>
@@ -59,14 +61,16 @@ export default function LegalPage() {
   // Multiple pages: show with tabs
   return (
     <div className="container mx-auto max-w-4xl px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6">Legal Information</h1>
-      <Tabs aria-label="Legal information" variant="underlined">
+      <h1 className="text-3xl font-bold mb-6">{t("title")}</h1>
+      <Tabs aria-label={t("tabsAriaLabel")} variant="underlined">
         {legalInfos.map((info) => (
           <Tab key={info.id} title={info.label}>
             <div className="py-6">
               <div className="prose prose-slate dark:prose-invert max-w-none">
                 <p className="text-sm text-gray-600 dark:text-gray-400 mb-6">
-                  Last updated: {new Date(info.updatedAt).toLocaleDateString()}
+                  {t("lastUpdated", {
+                    date: new Date(info.updatedAt).toLocaleDateString(),
+                  })}
                 </p>
                 <div dangerouslySetInnerHTML={{ __html: info.content }} />
               </div>

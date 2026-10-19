@@ -1,10 +1,14 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import LegalPage from "~/app/_components/legal/LegalPage";
 
-export const metadata: Metadata = {
-  title: "Legal Information - Audio Marker",
-  description: "Legal information for Audio Marker application",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("LegalPage.metadata");
+  return {
+    title: t("title"),
+    description: t("description"),
+  };
+}
 
 export default function Legal() {
   return <LegalPage />;

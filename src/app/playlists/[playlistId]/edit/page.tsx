@@ -7,6 +7,7 @@ import { Suspense } from "react";
 import EditPlaylistForm from "~/app/_components/playlist/edit/EditPlaylistForm";
 import Link from "next/link";
 import { Play } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 
 interface PlaylistEditPageProps {
   params: Promise<{
@@ -31,12 +32,14 @@ export default async function PlaylistEditPage({
     notFound();
   }
 
+  const t = await getTranslations("PlaylistPages");
+
   return (
     <HydrateClient>
       <Suspense
         fallback={
           <div className="flex items-center justify-center py-8">
-            <p className="text-default-500">Loading playlist details...</p>
+            <p className="text-default-500">{t("loadingDetails")}</p>
           </div>
         }
       >
@@ -46,7 +49,7 @@ export default async function PlaylistEditPage({
             className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-success bg-success/10 hover:bg-success/20 rounded-lg transition-colors"
           >
             <Play size={18} />
-            Listen
+            {t("listen")}
           </Link>
         </div>
         <EditPlaylistForm playlistId={playlistId} />

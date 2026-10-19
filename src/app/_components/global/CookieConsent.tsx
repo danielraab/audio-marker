@@ -3,8 +3,10 @@
 import { useState, useEffect } from "react";
 import { Button } from "@heroui/button";
 import { X } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export function CookieConsent() {
+  const t = useTranslations("CookieConsent");
   const [showBanner, setShowBanner] = useState(false);
 
   useEffect(() => {
@@ -31,19 +33,19 @@ export function CookieConsent() {
       <div className="container mx-auto max-w-6xl">
         <div className="flex flex-col items-start sm:items-center justify-between gap-2">
           <div className="flex flex-row justify-between w-full flex-1">
-            <h3 className="font-semibold text-lg mb-1">🍪 We use cookies</h3>
+            <h3 className="font-semibold text-lg mb-1">{t("title")}</h3>
             <Button
               size="sm"
               variant="light"
               isIconOnly
               onPress={handleDecline}
-              aria-label="Close banner"
+              aria-label={t("closeAriaLabel")}
             >
               <X className="h-4 w-4" />
             </Button>
           </div>
           <p className="text-sm text-gray-600 dark:text-gray-400">
-            We use only essential cookies for authentication and functionality.
+            {t("description")}
           </p>
         </div>
       </div>

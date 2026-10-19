@@ -7,8 +7,10 @@
       "signedInAs": "Angemeldet als",
       "settings": "Einstellungen",
       "signOut": "Abmelden",
-      "signIn": "Anmelden"
-    }
+      "signIn": "Anmelden",
+      "fallbackName": "Benutzer"
+    },
+    "logoAlt": "Logo"
   },
   "PublicLanding": {
     "title": "Audio Marker",
@@ -59,7 +61,8 @@
     "save": "Änderungen speichern"
   },
   "Footer": {
-    "versionTitle": "Version: {version}"
+    "versionTitle": "Version: {version}",
+    "legalInformation": "Rechtliche Informationen"
   },
   "AudioPlayer": {
     "subtitle": "Audioplayer",
@@ -110,7 +113,8 @@
     "descriptionPlaceholder": "Füge eine Beschreibung für deine Audiodatei hinzu",
     "fileLabel": "MP3-Datei",
     "selectedFile": "Ausgewählt: {fileName}",
-    "selectFile": "Wähle eine MP3-Audiodatei"
+    "selectFile": "Wähle eine MP3-Audiodatei",
+    "networkError": "Ein Netzwerkfehler ist aufgetreten."
   },
   "AudioListItem": {
     "markers": "{count} {count, plural, one {Markierung} other {Markierungen}}",
@@ -376,7 +380,8 @@
       "users": "Benutzer",
       "softDeleted": "Gelöschte Elemente",
       "system": "System",
-      "general": "Allgemein"
+      "general": "Allgemein",
+      "legal": "Rechtliche Seiten"
     },
     "comingSoon": "Systemeinstellungen folgen in Kürze..."
   },
@@ -625,5 +630,108 @@
       "lastListened": "Zuletzt gehört am {date}",
       "neverListened": "Nie gehört"
     }
+  },
+  "AppMetadata": {
+    "description": "Audio Marker - Lade deine Audiodateien hoch, markiere und teile sie ganz einfach. Von DRaab",
+    "shortDescription": "Lade deine Audiodateien hoch, markiere und teile sie ganz einfach"
+  },
+  "CookieConsent": {
+    "title": "🍪 Wir verwenden Cookies",
+    "description": "Wir verwenden ausschließlich notwendige Cookies für die Anmeldung und die Funktionalität.",
+    "closeAriaLabel": "Hinweis schließen"
+  },
+  "ServiceWorker": {
+    "updateAvailable": "Eine neue Version ist verfügbar! Klicke auf OK, um zu aktualisieren."
+  },
+  "BrowserMarkers": {
+    "title": "Browser-Audio-Markierungen",
+    "subtitle": "Diese Markierungen sind nur in diesem Browser verfügbar.",
+    "listTitle": "Gespeicherte Markierungen:",
+    "defaultLabel": "Browser-Markierung {index}"
+  },
+  "AudioPages": {
+    "editAudio": "Audio bearbeiten",
+    "preview": "Vorschau",
+    "statistics": "Statistiken",
+    "loadingDetails": "Audiodetails werden geladen...",
+    "loadingStatistics": "Statistiken werden geladen...",
+    "metadata": {
+      "listenTitle": "Audio Marker - Anhören",
+      "listenDescription": "{name} anhören",
+      "listenFallbackDescription": "Audiodateien anhören",
+      "statisticsTitle": "Statistiken - {name} - Audio Marker",
+      "statisticsFallbackTitle": "Statistiken - Audio Marker",
+      "statisticsDescription": "Anhörstatistiken für {name}",
+      "statisticsFallbackDescription": "Audiostatistiken ansehen"
+    }
+  },
+  "PlaylistPages": {
+    "editPlaylist": "Playlist bearbeiten",
+    "listen": "Anhören",
+    "statistics": "Statistiken",
+    "loadingDetails": "Playlistdetails werden geladen...",
+    "loadingStatistics": "Statistiken werden geladen...",
+    "metadata": {
+      "listenTitle": "{name} - Playlist",
+      "listenFallbackTitle": "Playlist",
+      "listenDescription": "{name} anhören",
+      "listenFallbackDescription": "Playlists anhören",
+      "statisticsTitle": "Statistiken - {name} - Audio Marker",
+      "statisticsFallbackTitle": "Statistiken - Audio Marker",
+      "statisticsDescription": "Anhörstatistiken für {name}",
+      "statisticsFallbackDescription": "Playliststatistiken ansehen"
+    }
+  },
+  "LegalPage": {
+    "title": "Rechtliche Informationen",
+    "empty": "Derzeit sind keine rechtlichen Informationen verfügbar.",
+    "tabsAriaLabel": "Rechtliche Informationen",
+    "lastUpdated": "Zuletzt aktualisiert: {date}",
+    "metadata": {
+      "title": "Rechtliche Informationen - Audio Marker",
+      "description": "Rechtliche Informationen zur Audio Marker Anwendung"
+    }
+  },
+  "LegalInformationSection": {
+    "loading": "Wird geladen...",
+    "title": "Rechtliche Informationen",
+    "description": "Inhalte der rechtlichen Seiten verwalten (AGB, Datenschutzerklärung usw.)",
+    "addPage": "Rechtliche Seite hinzufügen",
+    "confirmDelete": "Möchtest du diese rechtliche Information wirklich löschen?",
+    "lastUpdated": "Zuletzt aktualisiert: {date}",
+    "updatedBy": "von {name}",
+    "unknown": "Unbekannt",
+    "empty": "Noch keine rechtlichen Seiten vorhanden. Erstelle eine, um loszulegen.",
+    "aria": {
+      "toggleEnabled": "Seite aktivieren oder deaktivieren",
+      "edit": "Rechtliche Seite bearbeiten",
+      "delete": "Rechtliche Seite löschen"
+    },
+    "modal": {
+      "editTitle": "Rechtliche Seite bearbeiten",
+      "createTitle": "Rechtliche Seite erstellen"
+    },
+    "fields": {
+      "label": {
+        "label": "Bezeichnung",
+        "placeholder": "z. B. Datenschutzerklärung, Nutzungsbedingungen"
+      },
+      "content": "Inhalt",
+      "enabled": "Diese Seite aktivieren"
+    },
+    "actions": {
+      "cancel": "Abbrechen",
+      "update": "Aktualisieren",
+      "create": "Erstellen"
+    }
+  },
+  "RichTextEditor": {
+    "enterUrl": "URL eingeben:"
+  },
+  "VerificationEmail": {
+    "subject": "Bei {host} anmelden",
+    "heading": "Bei {host} anmelden",
+    "button": "Anmelden",
+    "ignoreNotice": "Falls du diese E-Mail nicht angefordert hast, kannst du sie einfach ignorieren."
   }
 }

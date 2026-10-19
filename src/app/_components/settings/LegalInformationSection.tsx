@@ -18,6 +18,7 @@ import { Plus, Edit, Trash2, Save, X, GripVertical } from "lucide-react";
 import RichTextEditor from "./RichTextEditor";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import type { DropResult } from "@hello-pangea/dnd";
+import { useTranslations } from "next-intl";
 
 type LegalInfo = {
   id: string;
@@ -36,6 +37,7 @@ type LegalInfo = {
 };
 
 export default function LegalInformationSection() {
+  const t = useTranslations("LegalInformationSection");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<LegalInfo | null>(null);
   const [localItems, setLocalItems] = useState<LegalInfo[]>([]);
@@ -128,7 +130,7 @@ export default function LegalInformationSection() {
   };
 
   const handleDelete = (id: string) => {
-    if (confirm("Are you sure you want to delete this legal information?")) {
+    if (confirm(t("confirmDelete"))) {
       deleteMutation.mutate({ id });
     }
   };
@@ -161,7 +163,7 @@ export default function LegalInformationSection() {
       <Card>
         <CardBody>
           <div className="flex min-h-[400px] items-center justify-center">
-            <Spinner size="lg" label="Loading..." />
+            <Spinner size="lg" label={t("loading")} />
           </div>
         </CardBody>
       </Card>
@@ -172,17 +174,15 @@ export default function LegalInformationSection() {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-semibold">Legal Information</h2>
-          <p className="text-sm text-default-500">
-            Manage legal pages content (Terms, Privacy Policy, etc.)
-          </p>
+          <h2 className="text-2xl font-semibold">{t("title")}</h2>
+          <p className="text-sm text-default-500">{t("description")}</p>
         </div>
         <Button
           color="primary"
           startContent={<Plus size={18} />}
           onPress={openCreateModal}
         >
-          Add Legal Page
+          {t("addPage")}
         </Button>
       </div>
 
@@ -221,33 +221,23 @@ export default function LegalInformationSection() {
                                   })
                                 }
                                 size="sm"
+                                aria-label={t("aria.toggleEnabled")}
                               />
                               <div>
                                 <h3 className="font-semibold">{item.label}</h3>
                                 <p className="text-xs text-default-500">
-                                  Last updated:{" "}
-                                  {new Date(
-                                    item.updatedAt,
-                                  ).toLocaleDateString()}
-                                  {item.updatedBy && (
-                                    <>
-                                      {" "}
-                                      by{" "}
-                                      {(
-                                        item.updatedBy as {
-                                          name: string | null;
-                                          email: string | null;
-                                        }
-                                      ).name ??
-                                        (
-                                          item.updatedBy as {
-                                            name: string | null;
-                                            email: string | null;
-                                          }
-                                        ).email ??
-                                        "Unknown"}
-                                    </>
-                                  )}
+                                  {t("lastUpdated", {
+                                    date: new Date(
+                                      item.updatedAt,
+                                    ).toLocaleDateString(),
+                                  })}
+                                  {item.updatedBy &&
+                                    ` ${t("updatedBy", {
+                                      name:
+                                        item.updatedBy.name ??
+                                        item.updatedBy.email ??
+                                        t("unknown"),
+                                    })}`}
                                 </p>
                               </div>
                             </div>
@@ -256,6 +246,7 @@ export default function LegalInformationSection() {
                                 size="sm"
                                 variant="light"
                                 isIconOnly
+                                aria-label={t("aria.edit")}
                                 onPress={() => openEditModal(item)}
                               >
                                 <Edit size={18} />
@@ -265,6 +256,7 @@ export default function LegalInformationSection() {
                                 variant="light"
                                 color="danger"
                                 isIconOnly
+                                aria-label={t("aria.delete")}
                                 onPress={() => handleDelete(item.id)}
                               >
                                 <Trash2 size={18} />
@@ -291,9 +283,7 @@ export default function LegalInformationSection() {
         {localItems?.length === 0 && (
           <Card>
             <CardBody className="text-center py-12">
-              <p className="text-default-500">
-                No legal information pages yet. Create one to get started.
-              </p>
+              <p className="text-default-500">{t("empty")}</p>
             </CardBody>
           </Card>
         )}
@@ -307,13 +297,13 @@ export default function LegalInformationSection() {
       >
         <ModalContent>
           <ModalHeader>
-            {editingItem ? "Edit Legal Page" : "Create Legal Page"}
+            {editingItem ? t("modal.editTitle") : t("modal.createTitle")}
           </ModalHeader>
           <ModalBody>
             <div className="space-y-4">
               <Input
-                label="Label"
-                placeholder="e.g., Privacy Policy, Terms of Service"
+                label={t("fields.label.label")}
+                placeholder={t("fields.label.placeholder")}
                 value={formData.label}
                 onValueChange={(value) =>
                   setFormData({ ...formData, label: value })
@@ -323,7 +313,7 @@ export default function LegalInformationSection() {
 
               <div>
                 <label className="text-sm font-medium mb-2 block">
-                  Content
+                  {t("fields.content")}
                 </label>
                 <RichTextEditor
                   content={formData.content}
@@ -337,14 +327,14 @@ export default function LegalInformationSection() {
                   setFormData({ ...formData, enabled })
                 }
               >
-                Enable this page
+                {t("fields.enabled")}
               </Switch>
             </div>
           </ModalBody>
           <ModalFooter>
             <Button variant="light" onPress={closeModal}>
               <X size={18} />
-              Cancel
+              {t("actions.cancel")}
             </Button>
             <Button
               color="primary"
@@ -352,7 +342,7 @@ export default function LegalInformationSection() {
               isLoading={createMutation.isPending || updateMutation.isPending}
             >
               <Save size={18} />
-              {editingItem ? "Update" : "Create"}
+              {editingItem ? t("actions.update") : t("actions.create")}
             </Button>
           </ModalFooter>
         </ModalContent>

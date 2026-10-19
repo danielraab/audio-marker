@@ -9,37 +9,40 @@ import Navbar from "./_components/global/layout/navbar/Navbar";
 import ServiceWorkerRegistration from "./_components/ServiceWorkerRegistration";
 import Footer from "./_components/global/layout/Footer";
 import { CookieConsent } from "./_components/global/CookieConsent";
-import { getLocale } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
 import { getHeadInjection } from "~/lib/headInjection";
 import HeadInjection from "./_components/HeadInjection";
 
-export const metadata: Metadata = {
-  title: "Audio Marker",
-  description:
-    "Audio Marker - Upload, mark, and share your audio files with ease. By DRaab",
-  icons: [{ rel: "icon", url: "/favicon.ico" }],
-  manifest: "/manifest.json",
-  appleWebApp: {
-    capable: true,
-    statusBarStyle: "default",
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("AppMetadata");
+  const shortDescription = t("shortDescription");
+  return {
     title: "Audio Marker",
-  },
-  formatDetection: {
-    telephone: false,
-  },
-  openGraph: {
-    type: "website",
-    siteName: "Audio Marker",
-    title: "Audio Marker",
-    description: "Upload, mark, and share your audio files with ease",
-  },
-  twitter: {
-    card: "summary",
-    title: "Audio Marker",
-    description: "Upload, mark, and share your audio files with ease",
-  },
-};
+    description: t("description"),
+    icons: [{ rel: "icon", url: "/favicon.ico" }],
+    manifest: "/manifest.json",
+    appleWebApp: {
+      capable: true,
+      statusBarStyle: "default",
+      title: "Audio Marker",
+    },
+    formatDetection: {
+      telephone: false,
+    },
+    openGraph: {
+      type: "website",
+      siteName: "Audio Marker",
+      title: "Audio Marker",
+      description: shortDescription,
+    },
+    twitter: {
+      card: "summary",
+      title: "Audio Marker",
+      description: shortDescription,
+    },
+  };
+}
 
 const geist = Geist({
   subsets: ["latin"],

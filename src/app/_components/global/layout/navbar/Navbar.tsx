@@ -27,7 +27,7 @@ export default function Navbar({
               height={32}
               width={32}
               src={logoSrc}
-              alt="Logo"
+              alt={t("logoAlt")}
               className="h-8 w-8 object-contain"
             />
           ) : (
