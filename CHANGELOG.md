@@ -9,11 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Translation test**: New test ensures English and German message files contain the same keys, no empty values and matching placeholders
+
 ### Changed
 
 - **CI security audit**: `pnpm audit` steps in the CI and Docker workflows are now non-blocking; findings are still reported as annotations but no longer fail the pipeline. The now redundant `bypass_audit` workflow input was removed
 
 ### Fixed
+
+- **Missing translations**: Replaced remaining hardcoded English texts with German and English translations (legal pages and admin legal settings, cookie banner, browser markers, footer, rich text editor, service worker update prompt, audio/playlist page links, loading states and page metadata). Added missing aria-labels to the legal page settings icon buttons
 
 ### Security
 

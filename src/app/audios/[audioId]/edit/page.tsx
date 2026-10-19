@@ -7,6 +7,7 @@ import { Suspense } from "react";
 import { EditAudioForm } from "~/app/_components/audio/edit/EditAudioForm";
 import Link from "next/link";
 import { Play, BarChart3 } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 
 interface EditAudioPageProps {
   params: Promise<{ audioId: string }>;
@@ -28,6 +29,8 @@ export default async function EditAudioPage({ params }: EditAudioPageProps) {
     notFound();
   }
 
+  const t = await getTranslations("AudioPages");
+
   return (
     <div className="w-full flex min-h-screen flex-col items-center gap-4">
       <div className="w-full flex flex-col items-center mx-auto">
@@ -37,14 +40,14 @@ export default async function EditAudioPage({ params }: EditAudioPageProps) {
             className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-success bg-success/10 hover:bg-success/20 rounded-lg transition-colors"
           >
             <Play size={18} />
-            Preview
+            {t("preview")}
           </Link>
           <Link
             href={`/audios/${audioId}/statistics`}
             className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-warning bg-warning/10 hover:bg-warning/20 rounded-lg transition-colors"
           >
             <BarChart3 size={18} />
-            Statistics
+            {t("statistics")}
           </Link>
         </div>
       </div>
@@ -52,7 +55,7 @@ export default async function EditAudioPage({ params }: EditAudioPageProps) {
         <Suspense
           fallback={
             <div className="flex items-center justify-center py-8">
-              <p className="text-default-500">Loading audio details...</p>
+              <p className="text-default-500">{t("loadingDetails")}</p>
             </div>
           }
         >

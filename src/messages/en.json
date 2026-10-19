@@ -7,8 +7,10 @@
       "signedInAs": "Signed in as",
       "settings": "Settings",
       "signOut": "Sign Out",
-      "signIn": "Sign In"
-    }
+      "signIn": "Sign In",
+      "fallbackName": "User"
+    },
+    "logoAlt": "Logo"
   },
   "PublicLanding": {
     "title": "Audio Marker",
@@ -59,7 +61,8 @@
     "save": "Save Changes"
   },
   "Footer": {
-    "versionTitle": "Version: {version}"
+    "versionTitle": "Version: {version}",
+    "legalInformation": "Legal Information"
   },
   "AudioPlayer": {
     "subtitle": "Audio Player",
@@ -110,7 +113,8 @@
     "descriptionPlaceholder": "Add a description for your audio",
     "fileLabel": "MP3 File",
     "selectedFile": "Selected: {fileName}",
-    "selectFile": "Choose an MP3 audio file"
+    "selectFile": "Choose an MP3 audio file",
+    "networkError": "Network error occurred."
   },
   "AudioListItem": {
     "markers": "{count} {count, plural, one {marker} other {markers}}",
@@ -376,7 +380,8 @@
       "users": "Users",
       "softDeleted": "Deleted",
       "system": "System",
-      "general": "General"
+      "general": "General",
+      "legal": "Legal Pages"
     },
     "comingSoon": "System settings coming soon..."
   },
@@ -625,5 +630,102 @@
       "lastListened": "Last listened {date}",
       "neverListened": "Never listened"
     }
+  },
+  "AppMetadata": {
+    "description": "Audio Marker - Upload, mark, and share your audio files with ease. By DRaab",
+    "shortDescription": "Upload, mark, and share your audio files with ease"
+  },
+  "CookieConsent": {
+    "title": "🍪 We use cookies",
+    "description": "We use only essential cookies for authentication and functionality.",
+    "closeAriaLabel": "Close banner"
+  },
+  "ServiceWorker": {
+    "updateAvailable": "A new version is available! Click OK to update."
+  },
+  "BrowserMarkers": {
+    "title": "Browser Audio Markers",
+    "subtitle": "These markers are only available in this browser.",
+    "listTitle": "Saved Markers:",
+    "defaultLabel": "Browser Marker {index}"
+  },
+  "AudioPages": {
+    "editAudio": "Edit Audio",
+    "preview": "Preview",
+    "statistics": "Statistics",
+    "loadingDetails": "Loading audio details...",
+    "loadingStatistics": "Loading statistics...",
+    "metadata": {
+      "listenTitle": "Audio Marker - Listen",
+      "listenDescription": "Listen to {name}",
+      "listenFallbackDescription": "Listen to audio files",
+      "statisticsTitle": "Statistics - {name} - Audio Marker",
+      "statisticsFallbackTitle": "Statistics - Audio Marker",
+      "statisticsDescription": "Listen statistics for {name}",
+      "statisticsFallbackDescription": "View audio statistics"
+    }
+  },
+  "PlaylistPages": {
+    "editPlaylist": "Edit Playlist",
+    "listen": "Listen",
+    "statistics": "Statistics",
+    "loadingDetails": "Loading playlist details...",
+    "loadingStatistics": "Loading statistics...",
+    "metadata": {
+      "listenTitle": "{name} - Playlist",
+      "listenFallbackTitle": "Playlist",
+      "listenDescription": "Listen to {name}",
+      "listenFallbackDescription": "Listen to playlists",
+      "statisticsTitle": "Statistics - {name} - Audio Marker",
+      "statisticsFallbackTitle": "Statistics - Audio Marker",
+      "statisticsDescription": "Listen statistics for {name}",
+      "statisticsFallbackDescription": "View playlist statistics"
+    }
+  },
+  "LegalPage": {
+    "title": "Legal Information",
+    "empty": "No legal information is currently available.",
+    "tabsAriaLabel": "Legal information",
+    "lastUpdated": "Last updated: {date}",
+    "metadata": {
+      "title": "Legal Information - Audio Marker",
+      "description": "Legal information for Audio Marker application"
+    }
+  },
+  "LegalInformationSection": {
+    "loading": "Loading...",
+    "title": "Legal Information",
+    "description": "Manage legal pages content (Terms, Privacy Policy, etc.)",
+    "addPage": "Add Legal Page",
+    "confirmDelete": "Are you sure you want to delete this legal information?",
+    "lastUpdated": "Last updated: {date}",
+    "updatedBy": "by {name}",
+    "unknown": "Unknown",
+    "empty": "No legal information pages yet. Create one to get started.",
+    "aria": {
+      "toggleEnabled": "Enable or disable page",
+      "edit": "Edit legal page",
+      "delete": "Delete legal page"
+    },
+    "modal": {
+      "editTitle": "Edit Legal Page",
+      "createTitle": "Create Legal Page"
+    },
+    "fields": {
+      "label": {
+        "label": "Label",
+        "placeholder": "e.g., Privacy Policy, Terms of Service"
+      },
+      "content": "Content",
+      "enabled": "Enable this page"
+    },
+    "actions": {
+      "cancel": "Cancel",
+      "update": "Update",
+      "create": "Create"
+    }
+  },
+  "RichTextEditor": {
+    "enterUrl": "Enter URL:"
   }
 }
