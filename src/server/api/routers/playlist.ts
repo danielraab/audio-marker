@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { toDateKey } from "~/lib/time";
 
 import {
   createTRPCRouter,
@@ -735,13 +736,13 @@ export const playlistRouter = createTRPCRouter({
         d <= endDate;
         d.setDate(d.getDate() + 1)
       ) {
-        const dateKey = d.toISOString().split("T")[0]!;
+        const dateKey = toDateKey(d);
         dailyStats[dateKey] = 0;
       }
 
       // Count listens per day
       for (const record of listenRecords) {
-        const dateKey = record.listenedAt.toISOString().split("T")[0]!;
+        const dateKey = toDateKey(record.listenedAt);
         if (dailyStats[dateKey] !== undefined) {
           dailyStats[dateKey]++;
         }
@@ -795,14 +796,14 @@ export const playlistRouter = createTRPCRouter({
           d <= endDate;
           d.setDate(d.getDate() + 1)
         ) {
-          const dateKey = d.toISOString().split("T")[0]!;
+          const dateKey = toDateKey(d);
           daily[dateKey] = 0;
         }
         audioStatsMap.set(audioId, daily);
       }
 
       for (const record of audioListenRecords) {
-        const dateKey = record.listenedAt.toISOString().split("T")[0]!;
+        const dateKey = toDateKey(record.listenedAt);
         const daily = audioStatsMap.get(record.audioId);
         if (daily?.[dateKey] !== undefined) {
           daily[dateKey]++;

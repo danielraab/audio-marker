@@ -733,7 +733,7 @@ async function seed() {
     // =========================================
     // Summary
     // =========================================
-    console.log("\n" + "=".repeat(50));
+    console.log(`\n${"=".repeat(50)}`);
     console.log("🎉 Database seeding completed successfully!");
     console.log("=".repeat(50));
     console.log("\nSummary:");

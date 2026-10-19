@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { Card, CardBody, CardHeader, Chip } from "@heroui/react";
 import { FlagTriangleRight } from "lucide-react";
+import { useTranslations } from "next-intl";
 import type { AudioMarker } from "~/types/Audio";
 import AddMarker from "../marker/AddMarker";
 import MarkerList from "../marker/MarkerList";
@@ -37,6 +38,7 @@ export default function BrowserMarkerManager({
   onToggleEdit,
   onUpdateMarkerReady,
 }: MarkerManagerProps) {
+  const t = useTranslations("BrowserMarkers");
   const [markers, setMarkers] = useState<AudioMarker[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -108,7 +110,7 @@ export default function BrowserMarkerManager({
     const newMarker: AudioMarker = {
       id: `marker_${Date.now()}`,
       timestamp: startTime,
-      label: label.trim() || `Browser Marker ${markers.length + 1}`,
+      label: label.trim() || t("defaultLabel", { index: markers.length + 1 }),
       color: `hsl(${Math.random() * 360}, 70%, 50%)`,
       endTimestamp: endTime,
     };
@@ -123,14 +125,12 @@ export default function BrowserMarkerManager({
       <CardHeader className="flex flex-col items-start">
         <div className="flex flex-row items-center gap-2 pb-2">
           <FlagTriangleRight size={20} className="text-primary" />
-          <h3 className="text-lg font-semibold">Browser Audio Markers</h3>
+          <h3 className="text-lg font-semibold">{t("title")}</h3>
           <Chip size="sm" variant="flat" color="primary">
             {markers.length}
           </Chip>
         </div>
-        <p className="text-small text-default-500">
-          This Markers are only available in this browser.
-        </p>
+        <p className="text-small text-default-500">{t("subtitle")}</p>
       </CardHeader>
       <CardBody className="space-y-4">
         {/* Add Custom Marker */}
@@ -147,7 +147,7 @@ export default function BrowserMarkerManager({
         {markers.length > 0 && (
           <div className="space-y-2 max-h-96 overflow-y-auto">
             <h4 className="text-sm font-medium text-default-600">
-              Saved Markers:
+              {t("listTitle")}
             </h4>
             <MarkerList
               markers={markers}

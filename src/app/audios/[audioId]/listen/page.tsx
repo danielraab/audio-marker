@@ -6,6 +6,7 @@ import { VisibilityBanner } from "~/app/_components/global/VisibilityBanner";
 import { env } from "~/env";
 import { BarChart3, Edit } from "lucide-react";
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 
 interface ListenPageProps {
   params: Promise<{ audioId: string }>;
@@ -32,6 +33,8 @@ export default async function ListenPage({ params }: ListenPageProps) {
       notFound();
     }
 
+    const t = await getTranslations("AudioPages");
+
     return (
       <div className="w-full flex flex-col items-center mx-auto py-8">
         <VisibilityBanner isPublic={audio.isPublic} isCreator={isCreator} />
@@ -42,14 +45,14 @@ export default async function ListenPage({ params }: ListenPageProps) {
               className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-primary bg-primary/10 hover:bg-primary/20 rounded-lg transition-colors"
             >
               <Edit size={18} />
-              Edit Audio
+              {t("editAudio")}
             </Link>
             <Link
               href={`/audios/${audioId}/statistics`}
               className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-warning bg-warning/10 hover:bg-warning/20 rounded-lg transition-colors"
             >
               <BarChart3 size={18} />
-              Statistics
+              {t("statistics")}
             </Link>
           </div>
         )}
@@ -72,18 +75,20 @@ export default async function ListenPage({ params }: ListenPageProps) {
 export async function generateMetadata({ params }: ListenPageProps) {
   const { audioId } = await params;
   const session = await auth();
+  const t = await getTranslations("AudioPages.metadata");
   try {
     const audio = session
       ? await api.audio.getUserAudioById({ id: audioId })
       : await api.audio.getPublicAudioById({ id: audioId });
     return {
       title: `${audio.name} - Audio Marker`,
-      description: audio.description ?? `Listen to ${audio.name}`,
+      description:
+        audio.description ?? t("listenDescription", { name: audio.name }),
     };
   } catch {
     return {
-      title: "Audio Marker - Listen",
-      description: "Listen to audio files",
+      title: t("listenTitle"),
+      description: t("listenFallbackDescription"),
     };
   }
 }

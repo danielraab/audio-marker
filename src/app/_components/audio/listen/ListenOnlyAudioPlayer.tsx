@@ -72,12 +72,12 @@ export default function ListenOnlyAudioPlayer({
 
   // Fetch playlist data - use user's playlist if logged in, otherwise use public playlist
   const { data: playlistFromUser } = api.playlist.getUserPlaylistById.useQuery(
-    { id: playlistId! },
+    { id: playlistId ?? "" },
     { enabled: !!playlistId && !!session },
   );
 
   const { data: playlistPublic } = api.playlist.getPublicPlaylistById.useQuery(
-    { id: playlistId! },
+    { id: playlistId ?? "" },
     { enabled: !!playlistId && !session },
   );
 

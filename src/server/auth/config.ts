@@ -6,6 +6,7 @@ import Authentik from "next-auth/providers/authentik";
 import Nodemailer from "next-auth/providers/nodemailer";
 
 import { db } from "~/server/db";
+import { sendVerificationRequest } from "./verificationEmail";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -68,6 +69,7 @@ export const authConfig = {
               },
             },
             from: env.EMAIL_FROM,
+            sendVerificationRequest,
           }),
         ]
       : []),

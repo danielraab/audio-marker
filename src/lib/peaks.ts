@@ -42,8 +42,8 @@ export async function generatePeaks(audioFilePath: string): Promise<PeaksData> {
   // We take the absolute max of each min/max pair for our peaks
   const peaks: number[] = [];
   for (let i = 0; i < waveformData.data.length; i += 2) {
-    const min = Math.abs(waveformData.data[i]!);
-    const max = Math.abs(waveformData.data[i + 1]!);
+    const min = Math.abs(waveformData.data[i] ?? 0);
+    const max = Math.abs(waveformData.data[i + 1] ?? 0);
     const peak = Math.max(min, max);
     // Normalize from 8-bit range (0-255, with 128 as center) to [0, 1]
     const normalized = peak / 128.0;
@@ -132,7 +132,7 @@ async function generateWaveformData(
     return data;
   } catch (error) {
     const err = error as { message: string; stderr?: string };
-    const stderrMsg = err.stderr ? "\n" + err.stderr : "";
+    const stderrMsg = err.stderr ? `\n${err.stderr}` : "";
     throw new Error(`audiowaveform failed: ${err.message}${stderrMsg}`);
   }
 }

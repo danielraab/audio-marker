@@ -29,7 +29,9 @@ export default function UserMenu() {
               <Avatar
                 as="button"
                 src={session.user.image ?? undefined}
-                name={session.user.name ?? session.user.email ?? "User"}
+                name={
+                  session.user.name ?? session.user.email ?? t("fallbackName")
+                }
                 size="sm"
                 className="transition-transform hover:scale-105"
                 radius="full"

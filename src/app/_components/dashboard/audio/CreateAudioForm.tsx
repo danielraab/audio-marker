@@ -90,13 +90,13 @@ export default function CreateAudioForm() {
           resolve(response);
         } else {
           const error = JSON.parse(xhr.responseText) as { error: string };
-          reject(new Error(error.error || "Upload failed"));
+          reject(new Error(error.error || t("uploadError")));
         }
       };
 
       // Handle errors
       xhr.onerror = () => {
-        reject(new Error("Network error occurred"));
+        reject(new Error(t("networkError")));
       };
 
       // Prepare form data
