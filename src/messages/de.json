@@ -727,5 +727,11 @@
   },
   "RichTextEditor": {
     "enterUrl": "URL eingeben:"
+  },
+  "VerificationEmail": {
+    "subject": "Bei {host} anmelden",
+    "heading": "Bei {host} anmelden",
+    "button": "Anmelden",
+    "ignoreNotice": "Falls du diese E-Mail nicht angefordert hast, kannst du sie einfach ignorieren."
   }
 }

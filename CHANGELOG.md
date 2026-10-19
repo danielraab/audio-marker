@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Translated sign-in email**: The magic link email sent by the email (Nodemailer) login is now translated to German and English based on the selected language, using the same layout as the previous Auth.js default email
 - **Translation test**: New test ensures English and German message files contain the same keys, no empty values and matching placeholders
 
 ### Changed
