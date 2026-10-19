@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- **Lint warnings**: Resolved all Biome lint warnings (non-null assertions, template literals, `node:` import protocol, useless fragment). `isSection` is now a type guard and date keys for listen statistics use a shared, tested `toDateKey` helper
+
 ## [0.9.7] - 2026-10-19
 
 ### Added

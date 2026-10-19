@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { formatTime, roundTime, formatTimeAgo } from "./time";
+import { formatTime, roundTime, formatTimeAgo, toDateKey } from "./time";
 
 describe("Time Utilities", () => {
   describe("formatTime", () => {
@@ -113,6 +113,17 @@ describe("Time Utilities", () => {
       // Just over 1 hour
       const justHour = new Date(now.getTime() - 3601 * 1000);
       expect(formatTimeAgo(justHour)).toBe("1 hours ago");
+    });
+  });
+
+  describe("toDateKey", () => {
+    it("should format a date as a UTC YYYY-MM-DD key", () => {
+      expect(toDateKey(new Date("2024-03-05T00:00:00.000Z"))).toBe(
+        "2024-03-05",
+      );
+      expect(toDateKey(new Date("2024-12-31T23:59:59.999Z"))).toBe(
+        "2024-12-31",
+      );
     });
   });
 });
