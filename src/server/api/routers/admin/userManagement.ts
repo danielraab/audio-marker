@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { TRPCError } from "@trpc/server";
+import { PASSKEY_PROVIDER_ID } from "~/server/auth/passkey/config";
 import { requireAdminForUserManagement } from "./utils";
 
 export const userManagementRouter = createTRPCRouter({
@@ -164,6 +165,21 @@ export const userManagementRouter = createTRPCRouter({
       await ctx.db.user.delete({
         where: { id: input.id },
       });
+
+      return { success: true };
+    }),
+
+  revokeAllPasskeys: protectedProcedure
+    .input(z.object({ userId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      requireAdminForUserManagement(ctx.session, "revoke passkeys");
+
+      await ctx.db.$transaction([
+        ctx.db.authenticator.deleteMany({ where: { userId: input.userId } }),
+        ctx.db.account.deleteMany({
+          where: { userId: input.userId, provider: PASSKEY_PROVIDER_ID },
+        }),
+      ]);
 
       return { success: true };
     }),

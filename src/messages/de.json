@@ -5,6 +5,7 @@
       "userMenuAriaLabel": "Benutzermenü",
       "authMenuAriaLabel": "Anmeldemenü",
       "signedInAs": "Angemeldet als",
+      "profile": "Profil",
       "settings": "Einstellungen",
       "signOut": "Abmelden",
       "signIn": "Anmelden",
@@ -385,6 +386,43 @@
     },
     "comingSoon": "Systemeinstellungen folgen in Kürze..."
   },
+  "ProfilePage": {
+    "title": "Profil",
+    "description": "Verwalte deine persönlichen Kontoeinstellungen.",
+    "empty": "Derzeit sind keine Profileinstellungen verfügbar."
+  },
+  "PasskeySection": {
+    "title": "Passkeys",
+    "description": "Melde dich schnell und sicher mit Fingerabdruck, Gesichtserkennung oder Geräte-PIN an – statt per E-Mail oder Authentik.",
+    "count": "{count} von {max} Passkeys",
+    "empty": "Du hast noch keine Passkeys hinzugefügt.",
+    "unknownAuthenticator": "Unbekannter Authenticator",
+    "createdOn": "Hinzugefügt am {date}",
+    "lastUsedOn": "zuletzt verwendet am {date}",
+    "neverUsed": "noch nie verwendet",
+    "confirmDelete": "Den Passkey „{name}“ löschen? Er kann danach nicht mehr zur Anmeldung verwendet werden.",
+    "add": {
+      "button": "Passkey hinzufügen",
+      "labelField": "Bezeichnung (optional)",
+      "labelPlaceholder": "z. B. Arbeitslaptop"
+    },
+    "info": {
+      "windowOpen": "Du kannst bis {time} Uhr Passkeys hinzufügen.",
+      "windowClosed": "Aus Sicherheitsgründen können Passkeys nur innerhalb von 5 Minuten nach einer Anmeldung per E-Mail oder Authentik hinzugefügt werden. Melde dich ab und erneut an, um einen Passkey hinzuzufügen.",
+      "limitReached": "Du hast das Maximum von {max} Passkeys erreicht. Lösche einen Passkey, um einen neuen hinzuzufügen."
+    },
+    "actions": {
+      "rename": "Bezeichnung bearbeiten",
+      "delete": "Passkey löschen",
+      "save": "Bezeichnung speichern",
+      "cancel": "Abbrechen"
+    },
+    "errors": {
+      "cancelled": "Das Hinzufügen des Passkeys wurde abgebrochen.",
+      "alreadyRegistered": "Auf diesem Gerät ist bereits einer deiner Passkeys gespeichert.",
+      "generic": "Der Passkey konnte nicht hinzugefügt werden."
+    }
+  },
   "GeneralSettings": {
     "loading": "Einstellungen werden geladen...",
     "authSettings": {
@@ -515,6 +553,13 @@
       "nameRequired": "Name ist erforderlich",
       "emailRequired": "E-Mail ist erforderlich",
       "emailInvalid": "Ungültige E-Mail-Adresse"
+    },
+    "passkeys": {
+      "label": "Passkeys",
+      "description": "Alle Passkeys dieses Benutzers löschen, z. B. wenn ein Gerät verloren wurde.",
+      "revokeAll": "Alle Passkeys widerrufen",
+      "confirmRevokeAll": "Alle Passkeys dieses Benutzers widerrufen? Sie können danach nicht mehr zur Anmeldung verwendet werden.",
+      "revoked": "Alle Passkeys dieses Benutzers wurden widerrufen."
     }
   },
   "AudioStatistics": {

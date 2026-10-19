@@ -5,6 +5,7 @@
       "userMenuAriaLabel": "User menu",
       "authMenuAriaLabel": "Authentication menu",
       "signedInAs": "Signed in as",
+      "profile": "Profile",
       "settings": "Settings",
       "signOut": "Sign Out",
       "signIn": "Sign In",
@@ -385,6 +386,43 @@
     },
     "comingSoon": "System settings coming soon..."
   },
+  "ProfilePage": {
+    "title": "Profile",
+    "description": "Manage your personal account settings.",
+    "empty": "There are no profile settings available at the moment."
+  },
+  "PasskeySection": {
+    "title": "Passkeys",
+    "description": "Sign in quickly and securely with your fingerprint, face or device PIN instead of email or Authentik.",
+    "count": "{count} of {max} passkeys",
+    "empty": "You have not added any passkeys yet.",
+    "unknownAuthenticator": "Unknown authenticator",
+    "createdOn": "Added on {date}",
+    "lastUsedOn": "last used on {date}",
+    "neverUsed": "never used",
+    "confirmDelete": "Delete the passkey \"{name}\"? It can no longer be used to sign in.",
+    "add": {
+      "button": "Add passkey",
+      "labelField": "Label (optional)",
+      "labelPlaceholder": "e.g. Work laptop"
+    },
+    "info": {
+      "windowOpen": "You can add passkeys until {time}.",
+      "windowClosed": "For security reasons, passkeys can only be added within 5 minutes after signing in with email or Authentik. Sign out and sign in again to add a passkey.",
+      "limitReached": "You have reached the maximum of {max} passkeys. Delete a passkey to add a new one."
+    },
+    "actions": {
+      "rename": "Edit label",
+      "delete": "Delete passkey",
+      "save": "Save label",
+      "cancel": "Cancel"
+    },
+    "errors": {
+      "cancelled": "Adding the passkey was cancelled.",
+      "alreadyRegistered": "This device already holds one of your passkeys.",
+      "generic": "The passkey could not be added."
+    }
+  },
   "GeneralSettings": {
     "loading": "Loading settings...",
     "authSettings": {
@@ -515,6 +553,13 @@
       "nameRequired": "Name is required",
       "emailRequired": "Email is required",
       "emailInvalid": "Invalid email address"
+    },
+    "passkeys": {
+      "label": "Passkeys",
+      "description": "Delete all passkeys of this user, e.g. if a device was lost.",
+      "revokeAll": "Revoke all passkeys",
+      "confirmRevokeAll": "Revoke all passkeys of this user? They can no longer be used to sign in.",
+      "revoked": "All passkeys of this user have been revoked."
     }
   },
   "AudioStatistics": {

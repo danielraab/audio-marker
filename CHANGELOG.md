@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Passkey sign-in**: Users can sign in with passkeys via the sign-in page. Passkeys are enabled when `AUTH_URL` is set (it defines the passkey domain) and can be disabled with `AUTH_PASSKEY_DISABLED=true`. Disabled users cannot sign in with a passkey
+- **Profile page**: New `/profile` page for all users, reachable via "Profile" in the user menu. Its first section manages passkeys: add (max. 10, only within 5 minutes after signing in with email or Authentik), optional label, vendor name and icon (from a snapshot of the community passkey AAGUID list, refresh with `pnpm run passkey:update-aaguids`), created and last used date, delete
+- **Admin passkey revocation**: Admins can revoke all passkeys of a user in the user management dialog without seeing the individual passkeys
+
+### Security
+
+- **Session payload**: The session returned to the browser no longer contains the database session row (including the session token); only whitelisted fields are exposed
+
 ### Fixed
 
 - **Test setup with Vitest 5**: The `localStorage` mock is now installed via `vi.stubGlobal`, as Vitest 5's jsdom environment no longer allows assigning `global.localStorage` directly. The Vitest config uses `import.meta.dirname` instead of `__dirname`

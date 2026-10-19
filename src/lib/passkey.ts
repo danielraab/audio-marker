@@ -1,0 +1,1 @@
+export const PASSKEY_LABEL_MAX_LENGTH = 50;

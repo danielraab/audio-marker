@@ -19,6 +19,7 @@ services:
       - DATABASE_URL=file:/app/data/db.sqlite
       - AUTH_URL=http://localhost:3000
       - AUTH_SECRET=your-auth-secret-here
+      # - AUTH_PASSKEY_DISABLED=true
       - AUTH_AUTHENTIK_ID=your-authentik-id
       - AUTH_AUTHENTIK_SECRET=your-authentik-secret
       - AUTH_AUTHENTIK_ISSUER=your-authentik-issuer

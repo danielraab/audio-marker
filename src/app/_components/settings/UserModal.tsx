@@ -12,7 +12,7 @@ import { Button } from "@heroui/button";
 import { Input } from "@heroui/input";
 import { Switch } from "@heroui/switch";
 import { api } from "~/trpc/react";
-import { Shield, Ban } from "lucide-react";
+import { Shield, Ban, KeyRound } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 interface User {
@@ -41,6 +41,7 @@ export default function UserModal({
   const [email, setEmail] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
+  const [passkeysRevoked, setPasskeysRevoked] = useState(false);
   const [errors, setErrors] = useState<{
     name?: string;
     email?: string;
@@ -65,6 +66,7 @@ export default function UserModal({
         setIsDisabled(false);
       }
       setErrors({});
+      setPasskeysRevoked(false);
     }
   }, [isOpen, user]);
 
@@ -89,6 +91,20 @@ export default function UserModal({
       setErrors({ general: error.message });
     },
   });
+
+  const revokeAllPasskeysMutation =
+    api.admin.userManagement.revokeAllPasskeys.useMutation({
+      onSuccess: () => setPasskeysRevoked(true),
+      onError: (error) => {
+        setErrors({ general: error.message });
+      },
+    });
+
+  const handleRevokeAllPasskeys = () => {
+    if (user && confirm(t("passkeys.confirmRevokeAll"))) {
+      revokeAllPasskeysMutation.mutate({ userId: user.id });
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -198,6 +214,30 @@ export default function UserModal({
               </div>
               {isDisabled && <Ban className="h-4 w-4 text-danger" />}
             </Switch>
+
+            {isEditMode && (
+              <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg bg-content1 p-4">
+                <div className="flex flex-col gap-1">
+                  <p className="text-medium">{t("passkeys.label")}</p>
+                  <p className="text-tiny text-default-400">
+                    {passkeysRevoked
+                      ? t("passkeys.revoked")
+                      : t("passkeys.description")}
+                  </p>
+                </div>
+                <Button
+                  color="danger"
+                  variant="bordered"
+                  size="sm"
+                  startContent={<KeyRound className="h-4 w-4" />}
+                  isLoading={revokeAllPasskeysMutation.isPending}
+                  isDisabled={passkeysRevoked}
+                  onPress={handleRevokeAllPasskeys}
+                >
+                  {t("passkeys.revokeAll")}
+                </Button>
+              </div>
+            )}
           </ModalBody>
           <ModalFooter>
             <Button

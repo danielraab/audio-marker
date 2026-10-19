@@ -4,8 +4,14 @@ import type { Adapter } from "next-auth/adapters";
 import { env } from "~/env";
 import Authentik from "next-auth/providers/authentik";
 import Nodemailer from "next-auth/providers/nodemailer";
+import Passkey from "next-auth/providers/passkey";
 
 import { db } from "~/server/db";
+import {
+  FRESH_AUTH_PROVIDERS,
+  getPasskeyAddableUntil,
+  passkeyConfig,
+} from "./passkey/config";
 import { sendVerificationRequest } from "./verificationEmail";
 
 /**
@@ -16,6 +22,8 @@ import { sendVerificationRequest } from "./verificationEmail";
  */
 declare module "next-auth" {
   interface Session extends DefaultSession {
+    /** ISO date until which a passkey can be added, `null` without a fresh sign-in. */
+    passkeyAddableUntil: string | null;
     user: {
       id: string;
       isAdmin: boolean;
@@ -38,7 +46,22 @@ declare module "next-auth/adapters" {
     isAdmin: boolean;
     isDisabled: boolean;
   }
+
+  interface AdapterSession {
+    freshAuthAt?: Date | null;
+  }
 }
+
+const prismaAdapter = PrismaAdapter(db) as Adapter;
+
+const adapter: Adapter = {
+  ...prismaAdapter,
+  updateAuthenticatorCounter: (credentialID, counter) =>
+    db.authenticator.update({
+      where: { credentialID },
+      data: { counter, lastUsedAt: new Date() },
+    }),
+};
 
 /**
  * Options for NextAuth.js used to configure adapters, providers, callbacks, etc.
@@ -73,8 +96,42 @@ export const authConfig = {
           }),
         ]
       : []),
+    ...(passkeyConfig.enabled
+      ? [
+          Passkey({
+            relayingParty: passkeyConfig.relyingParty,
+            // Passkeys are registered on the profile page only, never via sign-up
+            getUserInfo: async () => null,
+            formFields: {},
+            enableConditionalUI: false,
+          }),
+        ]
+      : []),
   ],
-  adapter: PrismaAdapter(db) as Adapter,
+  adapter,
+  experimental: { enableWebAuthn: passkeyConfig.enabled },
+  events: {
+    signIn: async ({ user, account }) => {
+      if (
+        !user.id ||
+        !account ||
+        !FRESH_AUTH_PROVIDERS.includes(account.provider)
+      ) {
+        return;
+      }
+      const newestSession = await db.session.findFirst({
+        where: { userId: user.id },
+        orderBy: { createdAt: "desc" },
+        select: { id: true },
+      });
+      if (newestSession) {
+        await db.session.update({
+          where: { id: newestSession.id },
+          data: { freshAuthAt: new Date() },
+        });
+      }
+    },
+  },
   callbacks: {
     session: ({ session, user }) => {
       // Block disabled users from creating sessions
@@ -84,11 +141,16 @@ export const authConfig = {
         );
       }
 
+      // Whitelist fields: the database session row also contains the session token
       return {
-        ...session,
+        expires: session.expires,
+        passkeyAddableUntil:
+          getPasskeyAddableUntil(session.freshAuthAt ?? null)?.toISOString() ??
+          null,
         user: {
-          ...session.user,
           id: user.id,
+          name: user.name,
+          email: user.email,
           image: user.image,
           isAdmin: user.isAdmin,
           isDisabled: user.isDisabled,
